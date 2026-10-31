@@ -899,66 +899,88 @@ function extractMatches(data) {
 
 /*
 |--------------------------------------------------------------------------
-| STATUS
+| STATUS RAW
 |--------------------------------------------------------------------------
-|
-| IMPORTANTE:
-|
-| O SportScore pode devolver:
-|
-| status: "live"
-|
-| ou:
-|
-| status: {
-|   type: "live",
-|   short: "LIVE",
-|   name: "Live"
-| }
-|
+*/
+
+function getRawStatusValues(match) {
+  const rawStatus =
+    match?.status;
+
+  const values = [];
+
+  if (
+    typeof rawStatus === "string"
+  ) {
+    values.push(
+      rawStatus
+    );
+  }
+
+  if (
+    rawStatus &&
+    typeof rawStatus === "object"
+  ) {
+    values.push(
+      rawStatus.type,
+      rawStatus.state,
+      rawStatus.status,
+      rawStatus.short,
+      rawStatus.code,
+      rawStatus.name,
+      rawStatus.text,
+      rawStatus.description
+    );
+  }
+
+  values.push(
+    match?.status_type,
+    match?.statusType,
+    match?.status_state,
+    match?.statusState,
+    match?.status_code,
+    match?.statusCode,
+    match?.status_short,
+    match?.statusShort,
+    match?.status_name,
+    match?.statusName,
+    match?.status_text,
+    match?.statusText,
+    match?.state,
+    match?.state_type,
+    match?.stateType
+  );
+
+  return values
+    .filter(
+      value =>
+        value !== null &&
+        value !== undefined &&
+        String(value).trim()
+    )
+    .map(
+      value =>
+        String(value)
+          .toLowerCase()
+          .trim()
+          .replace(/[\s-]+/g, "_")
+    );
+}
+
+/*
+|--------------------------------------------------------------------------
+| STATUS
 |--------------------------------------------------------------------------
 */
 
 function normalizeStatus(match) {
-  const rawStatus =
-    match?.status;
-
-  const status =
-    typeof rawStatus === "object"
-      ? (
-          rawStatus.type ||
-          rawStatus.short ||
-          rawStatus.name ||
-          rawStatus.code ||
-          rawStatus.status ||
-          ""
-        )
-      : rawStatus;
+  const statuses =
+    getRawStatusValues(
+      match
+    );
 
   const statusText =
-    String(
-      match?.status_text ||
-      match?.statusText ||
-      (
-        typeof rawStatus === "object"
-          ? (
-              rawStatus.text ||
-              rawStatus.description ||
-              rawStatus.name ||
-              ""
-            )
-          : ""
-      ) ||
-      ""
-    )
-      .toLowerCase()
-      .trim();
-
-  const normalizedStatus =
-    String(status || "")
-      .toLowerCase()
-      .trim()
-      .replace(/[\s-]+/g, "_");
+    statuses.join(" ");
 
   /*
   |--------------------------------------------------------------------------
@@ -967,23 +989,22 @@ function normalizeStatus(match) {
   */
 
   if (
-    [
-      "halftime",
-      "half_time",
-      "ht",
-      "paused",
-      "pause",
-      "break",
-      "interval",
-      "half",
-    ].includes(normalizedStatus) ||
-    [
-      "ht",
-      "half time",
-      "half-time",
-      "interval",
-      "halftime",
-    ].includes(statusText)
+    statuses.some(
+      value =>
+        [
+          "halftime",
+          "half_time",
+          "ht",
+          "paused",
+          "pause",
+          "break",
+          "interval",
+          "half",
+        ].includes(value)
+    ) ||
+    /(^|_)(ht|halftime|half_time)(_|$)/.test(
+      statusText
+    )
   ) {
     return "HALFTIME";
   }
@@ -995,32 +1016,27 @@ function normalizeStatus(match) {
   */
 
   if (
-    [
-      "finished",
-      "finished_aet",
-      "ft",
-      "ended",
-      "end",
-      "complete",
-      "completed",
-      "after_extra_time",
-      "after_penalties",
-      "full_time",
-      "fulltime",
-      "final",
-      "closed",
-    ].includes(normalizedStatus) ||
-    [
-      "ft",
-      "finished",
-      "ended",
-      "end",
-      "full time",
-      "full-time",
-      "fulltime",
-      "final",
-      "completed",
-    ].includes(statusText)
+    statuses.some(
+      value =>
+        [
+          "finished",
+          "finished_aet",
+          "ft",
+          "ended",
+          "end",
+          "complete",
+          "completed",
+          "after_extra_time",
+          "after_penalties",
+          "full_time",
+          "fulltime",
+          "final",
+          "closed",
+          "cancelled",
+          "canceled",
+          "postponed",
+        ].includes(value)
+    )
   ) {
     return "FINISHED";
   }
@@ -1032,75 +1048,121 @@ function normalizeStatus(match) {
   */
 
   if (
-    [
-      "live",
-      "in_play",
-      "inplay",
-      "playing",
-      "in_progress",
-      "inprogress",
-      "1h",
-      "2h",
-      "first_half",
-      "second_half",
-      "1st_half",
-      "2nd_half",
-      "extra_time",
-      "extra_time_1",
-      "extra_time_2",
-      "et",
-      "playing_now",
-    ].includes(normalizedStatus) ||
-    [
-      "live",
-      "in play",
-      "in-play",
-      "playing",
-      "1h",
-      "2h",
-      "first half",
-      "second half",
-      "extra time",
-    ].includes(statusText)
+    statuses.some(
+      value =>
+        [
+          "live",
+          "in_play",
+          "inplay",
+          "playing",
+          "started",
+          "start",
+          "in_progress",
+          "inprogress",
+          "ongoing",
+          "on_going",
+          "1h",
+          "2h",
+          "first_half",
+          "second_half",
+          "1st_half",
+          "2nd_half",
+          "extra_time",
+          "extra_time_1",
+          "extra_time_2",
+          "et",
+          "playing_now",
+        ].includes(value)
+    )
   ) {
     return "LIVE";
   }
 
   /*
   |--------------------------------------------------------------------------
-  | AGENDADO
+  | SCHEDULED
   |--------------------------------------------------------------------------
   */
 
   if (
-    [
-      "scheduled",
-      "not_started",
-      "notstarted",
-      "ns",
-      "upcoming",
-      "fixture",
-      "pending",
-      "not_start",
-      "pre_match",
-      "prematch",
-      "waiting",
-    ].includes(normalizedStatus) ||
-    [
-      "scheduled",
-      "not started",
-      "not-started",
-      "upcoming",
-      "fixture",
-      "pending",
-      "pre match",
-      "prematch",
-    ].includes(statusText)
+    statuses.some(
+      value =>
+        [
+          "scheduled",
+          "not_started",
+          "notstarted",
+          "ns",
+          "upcoming",
+          "fixture",
+          "pending",
+          "not_start",
+          "pre_match",
+          "prematch",
+          "waiting",
+        ].includes(value)
+    )
   ) {
     return "SCHEDULED";
   }
 
+  /*
+  |--------------------------------------------------------------------------
+  | FALLBACK POR MINUTO
+  |--------------------------------------------------------------------------
+  |
+  | Algumas respostas podem não trazer um status textual
+  | útil, mas trazem o minuto do jogo.
+  |
+  |--------------------------------------------------------------------------
+  */
+
+  const providerMinute =
+    parseFootballMinute(
+      match?.minute ??
+      match?.minutes ??
+      match?.elapsed ??
+      match?.clock?.minute
+    );
+
+  if (
+    Number.isFinite(
+      providerMinute
+    ) &&
+    providerMinute > 0 &&
+    providerMinute <= 120
+  ) {
+    return "LIVE";
+  }
+
   return "UNKNOWN";
+}
+
+/*
+|--------------------------------------------------------------------------
+| RAW MATCH PARECE LIVE
+|--------------------------------------------------------------------------
+|
+| Usado ANTES da normalização completa para decidir
+| se vale a pena tentar outro slug.
+|--------------------------------------------------------------------------
+*/
+
+function rawMatchLooksLive(
+  match
+) {
+  const status =
+    normalizeStatus(
+      match
+    );
+
+  if (
+    status === "LIVE" ||
+    status === "HALFTIME"
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 /*
@@ -1325,12 +1387,14 @@ function normalizeMatch(
   const homeRaw =
     rawMatch.home_team ||
     rawMatch.homeTeam ||
-    rawMatch.home;
+    rawMatch.home ||
+    rawMatch.teams?.home;
 
   const awayRaw =
     rawMatch.away_team ||
     rawMatch.awayTeam ||
-    rawMatch.away;
+    rawMatch.away ||
+    rawMatch.teams?.away;
 
   const homeLogo =
     rawMatch.home_logo ||
@@ -1369,7 +1433,9 @@ function normalizeMatch(
       rawMatch.home_score ??
       rawMatch.homeScore ??
       rawMatch.score?.home ??
-      rawMatch.scores?.home
+      rawMatch.scores?.home ??
+      rawMatch.goals?.home ??
+      rawMatch.result?.home
     );
 
   const awayScore =
@@ -1377,7 +1443,9 @@ function normalizeMatch(
       rawMatch.away_score ??
       rawMatch.awayScore ??
       rawMatch.score?.away ??
-      rawMatch.scores?.away
+      rawMatch.scores?.away ??
+      rawMatch.goals?.away ??
+      rawMatch.result?.away
     );
 
   const normalizedStatus =
@@ -1399,6 +1467,9 @@ function normalizeMatch(
   const utcDate =
     rawMatch.utc_date ||
     rawMatch.utcDate ||
+    rawMatch.kickoff ||
+    rawMatch.kickoff_time ||
+    rawMatch.kickoffTime ||
     rawMatch.datetime ||
     rawMatch.date_time ||
     rawMatch.start_time ||
@@ -1412,6 +1483,8 @@ function normalizeMatch(
     rawMatch.minutes ??
     rawMatch.elapsed ??
     rawMatch.clock?.minute ??
+    rawMatch.timer?.minute ??
+    rawMatch.period?.minute ??
     null;
 
   const providerMinute =
@@ -1431,6 +1504,8 @@ function normalizeMatch(
     rawMatch.fixtureId ||
     rawMatch.match_id ||
     rawMatch.matchId ||
+    rawMatch.event_id ||
+    rawMatch.eventId ||
     rawMatch.url ||
     [
       competition.key,
@@ -1446,6 +1521,7 @@ function normalizeMatch(
     typeof rawStatus === "object"
       ? (
           rawStatus.type ||
+          rawStatus.state ||
           rawStatus.short ||
           rawStatus.name ||
           rawStatus.code ||
@@ -1486,6 +1562,7 @@ function normalizeMatch(
         resolvedSlug ||
         rawMatch.competition_slug ||
         rawMatch.competitionSlug ||
+        rawMatch.competition?.slug ||
         null,
 
       logo:
@@ -1626,6 +1703,16 @@ function getLiveDisplay(match) {
 |--------------------------------------------------------------------------
 | FIXTURES
 |--------------------------------------------------------------------------
+|
+| CORREÇÃO PRINCIPAL:
+|
+| 1. NÃO usamos "status=live" no provider.
+| 2. Tentamos todos os slugs.
+| 3. Se um slug devolver 200 + [] continuamos.
+| 4. Se LIVE estiver ativo, só paramos quando encontramos
+|    pelo menos um jogo que parece LIVE.
+|
+|--------------------------------------------------------------------------
 */
 
 async function requestFixtures({
@@ -1654,49 +1741,58 @@ async function requestFixtures({
       slug: null,
       matches: [],
       errors: [],
+      attempts: [],
       success: false,
     };
   }
 
   const errors = [];
+  const attempts = [];
+
+  let lastSuccessfulResponse =
+    null;
 
   for (
     const slug of slugs
   ) {
+    const params =
+      new URLSearchParams();
+
+    params.set(
+      "sport",
+      SPORT
+    );
+
+    params.set(
+      "date",
+      date
+    );
+
+    params.set(
+      "limit",
+      "200"
+    );
+
+    params.set(
+      "competition",
+      slug
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | NÃO adicionar:
+    |
+    | params.set("status", "live")
+    |
+    | porque a SportScore pode devolver vazio
+    | mesmo existindo jogos LIVE.
+    |--------------------------------------------------------------------------
+    */
+
+    const endpoint =
+      `/fixtures/?${params.toString()}`;
+
     try {
-      const params =
-        new URLSearchParams();
-
-      params.set(
-        "sport",
-        SPORT
-      );
-
-      params.set(
-        "date",
-        date
-      );
-
-      params.set(
-        "limit",
-        "200"
-      );
-
-      params.set(
-        "competition",
-        slug
-      );
-
-      if (liveOnly) {
-        params.set(
-          "status",
-          "live"
-        );
-      }
-
-      const endpoint =
-        `/fixtures/?${params.toString()}`;
-
       const data =
         await sportScore(
           endpoint,
@@ -1713,26 +1809,88 @@ async function requestFixtures({
       const matches =
         extractMatches(data);
 
-      /*
-      |--------------------------------------------------------------------------
-      | IMPORTANTE:
-      |
-      | Uma resposta válida com 0 jogos é diferente
-      | de uma falha da API.
-      |--------------------------------------------------------------------------
-      */
+      const liveCount =
+        matches.filter(
+          rawMatch =>
+            rawMatchLooksLive(
+              rawMatch
+            )
+        ).length;
 
-      return {
+      attempts.push({
+        slug,
+        endpoint,
+        success: true,
+        count:
+          matches.length,
+        liveCount,
+      });
+
+      lastSuccessfulResponse = {
         endpoint,
         data,
         slug,
         matches,
-        errors,
-        success: true,
       };
 
+      /*
+      |--------------------------------------------------------------------------
+      | LIVE:
+      |
+      | Se este slug devolveu jogos mas nenhum é LIVE,
+      | continuamos para o próximo slug.
+      |--------------------------------------------------------------------------
+      */
+
+      if (
+        liveOnly &&
+        liveCount > 0
+      ) {
+        return {
+          ...lastSuccessfulResponse,
+
+          errors,
+
+          attempts,
+
+          success: true,
+        };
+      }
+
+      /*
+      |--------------------------------------------------------------------------
+      | NORMAL:
+      |
+      | Qualquer slug com jogos é suficiente.
+      |--------------------------------------------------------------------------
+      */
+
+      if (
+        !liveOnly &&
+        matches.length > 0
+      ) {
+        return {
+          ...lastSuccessfulResponse,
+
+          errors,
+
+          attempts,
+
+          success: true,
+        };
+      }
+
+      /*
+      |--------------------------------------------------------------------------
+      | Se veio 200 + []:
+      |
+      | NÃO fazemos return.
+      | Continuamos para o próximo slug.
+      |--------------------------------------------------------------------------
+      */
+
     } catch (error) {
-      errors.push({
+      const errorInfo = {
         slug,
 
         status:
@@ -1742,8 +1900,51 @@ async function requestFixtures({
         message:
           error?.message ||
           String(error),
+      };
+
+      errors.push(
+        errorInfo
+      );
+
+      attempts.push({
+        slug,
+        endpoint,
+        success: false,
+        count: 0,
+        liveCount: 0,
+        error:
+          errorInfo.message,
+        status:
+          errorInfo.status,
       });
     }
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Nenhum slug encontrou LIVE.
+  |
+  | Se tivemos pelo menos uma resposta válida,
+  | devolvemos essa resposta como sucesso.
+  |--------------------------------------------------------------------------
+  */
+
+  if (
+    lastSuccessfulResponse
+  ) {
+    return {
+      ...lastSuccessfulResponse,
+
+      matches:
+        lastSuccessfulResponse.matches ||
+        [],
+
+      errors,
+
+      attempts,
+
+      success: true,
+    };
   }
 
   return {
@@ -1752,6 +1953,7 @@ async function requestFixtures({
     slug: null,
     matches: [],
     errors,
+    attempts,
     success: false,
   };
 }
@@ -1813,6 +2015,9 @@ async function getCompetitionMatches(
 
     errors:
       result.errors,
+
+    attempts:
+      result.attempts,
   };
 }
 
@@ -1874,7 +2079,18 @@ async function getLiveMatchesForDate(
           competition,
           {
             date,
+
+            /*
+            |--------------------------------------------------------------------------
+            | IMPORTANTE:
+            |
+            | getCompetitionMatches usa liveOnly para
+            | filtrar localmente, não no provider.
+            |--------------------------------------------------------------------------
+            */
+
             liveOnly: true,
+
             forceRefresh,
           }
         );
@@ -2610,25 +2826,6 @@ function processGoalEvents(
 |--------------------------------------------------------------------------
 | PROCESSAR CICLO DE VIDA
 |--------------------------------------------------------------------------
-|
-| Regras:
-|
-| 1. SCHEDULED -> LIVE
-|       => match_started
-|
-| 2. UNKNOWN -> LIVE
-|       => match_started
-|
-| 3. LIVE/HALFTIME -> FINISHED
-|       => match_finished
-|
-| 4. Primeiro estado já LIVE
-|       => match_started
-|
-| 5. LIVE desaparece do endpoint LIVE
-|       => match_finished
-|
-|--------------------------------------------------------------------------
 */
 
 function processMatchLifecycle(
@@ -2664,18 +2861,11 @@ function processMatchLifecycle(
 
     /*
     |--------------------------------------------------------------------------
-    | PRIMEIRA VEZ QUE VEMOS O JOGO
+    | PRIMEIRA VEZ
     |--------------------------------------------------------------------------
     */
 
     if (!previous) {
-      /*
-      |--------------------------------------------------------------------------
-      | Se o servidor começou enquanto o jogo
-      | já estava LIVE, emitimos START.
-      |--------------------------------------------------------------------------
-      */
-
       if (
         currentStatus === "LIVE" ||
         currentStatus === "HALFTIME"
@@ -2715,12 +2905,6 @@ function processMatchLifecycle(
       previous.status ||
       "UNKNOWN";
 
-    /*
-    |--------------------------------------------------------------------------
-    | SCHEDULED/UNKNOWN -> LIVE
-    |--------------------------------------------------------------------------
-    */
-
     const wasNotStarted =
       previousStatus ===
         "SCHEDULED" ||
@@ -2741,12 +2925,6 @@ function processMatchLifecycle(
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | LIVE -> FINISHED
-    |--------------------------------------------------------------------------
-    */
-
     const wasLive =
       previousStatus === "LIVE" ||
       previousStatus === "HALFTIME";
@@ -2760,12 +2938,6 @@ function processMatchLifecycle(
         "match_finished"
       );
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | ATUALIZAR ESTADO
-    |--------------------------------------------------------------------------
-    */
 
     matchLifecycleStates.set(
       id,
@@ -2793,12 +2965,7 @@ function processMatchLifecycle(
 
   /*
   |--------------------------------------------------------------------------
-  | LIVE -> DESAPARECE DO ENDPOINT LIVE
-  |--------------------------------------------------------------------------
-  |
-  | Só fazemos isto quando sabemos que a consulta
-  | LIVE foi concluída com sucesso.
-  |
+  | LIVE -> desapareceu
   |--------------------------------------------------------------------------
   */
 
@@ -2839,14 +3006,6 @@ function processMatchLifecycle(
         );
       }
 
-      /*
-      |--------------------------------------------------------------------------
-      | Não apagamos imediatamente o estado.
-      | Marcamos como FINISHED para impedir
-      | eventos duplicados.
-      |--------------------------------------------------------------------------
-      */
-
       matchLifecycleStates.set(
         id,
         {
@@ -2867,7 +3026,7 @@ function processMatchLifecycle(
 
   /*
   |--------------------------------------------------------------------------
-  | LIMPEZA DE ESTADOS ANTIGOS
+  | LIMPEZA
   |--------------------------------------------------------------------------
   */
 
@@ -3073,13 +3232,6 @@ async function updateTodayMatches({
         date,
       });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Só atualizamos lifecycle se a consulta
-    | completa tiver sucesso.
-    |--------------------------------------------------------------------------
-    */
-
     if (result.complete) {
       processMatchLifecycle(
         result.matches
@@ -3270,7 +3422,9 @@ async function refreshTodayIfDateChanged() {
 |--------------------------------------------------------------------------
 */
 
-async function updateLiveMatches() {
+async function updateLiveMatches({
+  forceRefresh = false,
+} = {}) {
   if (liveUpdateRunning) {
     return;
   }
@@ -3283,14 +3437,13 @@ async function updateLiveMatches() {
 
     const liveResult =
       await getLiveMatchesFromAPI({
-        forceRefresh: false,
+        forceRefresh,
       });
 
     /*
     |--------------------------------------------------------------------------
-    | Só substituímos o liveMatches e processamos
-    | desaparecimentos se a API respondeu
-    | corretamente.
+    | Se a consulta estiver incompleta,
+    | não destruímos o estado LIVE anterior.
     |--------------------------------------------------------------------------
     */
 
@@ -3329,14 +3482,7 @@ async function updateLiveMatches() {
 
     /*
     |--------------------------------------------------------------------------
-    | CICLO DE VIDA
-    |--------------------------------------------------------------------------
-    |
-    | Aqui está uma das correções mais importantes.
-    |
-    | O lifecycle agora é processado também
-    | no polling LIVE de 15 segundos.
-    |
+    | LIFECYCLE
     |--------------------------------------------------------------------------
     */
 
@@ -3616,6 +3762,258 @@ app.get(
       lastApiResponseAt,
 
       lastApiError,
+    });
+  }
+);
+
+/*
+|--------------------------------------------------------------------------
+| PREMIER LEAGUE DEBUG
+|--------------------------------------------------------------------------
+|
+| Este endpoint é especialmente importante.
+|
+| Abre:
+|
+| GET /api/live/debug/premier-league
+|
+| e vais conseguir ver:
+|
+| - cada slug
+| - HTTP/status
+| - quantidade de jogos
+| - quantidade detetada como LIVE
+| - status crus
+|
+|--------------------------------------------------------------------------
+*/
+
+app.get(
+  "/api/live/debug/premier-league",
+  async (req, res) => {
+    const competition =
+      COMPETITIONS.find(
+        item =>
+          item.key ===
+          "premierLeague"
+      );
+
+    const date =
+      req.query.date ||
+      getApiDate();
+
+    const results = [];
+
+    for (
+      const slug of
+        competition.slugs
+    ) {
+      const params =
+        new URLSearchParams();
+
+      params.set(
+        "sport",
+        SPORT
+      );
+
+      params.set(
+        "date",
+        date
+      );
+
+      params.set(
+        "limit",
+        "200"
+      );
+
+      params.set(
+        "competition",
+        slug
+      );
+
+      const endpoint =
+        `/fixtures/?${params.toString()}`;
+
+      try {
+        const data =
+          await sportScore(
+            endpoint,
+            {
+              cacheTime:
+                LIVE_CACHE_TIME,
+
+              forceRefresh:
+                true,
+            }
+          );
+
+        const matches =
+          extractMatches(data);
+
+        results.push({
+          slug,
+
+          endpoint,
+
+          success: true,
+
+          count:
+            matches.length,
+
+          liveCount:
+            matches.filter(
+              rawMatch =>
+                rawMatchLooksLive(
+                  rawMatch
+                )
+            ).length,
+
+          statuses:
+            matches.map(
+              match => ({
+                id:
+                  match.id ||
+                  match.fixture_id ||
+                  match.match_id ||
+                  null,
+
+                home:
+                  match.home_team?.name ||
+                  match.homeTeam?.name ||
+                  match.home?.name ||
+                  match.home ||
+                  null,
+
+                away:
+                  match.away_team?.name ||
+                  match.awayTeam?.name ||
+                  match.away?.name ||
+                  match.away ||
+                  null,
+
+                status:
+                  match.status ||
+                  null,
+
+                statusText:
+                  match.status_text ||
+                  match.statusText ||
+                  null,
+
+                minute:
+                  match.minute ??
+                  match.minutes ??
+                  match.elapsed ??
+                  null,
+
+                date:
+                  match.utc_date ||
+                  match.utcDate ||
+                  match.kickoff ||
+                  match.kickoff_time ||
+                  match.start_time ||
+                  match.startTime ||
+                  match.datetime ||
+                  match.date ||
+                  null,
+
+                normalized:
+                  normalizeStatus(
+                    match
+                  ),
+              })
+            ),
+        });
+
+      } catch (error) {
+        results.push({
+          slug,
+
+          endpoint,
+
+          success: false,
+
+          count: 0,
+
+          liveCount: 0,
+
+          error:
+            error.message,
+
+          status:
+            error.status ||
+            null,
+        });
+      }
+    }
+
+    res.json({
+      success: true,
+
+      provider:
+        "SportScore",
+
+      date,
+
+      competition: {
+        key:
+          competition.key,
+
+        name:
+          competition.name,
+
+        slugs:
+          competition.slugs,
+      },
+
+      results,
+
+      summary: {
+        totalSlugs:
+          results.length,
+
+        successfulSlugs:
+          results.filter(
+            item =>
+              item.success
+          ).length,
+
+        failedSlugs:
+          results.filter(
+            item =>
+              !item.success
+          ).length,
+
+        totalMatches:
+          results.reduce(
+            (
+              total,
+              item
+            ) =>
+              total +
+              Number(
+                item.count || 0
+              ),
+            0
+          ),
+
+        totalLive:
+          results.reduce(
+            (
+              total,
+              item
+            ) =>
+              total +
+              Number(
+                item.liveCount ||
+                0
+              ),
+            0
+          ),
+      },
+
+      serverTime:
+        new Date().toISOString(),
     });
   }
 );
@@ -3982,7 +4380,9 @@ app.post(
 
     cache.clear();
 
-    await updateLiveMatches();
+    await updateLiveMatches({
+      forceRefresh: true,
+    });
 
     res.json({
       success: true,
@@ -4543,6 +4943,9 @@ app.get(
         competitions:
           "/api/live/competitions",
 
+        premierLeagueDebug:
+          "/api/live/debug/premier-league",
+
         liveCheck:
           "/api/live/check",
 
@@ -4749,6 +5152,12 @@ async function startServer() {
 
   console.log("");
 
+  /*
+  |--------------------------------------------------------------------------
+  | PRIMEIRA CARGA
+  |--------------------------------------------------------------------------
+  */
+
   await updateTodayMatches({
     forceRefresh: true,
 
@@ -4756,17 +5165,49 @@ async function startServer() {
       getApiDate(),
   });
 
-  await updateLiveMatches();
+  await updateLiveMatches({
+    forceRefresh: true,
+  });
+
+  /*
+  |--------------------------------------------------------------------------
+  | POLLING
+  |--------------------------------------------------------------------------
+  */
 
   setInterval(
-    updateLiveMatches,
+    () => {
+      updateLiveMatches().catch(
+        error => {
+          console.error(
+            "❌ LIVE interval:",
+            error
+          );
+        }
+      );
+    },
     LIVE_UPDATE_INTERVAL
   );
 
   setInterval(
-    updateMatchLifecycle,
+    () => {
+      updateMatchLifecycle().catch(
+        error => {
+          console.error(
+            "❌ Lifecycle interval:",
+            error
+          );
+        }
+      );
+    },
     LIFECYCLE_UPDATE_INTERVAL
   );
+
+  /*
+  |--------------------------------------------------------------------------
+  | LISTEN
+  |--------------------------------------------------------------------------
+  */
 
   app.listen(
     PORT,
@@ -4805,6 +5246,14 @@ async function startServer() {
 
       console.log(
         "   /api/live/detected-events"
+      );
+
+      console.log(
+        "   /api/live/competitions"
+      );
+
+      console.log(
+        "   /api/live/debug/premier-league"
       );
 
       console.log(
