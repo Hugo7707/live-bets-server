@@ -1,0 +1,582 @@
+.floating-bets-badge {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+
+  display: none;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 16px;
+  background: #111827;
+  color: #fff;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  text-decoration: none;
+  font-weight: 700;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.floating-bets-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
+}
+
+.floating-bets-icon {
+  font-size: 20px;
+}
+
+.floating-bets-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.1;
+}
+
+.floating-bets-title {
+  font-size: 11px;
+  opacity: 0.65;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.floating-bets-count {
+  font-size: 14px;
+}
+
+.floating-bets-meta {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.65;
+}
+
+.floating-bets-live {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+.floating-bets-number {
+  min-width: 26px;
+  height: 26px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 7px;
+
+  background: #ef4444;
+  color: #fff;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+}
+
+.floating-bets-badge.has-live {
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.floating-bets-badge.has-live .floating-bets-number {
+  animation: floatingBetPulse 1.8s infinite;
+}
+
+@keyframes floatingBetPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.35);
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px rgba(239, 68, 68, 0);
+  }
+}
+
+@media (max-width: 600px) {
+  .floating-bets-badge {
+    right: 12px;
+    bottom: 12px;
+    padding: 10px 13px;
+  }
+
+  .floating-bets-title {
+    font-size: 10px;
+  }
+
+  .floating-bets-count {
+    font-size: 13px;
+  }
+
+  .floating-bets-meta {
+    font-size: 10px;
+  }
+
+  .floating-bets-icon {
+    font-size: 18px;
+  }
+}
+
+/* ============================================================
+   FLOATING BETS BADGE — TWITCH DARK THEME
+   ============================================================ */
+
+.floating-bets-badge {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+
+  display: none;
+  align-items: center;
+  gap: 11px;
+
+  padding: 11px 14px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1a1a1f 0%,
+      #151519 100%
+    );
+
+  color: #f4f4f5;
+
+  border:
+    1px solid
+    #303037;
+
+  border-radius:
+    9px;
+
+  box-shadow:
+    0 8px 24px
+    rgba(0, 0, 0, .28);
+
+  text-decoration:
+    none;
+
+  font-weight:
+    700;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease;
+}
+
+
+/* ============================================================
+   HOVER
+   ============================================================ */
+
+.floating-bets-badge:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    linear-gradient(
+      180deg,
+      #1e1e24 0%,
+      #19191e 100%
+    );
+
+  border-color:
+    #44444c;
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, .35);
+}
+
+
+/* ============================================================
+   ICON
+   ============================================================ */
+
+.floating-bets-icon {
+  display: grid;
+  place-items: center;
+
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  border:
+    1px solid
+    rgba(145, 71, 255, .20);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(145, 71, 255, .09);
+
+  color:
+    #a970ff;
+
+  font-size:
+    18px;
+}
+
+
+/* ============================================================
+   TEXT
+   ============================================================ */
+
+.floating-bets-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+
+  line-height:
+    1.1;
+}
+
+
+/* ============================================================
+   TITLE
+   ============================================================ */
+
+.floating-bets-title {
+  color:
+    #858591;
+
+  font-size:
+    9px;
+
+  font-weight:
+    750;
+
+  opacity:
+    1;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .07em;
+}
+
+
+/* ============================================================
+   COUNT
+   ============================================================ */
+
+.floating-bets-count {
+  color:
+    #f4f4f5;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+}
+
+
+/* ============================================================
+   META
+   ============================================================ */
+
+.floating-bets-meta {
+  color:
+    #777783;
+
+  font-size:
+    10px;
+
+  font-weight:
+    500;
+
+  opacity:
+    1;
+}
+
+
+/* ============================================================
+   NUMBER BADGE
+   ============================================================ */
+
+.floating-bets-number {
+  min-width:
+    25px;
+
+  height:
+    25px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    0 7px;
+
+  border:
+    1px solid
+    rgba(145, 71, 255, .30);
+
+  border-radius:
+    999px;
+
+  background:
+    #9147ff;
+
+  color:
+    #fff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
+
+  box-shadow:
+    none;
+}
+
+
+/* ============================================================
+   LIVE TEXT
+   ============================================================ */
+
+.floating-bets-live {
+  color:
+    #eb5b67;
+
+  font-weight:
+    800;
+}
+
+
+/* ============================================================
+   HAS LIVE
+   ============================================================ */
+
+.floating-bets-badge.has-live {
+  border-color:
+    rgba(235, 91, 103, .30);
+}
+
+
+/* mantém o fundo escuro mesmo com aposta live */
+
+.floating-bets-badge.has-live:hover {
+  border-color:
+    rgba(235, 91, 103, .48);
+}
+
+
+/* ============================================================
+   LIVE ICON
+   ============================================================ */
+
+.floating-bets-badge.has-live
+.floating-bets-icon {
+  color:
+    #eb5b67;
+
+  border-color:
+    rgba(235, 91, 103, .20);
+
+  background:
+    rgba(235, 91, 103, .07);
+}
+
+
+/* ============================================================
+   LIVE NUMBER
+   ============================================================ */
+
+.floating-bets-badge.has-live
+.floating-bets-number {
+  background:
+    #eb5b67;
+
+  border-color:
+    #eb5b67;
+
+  animation:
+    floatingBetPulseTwitch
+    1.8s infinite;
+}
+
+
+/* ============================================================
+   LIVE PULSE
+   ============================================================ */
+
+@keyframes floatingBetPulseTwitch {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0
+      rgba(235, 91, 103, .30);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 6px
+      rgba(235, 91, 103, 0);
+  }
+}
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+.floating-bets-badge:focus-visible {
+  outline:
+    2px solid
+    rgba(145, 71, 255, .75);
+
+  outline-offset:
+    3px;
+}
+
+
+/* ============================================================
+   ACTIVE / CLICK
+   ============================================================ */
+
+.floating-bets-badge:active {
+  transform:
+    translateY(0)
+    scale(.98);
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+  .floating-bets-badge {
+    right:
+      12px;
+
+    bottom:
+      12px;
+
+    gap:
+      9px;
+
+    padding:
+      9px 11px;
+
+    border-radius:
+      8px;
+  }
+
+  .floating-bets-icon {
+    width:
+      30px;
+
+    height:
+      30px;
+
+    flex-basis:
+      30px;
+
+    border-radius:
+      7px;
+
+    font-size:
+      16px;
+  }
+
+  .floating-bets-title {
+    font-size:
+      8px;
+  }
+
+  .floating-bets-count {
+    font-size:
+      12px;
+  }
+
+  .floating-bets-meta {
+    font-size:
+      9px;
+  }
+
+  .floating-bets-number {
+    min-width:
+      23px;
+
+    height:
+      23px;
+
+    padding:
+      0 6px;
+
+    font-size:
+      10px;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+  .floating-bets-badge {
+    right:
+      10px;
+
+    bottom:
+      10px;
+
+    padding:
+      8px 10px;
+  }
+
+  .floating-bets-icon {
+    width:
+      28px;
+
+    height:
+      28px;
+
+    flex-basis:
+      28px;
+
+    font-size:
+      15px;
+  }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .floating-bets-badge,
+  .floating-bets-badge.has-live
+  .floating-bets-number {
+    transition:
+      none !important;
+
+    animation:
+      none !important;
+  }
+}

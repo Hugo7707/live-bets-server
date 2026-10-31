@@ -1,0 +1,6424 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/livescore.css">
+  <link rel="stylesheet" href="css/notification.css">
+  <link rel="stylesheet" href="css/mercados.css">
+  <link rel="stylesheet" href="css/floating-bets-badge.css">
+  <link rel="icon" href="favicon.ico">
+  <title>Football Bet Analyzer</title>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- ======================================================
+         HEADER
+    ====================================================== -->
+
+    <header>
+
+      <div class="brand">
+
+        <a
+          href="index.html"
+          class="aHref"
+        >
+
+          <div class="logo">
+            ⚽
+          </div>
+
+        </a>
+
+
+        <div>
+
+          <h1>
+            Football Bet Analyzer
+          </h1>
+
+          <p class="subtitle">
+            Jogos, forma recente e análise estatística
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <a
+        href="apostas.html"
+        class="bets-button"
+      >
+        🎟️ Minhas Apostas
+      </a>
+
+    </header>
+
+
+    <!-- ======================================================
+         JOGOS AO VIVO
+    ====================================================== -->
+
+    <section class="live-section">
+
+      <div class="live-section-title">
+
+        <div class="live-title-left">
+
+          <h2>
+            🔴 Jogos ao vivo
+          </h2>
+
+          <span class="live-badge">
+
+            <span class="live-dot"></span>
+
+            LIVE
+
+          </span>
+
+        </div>
+
+
+        <div
+          class="live-updated"
+          id="liveUpdated"
+        >
+          A verificar...
+        </div>
+
+      </div>
+
+
+      <div
+        class="live-api-info"
+        id="liveApiInfo"
+        style="
+          display:none;
+          margin-bottom:15px;
+          font-size:13px;
+          opacity:.75;
+        "
+      ></div>
+
+
+      <div
+        class="live-games"
+        id="liveGamesContainer"
+      >
+
+        <div class="live-empty">
+          A procurar jogos ao vivo...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         SUMÁRIO TOTAL DE APOSTAS
+    ====================================================== -->
+
+    <section
+      class="bets-summary-card"
+      id="betsSummaryCard"
+    >
+
+      <div class="bets-summary-header">
+
+        <div>
+
+          <span class="bets-summary-eyebrow">
+            Resumo das apostas
+          </span>
+
+          <h2>
+            Desempenho atual
+          </h2>
+
+        </div>
+
+
+        <a
+          href="apostas.html"
+          class="bets-summary-link"
+        >
+          Ver todas →
+        </a>
+
+      </div>
+
+
+      <div class="bets-summary-financials">
+
+        <div class="bets-summary-stat">
+
+          <span>
+            Profit
+          </span>
+
+          <strong id="summaryProfit">
+            0,00 €
+          </strong>
+
+        </div>
+
+
+        <div class="bets-summary-stat">
+
+          <span>
+            Win Rate
+          </span>
+
+          <strong id="summaryWinRate">
+            0%
+          </strong>
+
+        </div>
+
+
+        <div class="bets-summary-stat">
+
+          <span>
+            Total de apostas
+          </span>
+
+          <strong id="summaryTotalBets">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="bets-summary-stat">
+
+          <span>
+            Apostas pendentes
+          </span>
+
+          <strong id="summaryPendingBets">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         CONTROLOS
+    ====================================================== -->
+
+    <section class="toolbar">
+
+      <input
+        id="dateInput"
+        type="date"
+      >
+
+
+      <input
+        id="limitInput"
+        type="number"
+        min="0"
+        max="20"
+        value="0"
+        placeholder="Nº de análises"
+      >
+
+
+      <button
+        id="searchButton"
+        type="button"
+      >
+        Procurar jogos
+      </button>
+
+
+      <button
+        id="dailyButton"
+        type="button"
+      >
+        ⭐ Melhores do dia
+      </button>
+
+    </section>
+
+
+    <!-- ======================================================
+         ESTATÍSTICAS
+    ====================================================== -->
+
+    <section class="status-grid">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Jogos encontrados
+        </div>
+
+        <div
+          class="stat-value"
+          id="gamesCount"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Análises realizadas
+        </div>
+
+        <div
+          class="stat-value"
+          id="analysisCount"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          API
+        </div>
+
+        <div
+          class="stat-value online"
+          id="apiStatus"
+        >
+          A verificar...
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Fonte
+        </div>
+
+        <div
+          class="stat-value"
+          style="font-size:17px"
+        >
+          football-data.org / SportScore
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         INFORMAÇÃO
+    ====================================================== -->
+
+    <div
+      class="info"
+      id="infoBox"
+    >
+
+      Escolha uma data e clique em
+      <strong>Procurar jogos</strong>.
+
+    </div>
+
+
+    <!-- ======================================================
+         ERRO
+    ====================================================== -->
+
+    <div
+      class="error"
+      id="errorBox"
+    ></div>
+
+
+    <!-- ======================================================
+         JOGOS
+    ====================================================== -->
+
+    <div class="section-title">
+
+      <h2>
+        Jogos
+      </h2>
+
+      <span
+        class="muted"
+        id="dateLabel"
+      ></span>
+
+    </div>
+
+
+    <div
+      class="loading"
+      id="loading"
+    >
+      A consultar football-data.org...
+    </div>
+
+
+    <div
+      class="games"
+      id="gamesContainer"
+    >
+
+      <div class="empty">
+        Nenhum jogo carregado.
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         MELHORES DO DIA
+    ====================================================== -->
+
+    <section class="analysis">
+
+      <div class="section-title">
+
+        <h2>
+          ⭐ Melhores do dia
+        </h2>
+
+        <span
+          class="muted"
+          id="analysisDateLabel"
+        ></span>
+
+      </div>
+
+
+      <div id="analysisContainer">
+
+        <div class="empty">
+
+          Escolha o número de análises e clique
+          em <strong>⭐ Melhores do dia</strong>.
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+      Data provided by football-data.org.
+
+      <br>
+
+      As probabilidades apresentadas são estimativas
+      estatísticas e não representam odds reais nem
+      garantem lucro.
+
+      <br>
+
+      <a
+        href="https://sportscore.com/"
+        rel="dofollow"
+        title="Sports data by SportScore"
+        style="
+          display:inline-flex;
+          align-items:center;
+          gap:6px;
+          padding:6px 12px;
+          background:#ffb74d;
+          color:#0a1e3d;
+          border-radius:20px;
+          text-decoration:none;
+          font:700 .86rem system-ui,-apple-system,sans-serif;
+        "
+      >
+        Powered by SportScore
+      </a>
+
+    </footer>
+
+  </div>
+
+
+  <script>
+
+    // =========================================================
+    // CONFIGURAÇÃO
+    // =========================================================
+
+    const LIVE_API_URL =
+      "http://localhost:3001";
+
+
+    const LIVE_REFRESH_INTERVAL =
+      30_000;
+
+
+    // =========================================================
+    // ELEMENTOS PRINCIPAIS
+    // =========================================================
+
+    const dateInput =
+      document.getElementById("dateInput");
+
+
+    const limitInput =
+      document.getElementById("limitInput");
+
+
+    const searchButton =
+      document.getElementById("searchButton");
+
+
+    const dailyButton =
+      document.getElementById("dailyButton");
+
+
+    const gamesCount =
+      document.getElementById("gamesCount");
+
+
+    const analysisCount =
+      document.getElementById("analysisCount");
+
+
+    const apiStatus =
+      document.getElementById("apiStatus");
+
+
+    const infoBox =
+      document.getElementById("infoBox");
+
+
+    const errorBox =
+      document.getElementById("errorBox");
+
+
+    const gamesContainer =
+      document.getElementById("gamesContainer");
+
+
+    const analysisContainer =
+      document.getElementById("analysisContainer");
+
+
+    const loading =
+      document.getElementById("loading");
+
+
+    const dateLabel =
+      document.getElementById("dateLabel");
+
+
+    const analysisDateLabel =
+      document.getElementById("analysisDateLabel");
+
+
+    // =========================================================
+    // ELEMENTOS LIVE
+    // =========================================================
+
+    const liveGamesContainer =
+      document.getElementById(
+        "liveGamesContainer"
+      );
+
+
+    const liveUpdated =
+      document.getElementById(
+        "liveUpdated"
+      );
+
+
+    const liveApiInfo =
+      document.getElementById(
+        "liveApiInfo"
+      );
+
+
+    // =========================================================
+    // ESTADO
+    // =========================================================
+
+    let currentMatches = [];
+
+    let currentGamesDate = null;
+
+    let dailyAnalysisDate = null;
+
+    let liveMatches = [];
+
+    let liveRefreshTimer = null;
+
+    let liveHealthTimer = null;
+
+    let liveRequestInProgress = false;
+
+    let liveHealthRequestInProgress = false;
+
+    let liveServerAvailable = false;
+
+    let lastLiveData = null;
+
+
+    // =========================================================
+    // DATA LOCAL
+    // =========================================================
+
+    function todayLocal() {
+
+      const now =
+        new Date();
+
+
+      const year =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: "Europe/Lisbon",
+            year: "numeric"
+          }
+        ).format(now);
+
+
+      const month =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: "Europe/Lisbon",
+            month: "2-digit"
+          }
+        ).format(now);
+
+
+      const day =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: "Europe/Lisbon",
+            day: "2-digit"
+          }
+        ).format(now);
+
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+    dateInput.value =
+      todayLocal();
+
+
+    // =========================================================
+    // API PRINCIPAL
+    // =========================================================
+
+    async function api(url) {
+
+      const response =
+        await fetch(
+          url,
+          {
+            cache: "no-store",
+
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+
+      const text =
+        await response.text();
+
+
+      let data;
+
+
+      try {
+
+        data =
+          text
+            ? JSON.parse(text)
+            : {};
+
+      } catch {
+
+        throw new Error(
+          "O servidor devolveu uma resposta inválida."
+        );
+
+      }
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          data.message ||
+          `HTTP ${response.status}`
+        );
+
+      }
+
+
+      return data;
+
+    }
+
+
+    // =========================================================
+    // API LIVE LOCAL
+    // =========================================================
+
+    async function liveApi(url) {
+
+      const response =
+        await fetch(
+          `${LIVE_API_URL}${url}`,
+          {
+            cache: "no-store",
+
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+
+      const text =
+        await response.text();
+
+
+      let data;
+
+
+      try {
+
+        data =
+          text
+            ? JSON.parse(text)
+            : {};
+
+      } catch {
+
+        throw new Error(
+          "O servidor LIVE devolveu uma resposta inválida."
+        );
+
+      }
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          data.message ||
+          `LIVE HTTP ${response.status}`
+        );
+
+      }
+
+
+      return data;
+
+    }
+
+
+    // =========================================================
+    // HEALTH PRINCIPAL
+    // =========================================================
+
+    async function checkHealth() {
+
+      try {
+
+        const data =
+          await api(
+            "/api/health"
+          );
+
+
+        if (
+          data.ok &&
+          data.apiConfigured
+        ) {
+
+          apiStatus.textContent =
+            "Online ✓";
+
+
+          apiStatus.className =
+            "stat-value online";
+
+        } else {
+
+          apiStatus.textContent =
+            "Token não configurado";
+
+
+          apiStatus.className =
+            "stat-value offline";
+
+        }
+
+      } catch (error) {
+
+        apiStatus.textContent =
+          "Offline";
+
+
+        apiStatus.className =
+          "stat-value offline";
+
+
+        console.error(
+          "Health principal:",
+          error
+        );
+
+      }
+
+    }
+
+
+    // =========================================================
+    // HEALTH LIVE
+    // =========================================================
+
+    async function checkLiveHealth() {
+
+      if (
+        liveHealthRequestInProgress
+      ) {
+
+        return;
+
+      }
+
+
+      liveHealthRequestInProgress =
+        true;
+
+
+      try {
+
+        const data =
+          await liveApi(
+            "/api/live/health"
+          );
+
+
+        liveServerAvailable =
+          data.ok === true;
+
+
+        if (!liveServerAvailable) {
+
+          renderLiveError(
+            "O servidor LIVE respondeu com estado inválido."
+          );
+
+          return;
+
+        }
+
+
+        renderLiveHealthInfo(
+          data
+        );
+
+
+      } catch (error) {
+
+        liveServerAvailable =
+          false;
+
+
+        console.error(
+          "Servidor LIVE indisponível:",
+          error
+        );
+
+
+        renderLiveError(
+          "Servidor LIVE indisponível. Confirma se o live-server.js está a correr na porta 3001."
+        );
+
+      } finally {
+
+        liveHealthRequestInProgress =
+          false;
+
+      }
+
+    }
+
+
+    // =========================================================
+    // INFORMAÇÃO HEALTH LIVE
+    // =========================================================
+
+    function renderLiveHealthInfo(data) {
+
+      liveApiInfo.style.display =
+        "block";
+
+
+      const cooldown =
+        Number(
+          data?.apiCooldownSeconds
+        ) || 0;
+
+
+      const liveInterval =
+        Number(
+          data?.liveUpdateSeconds
+        ) || 30;
+
+
+      const todayInterval =
+        Number(
+          data?.todayUpdateSeconds
+        ) || 120;
+
+
+      const liveCount =
+        Number(
+          data?.liveCount
+        ) || liveMatches.length;
+
+
+      const available =
+        data?.lastApiAvailable;
+
+
+      const apiAvailableText =
+        Number.isFinite(
+          Number(available)
+        )
+          ? ` · ${available} pedidos disponíveis`
+          : "";
+
+
+      if (cooldown > 0) {
+
+        liveApiInfo.innerHTML =
+          `
+            🟡 <strong>Servidor LIVE ligado</strong>
+            · API em cooldown:
+            <strong>${cooldown}s</strong>
+            · LIVE:
+            <strong>${liveInterval}s</strong>
+            · Jogos:
+            <strong>${todayInterval}s</strong>
+            ${apiAvailableText}
+          `;
+
+        return;
+
+      }
+
+
+      liveApiInfo.innerHTML =
+        `
+          🟢 <strong>Servidor LIVE ligado</strong>
+          · ${liveCount} jogo(s) LIVE
+          · Atualização LIVE:
+          <strong>${liveInterval}s</strong>
+          · Jogos do dia:
+          <strong>${todayInterval}s</strong>
+          ${apiAvailableText}
+        `;
+
+    }
+
+
+    // =========================================================
+    // ERROS
+    // =========================================================
+
+    function showError(message) {
+
+      errorBox.textContent =
+        message || "Ocorreu um erro.";
+
+
+      errorBox.style.display =
+        "block";
+
+    }
+
+
+    function clearError() {
+
+      errorBox.textContent =
+        "";
+
+
+      errorBox.style.display =
+        "none";
+
+    }
+
+
+    // =========================================================
+    // EMBLEMAS
+    // =========================================================
+
+    function teamCrest(
+      team,
+      size = "normal"
+    ) {
+
+      if (!team) {
+
+        return `
+          <div class="team-crest team-crest-placeholder ${size}">
+            ⚽
+          </div>
+        `;
+
+      }
+
+
+      const name =
+        team.shortName ||
+        team.name ||
+        "Equipa";
+
+
+      const crest =
+        team.crest ||
+        team.logo ||
+        team.logoUrl ||
+        team.image ||
+        team.imageUrl ||
+        team.badge ||
+        team.badgeUrl ||
+        team.teamCrest ||
+        team.teamLogo ||
+        null;
+
+
+      if (crest) {
+
+        return `
+          <div
+            class="team-crest ${size}"
+            title="${escapeHtml(name)}"
+            aria-label="${escapeHtml(name)}"
+          >
+
+            <img
+              src="${escapeHtml(crest)}"
+              alt="${escapeHtml(name)}"
+              class="team-crest-img"
+              loading="lazy"
+              onerror="
+                this.parentElement.innerHTML='⚽';
+                this.parentElement.classList.add('team-crest-placeholder');
+              "
+            >
+
+          </div>
+        `;
+
+      }
+
+
+      return `
+        <div
+          class="team-crest team-crest-placeholder ${size}"
+          title="${escapeHtml(name)}"
+          aria-label="${escapeHtml(name)}"
+        >
+          ⚽
+        </div>
+      `;
+
+    }
+
+
+    // =========================================================
+    // CARREGAR JOGOS LIVE
+    // =========================================================
+
+    async function loadLiveMatches() {
+
+      if (
+        liveRequestInProgress
+      ) {
+
+        return;
+
+      }
+
+
+      liveRequestInProgress =
+        true;
+
+
+      try {
+
+        const data =
+          await liveApi(
+            "/api/live"
+          );
+
+
+        liveServerAvailable =
+          true;
+
+
+        if (
+          Array.isArray(
+            data.matches
+          )
+        ) {
+
+          liveMatches =
+            data.matches;
+
+        } else {
+
+          liveMatches =
+            [];
+
+        }
+
+
+        lastLiveData =
+          data;
+
+
+        updateLiveMeta(
+          data
+        );
+
+
+        renderLiveMatches(
+          liveMatches
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Erro ao carregar LIVE:",
+          error
+        );
+
+
+        liveServerAvailable =
+          false;
+
+
+        if (
+          liveMatches.length
+        ) {
+
+          renderLiveStale(
+            error.message
+          );
+
+        } else {
+
+          renderLiveError(
+            error.message
+          );
+
+        }
+
+      } finally {
+
+        liveRequestInProgress =
+          false;
+
+      }
+
+    }
+
+
+    // =========================================================
+    // META LIVE
+    // =========================================================
+
+    function updateLiveMeta(data) {
+
+      const updatedAt =
+        data?.updatedAt ||
+        data?.serverUpdatedAt;
+
+
+      let updatedText =
+        "Atualizado agora";
+
+
+      if (updatedAt) {
+
+        const date =
+          new Date(
+            updatedAt
+          );
+
+
+        if (
+          !Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          updatedText =
+            `Atualizado às ${formatTime(
+              date
+            )}`;
+
+        }
+
+      }
+
+
+      liveUpdated.textContent =
+        updatedText;
+
+
+      const count =
+        Array.isArray(
+          data?.matches
+        )
+          ? data.matches.length
+          : liveMatches.length;
+
+
+      liveApiInfo.style.display =
+        "block";
+
+
+      const cooldown =
+        Number(
+          data?.apiCooldownSeconds
+        ) || 0;
+
+
+      if (cooldown > 0) {
+
+        liveApiInfo.innerHTML =
+          `
+            🟡 Servidor LIVE ligado.
+            · ${count} jogo(s).
+            · API em cooldown:
+            <strong>${cooldown}s</strong>
+          `;
+
+        return;
+
+      }
+
+
+      liveApiInfo.innerHTML =
+        `
+          🟢 Servidor LIVE ligado.
+          · ${count} jogo(s) em live.
+          · Atualização automática a cada
+          ${LIVE_REFRESH_INTERVAL / 1000}s.
+        `;
+
+    }
+
+
+    // =========================================================
+    // RENDER LIVE
+    // =========================================================
+
+    function renderLiveMatches(matches) {
+
+      const list =
+        Array.isArray(matches)
+          ? matches
+          : [];
+
+
+      liveGamesContainer.innerHTML =
+        "";
+
+
+      if (!list.length) {
+
+        liveUpdated.textContent =
+          `Verificado às ${formatTime(
+            new Date()
+          )}`;
+
+
+        liveGamesContainer.innerHTML =
+          `
+            <div class="live-empty">
+
+              <strong>
+                Não há jogos ao vivo neste momento.
+              </strong>
+
+              <br><br>
+
+              O servidor LIVE continua a verificar
+              automaticamente.
+
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      for (
+        const match of list
+      ) {
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        card.className =
+          "live-game";
+
+
+        const status =
+          String(
+            match.status || ""
+          ).toUpperCase();
+
+
+        const isPaused =
+          status === "PAUSED";
+
+
+        const homeScore =
+          getScore(
+            match,
+            "home"
+          );
+
+
+        const awayScore =
+          getScore(
+            match,
+            "away"
+          );
+
+
+        const minute =
+          formatLiveMinute(
+            match
+          );
+
+
+        const statusHtml =
+          isPaused
+
+            ? `
+              <span class="live-status paused">
+                ⏸ INTERVALO
+              </span>
+            `
+
+            : `
+              <span class="live-status">
+                LIVE
+              </span>
+            `;
+
+
+        const minuteClass =
+          isPaused
+            ? "live-minute paused"
+            : "live-minute";
+
+
+        const competitionName =
+          match.competition?.name ||
+          "Competição";
+
+
+        const areaName =
+          match.competition?.area?.name ||
+          match.competition?.country ||
+          "";
+
+
+        card.innerHTML =
+          `
+
+            <div class="live-game-head">
+
+              <div class="live-competition">
+                ${escapeHtml(
+                  competitionName
+                )}
+              </div>
+
+              ${statusHtml}
+
+            </div>
+
+
+            <div class="live-teams">
+
+              <div class="live-team">
+
+                ${teamCrest(
+                  match.homeTeam,
+                  "normal"
+                )}
+
+                <span class="live-team-name">
+
+                  ${escapeHtml(
+                    match.homeTeam?.shortName ||
+                    match.homeTeam?.name ||
+                    "Casa"
+                  )}
+
+                </span>
+
+              </div>
+
+
+              <div class="live-score">
+
+                <span>
+                  ${escapeHtml(
+                    String(homeScore)
+                  )}
+                </span>
+
+                <span class="live-score-separator">
+                  -
+                </span>
+
+                <span>
+                  ${escapeHtml(
+                    String(awayScore)
+                  )}
+                </span>
+
+              </div>
+
+
+              <div class="live-team away">
+
+                <span class="live-team-name">
+
+                  ${escapeHtml(
+                    match.awayTeam?.shortName ||
+                    match.awayTeam?.name ||
+                    "Fora"
+                  )}
+
+                </span>
+
+                ${teamCrest(
+                  match.awayTeam,
+                  "normal"
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="${minuteClass}">
+
+              ${escapeHtml(
+                minute
+              )}
+
+            </div>
+
+
+            <div class="live-footer">
+
+              <span>
+                ${escapeHtml(
+                  areaName
+                )}
+              </span>
+
+              <span>
+                ${escapeHtml(
+                  match.status ||
+                  "LIVE"
+                )}
+              </span>
+
+            </div>
+
+          `;
+
+
+        liveGamesContainer.appendChild(
+          card
+        );
+
+      }
+
+    }
+
+
+    // =========================================================
+    // LIVE STALE
+    // =========================================================
+
+    function renderLiveStale(message) {
+
+      liveUpdated.textContent =
+        `Últimos dados conhecidos · ${formatTime(
+          new Date()
+        )}`;
+
+
+      liveApiInfo.style.display =
+        "block";
+
+
+      liveApiInfo.innerHTML =
+        `
+          🟠 Não foi possível atualizar o LIVE.
+          Os últimos dados conhecidos continuam apresentados.
+        `;
+
+
+      renderLiveMatches(
+        liveMatches
+      );
+
+
+      const warning =
+        document.createElement(
+          "div"
+        );
+
+
+      warning.className =
+        "live-error";
+
+
+      warning.innerHTML =
+        `
+          ⚠️
+
+          <strong>
+            Atualização temporariamente indisponível.
+          </strong>
+
+          <br>
+
+          Os dados apresentados podem estar desatualizados.
+
+          <br><br>
+
+          <small>
+            ${escapeHtml(
+              message
+            )}
+          </small>
+        `;
+
+
+      liveGamesContainer.prepend(
+        warning
+      );
+
+    }
+
+
+    // =========================================================
+    // ERRO LIVE
+    // =========================================================
+
+    function renderLiveError(message) {
+
+      liveUpdated.textContent =
+        "Servidor LIVE indisponível";
+
+
+      liveApiInfo.style.display =
+        "block";
+
+
+      liveApiInfo.innerHTML =
+        `
+          🔴 <strong>Servidor LIVE indisponível</strong>
+          · Porta:
+          <strong>3001</strong>
+        `;
+
+
+      if (
+        liveMatches.length
+      ) {
+
+        renderLiveStale(
+          message
+        );
+
+        return;
+
+      }
+
+
+      liveGamesContainer.innerHTML =
+        `
+          <div class="live-error">
+
+            <strong>
+              Não foi possível carregar os jogos ao vivo.
+            </strong>
+
+            <br><br>
+
+            ${escapeHtml(
+              message
+            )}
+
+            <br><br>
+
+            <small>
+
+              Confirma que o
+
+              <strong>
+                live-server.js
+              </strong>
+
+              está a correr em:
+
+              <strong>
+                http://localhost:3001
+              </strong>
+
+            </small>
+
+          </div>
+        `;
+
+    }
+
+
+    // =========================================================
+    // SCORE
+    // =========================================================
+
+    function getScore(
+      match,
+      side
+    ) {
+
+      const teamKey =
+        side === "home"
+          ? "homeTeam"
+          : "awayTeam";
+
+
+      const candidates = [
+
+        match?.liveScore?.[side],
+
+        match?.score?.current?.[side],
+
+        match?.score?.[side],
+
+        match?.score?.fullTime?.[side],
+
+        match?.score?.regularTime?.[side],
+
+        match?.score?.current?.[teamKey],
+
+        match?.score?.fullTime?.[teamKey],
+
+        match?.score?.regularTime?.[teamKey],
+
+        match?.score?.halfTime?.[teamKey]
+
+      ];
+
+
+      for (
+        const value of candidates
+      ) {
+
+        if (
+          value === null ||
+          value === undefined ||
+          value === ""
+        ) {
+
+          continue;
+
+        }
+
+
+        const number =
+          Number(value);
+
+
+        if (
+          Number.isFinite(number)
+        ) {
+
+          return number;
+
+        }
+
+      }
+
+
+      return 0;
+
+    }
+
+
+    // =========================================================
+    // SCORE FINAL
+    // =========================================================
+
+    function getFinishedScore(match) {
+
+      const status =
+        String(
+          match?.status ||
+          ""
+        ).toUpperCase();
+
+
+      if (
+        status !== "FINISHED" &&
+        status !== "AWARDED"
+      ) {
+
+        return null;
+
+      }
+
+
+      const homeCandidates = [
+
+        match?.score?.home,
+
+        match?.score?.fullTime?.home,
+
+        match?.score?.regularTime?.home,
+
+        match?.score?.current?.home,
+
+        match?.score?.homeTeam,
+
+        match?.score?.fullTime?.homeTeam,
+
+        match?.score?.regularTime?.homeTeam
+
+      ];
+
+
+      const awayCandidates = [
+
+        match?.score?.away,
+
+        match?.score?.fullTime?.away,
+
+        match?.score?.regularTime?.away,
+
+        match?.score?.current?.away,
+
+        match?.score?.awayTeam,
+
+        match?.score?.fullTime?.awayTeam,
+
+        match?.score?.regularTime?.awayTeam
+
+      ];
+
+
+      let home =
+        null;
+
+
+      let away =
+        null;
+
+
+      for (
+        const value of homeCandidates
+      ) {
+
+        if (
+          value === null ||
+          value === undefined ||
+          value === ""
+        ) {
+
+          continue;
+
+        }
+
+
+        const number =
+          Number(value);
+
+
+        if (
+          Number.isFinite(number)
+        ) {
+
+          home =
+            number;
+
+          break;
+
+        }
+
+      }
+
+
+      for (
+        const value of awayCandidates
+      ) {
+
+        if (
+          value === null ||
+          value === undefined ||
+          value === ""
+        ) {
+
+          continue;
+
+        }
+
+
+        const number =
+          Number(value);
+
+
+        if (
+          Number.isFinite(number)
+        ) {
+
+          away =
+            number;
+
+          break;
+
+        }
+
+      }
+
+
+      if (
+        !Number.isFinite(home) ||
+        !Number.isFinite(away)
+      ) {
+
+        return null;
+
+      }
+
+
+      return {
+        home,
+        away
+      };
+
+    }
+
+
+    // =========================================================
+    // AVALIAR MERCADO PELO RESULTADO
+    // =========================================================
+
+    function evaluateMarketResult(
+      market,
+      homeGoals,
+      awayGoals
+    ) {
+
+      const totalGoals =
+        homeGoals +
+        awayGoals;
+
+
+      switch (
+        String(
+          market || ""
+        ).trim().toUpperCase()
+      ) {
+
+        case "OVER 1.5":
+
+          return totalGoals >= 2;
+
+
+        case "UNDER 3.5":
+
+          return totalGoals <= 3;
+
+
+        case "CASA OU EMPATE":
+
+          return homeGoals >= awayGoals;
+
+
+        case "FORA OU EMPATE":
+
+          return awayGoals >= homeGoals;
+
+
+        case "OVER 2.5":
+
+          return totalGoals >= 3;
+
+
+        case "BTTS — SIM":
+
+          return (
+            homeGoals > 0 &&
+            awayGoals > 0
+          );
+
+
+        case "VITÓRIA CASA":
+
+          return homeGoals > awayGoals;
+
+
+        case "EMPATE":
+
+          return homeGoals === awayGoals;
+
+
+        case "VITÓRIA FORA":
+
+          return awayGoals > homeGoals;
+
+
+        default:
+
+          return null;
+
+      }
+
+    }
+
+
+    // =========================================================
+    // RESULTADO DO MERCADO
+    // =========================================================
+
+    function getMarketResult(
+      item,
+      fixture
+    ) {
+
+      const backendResult =
+        String(
+          item?.result || ""
+        ).toUpperCase();
+
+
+      if (
+        backendResult === "WON"
+      ) {
+
+        return {
+
+          result: "WON",
+
+          className: "market-won",
+
+          label: "BATEU",
+
+          icon: "🟢",
+
+          won: true,
+
+          score:
+            item?.score ||
+            null
+
+        };
+
+      }
+
+
+      if (
+        backendResult === "LOST"
+      ) {
+
+        return {
+
+          result: "LOST",
+
+          className: "market-lost",
+
+          label: "NÃO BATEU",
+
+          icon: "🔴",
+
+          won: false,
+
+          score:
+            item?.score ||
+            null
+
+        };
+
+      }
+
+
+      const finalScore =
+        getFinishedScore(
+          fixture
+        );
+
+
+      if (!finalScore) {
+
+        return {
+
+          result: "PENDING",
+
+          className: "market-pending",
+
+          label: "PENDENTE",
+
+          icon: "⚪",
+
+          won: null,
+
+          score: null
+
+        };
+
+      }
+
+
+      const won =
+        evaluateMarketResult(
+          item?.market,
+          finalScore.home,
+          finalScore.away
+        );
+
+
+      if (
+        won === null
+      ) {
+
+        return {
+
+          result: "PENDING",
+
+          className: "market-pending",
+
+          label: "SEM AVALIAÇÃO",
+
+          icon: "⚪",
+
+          won: null,
+
+          score:
+            `${finalScore.home}-${finalScore.away}`
+
+        };
+
+      }
+
+
+      return {
+
+        result:
+          won
+            ? "WON"
+            : "LOST",
+
+        className:
+          won
+            ? "market-won"
+            : "market-lost",
+
+        label:
+          won
+            ? "BATEU"
+            : "NÃO BATEU",
+
+        icon:
+          won
+            ? "🟢"
+            : "🔴",
+
+        won,
+
+        score:
+          `${finalScore.home}-${finalScore.away}`
+
+      };
+
+    }
+
+
+    // =========================================================
+    // ENRIQUECER ITEM
+    //
+    // IMPORTANTE:
+    //
+    // O objeto betclic é preservado.
+    //
+    // Exemplo esperado:
+    //
+    // betclic: {
+    //   odd: 1.85,
+    //   selection: "Over 2.5",
+    //   point: 2.5
+    // }
+    //
+    // Não calculamos Odd justa.
+    // Não calculamos Value.
+    // =========================================================
+
+    function enrichMarketItem(
+      item,
+      fixture
+    ) {
+
+      const result =
+        getMarketResult(
+          item,
+          fixture
+        );
+
+
+      return {
+
+        ...item,
+
+        // Preserva explicitamente a Betclic
+        betclic:
+          item?.betclic ||
+          null,
+
+        result:
+          result.result,
+
+        color:
+          result.result === "WON"
+            ? "green"
+            : result.result === "LOST"
+              ? "red"
+              : "gray",
+
+        label:
+          result.label,
+
+        won:
+          result.won,
+
+        score:
+          result.score
+
+      };
+
+    }
+
+
+    // =========================================================
+    // ENRIQUECER RECOMENDAÇÃO
+    // =========================================================
+
+    function enrichRecommendation(
+      recommendation,
+      alternatives,
+      fixture
+    ) {
+
+      if (
+        !recommendation
+      ) {
+
+        return {};
+
+      }
+
+
+      const alternative =
+        alternatives.find(
+          (item) =>
+            String(
+              item?.market || ""
+            ).trim().toUpperCase() ===
+            String(
+              recommendation?.market || ""
+            ).trim().toUpperCase()
+        );
+
+
+      const source =
+        alternative ||
+        recommendation;
+
+
+      const result =
+        getMarketResult(
+          source,
+          fixture
+        );
+
+
+      return {
+
+        ...recommendation,
+
+        // Preserva a odd Betclic da recomendação
+        betclic:
+          recommendation?.betclic ||
+          alternative?.betclic ||
+          null,
+
+        result:
+          result.result,
+
+        color:
+          result.result === "WON"
+            ? "green"
+            : result.result === "LOST"
+              ? "red"
+              : "gray",
+
+        label:
+          result.label,
+
+        won:
+          result.won,
+
+        score:
+          result.score
+
+      };
+
+    }
+
+
+    // =========================================================
+    // RENDER STATUS DO MERCADO
+    // =========================================================
+
+    function renderMarketStatus(
+      item,
+      fixture
+    ) {
+
+      const result =
+        getMarketResult(
+          item,
+          fixture
+        );
+
+
+      const scoreHtml =
+        result.score
+          ? `
+              <span class="market-result-score">
+
+                · ${escapeHtml(
+                  result.score
+                )}
+
+              </span>
+            `
+          : "";
+
+
+      return `
+
+        <div class="market-result">
+
+          <span class="market-result-icon">
+
+            ${result.icon}
+
+          </span>
+
+
+          <span class="market-result-label">
+
+            ${escapeHtml(
+              result.label
+            )}
+
+          </span>
+
+
+          ${scoreHtml}
+
+        </div>
+
+      `;
+
+    }
+
+
+    // =========================================================
+    // RENDER ITEM DO MERCADO
+    //
+    // MOSTRA:
+    //
+    // - Tipo de mercado
+    // - Seleção Betclic
+    // - Probabilidade
+    // - Odd Betclic
+    // - Resultado
+    //
+    // NÃO MOSTRA:
+    //
+    // - Odd justa
+    // - Value
+    // =========================================================
+
+    function renderMarketItem(
+      item,
+      fixture
+    ) {
+
+      const enriched =
+        enrichMarketItem(
+          item,
+          fixture
+        );
+
+
+      const result =
+        getMarketResult(
+          enriched,
+          fixture
+        );
+
+
+      // =======================================================
+      // BETCLIC
+      // =======================================================
+
+      const betclic =
+        enriched?.betclic ||
+        {};
+
+
+      const betclicOdd =
+        Number(
+          betclic?.odd
+        );
+
+
+      const hasBetclicOdd =
+        Number.isFinite(
+          betclicOdd
+        ) &&
+        betclicOdd > 1;
+
+
+      // =======================================================
+      // SELEÇÃO BETCLIC
+      // =======================================================
+
+      const selectionHtml =
+        betclic?.selection
+
+          ? `
+
+            <span class="market-selection">
+
+              ${escapeHtml(
+                betclic.selection
+              )}
+
+              ${
+                betclic.point !== null &&
+                betclic.point !== undefined &&
+                betclic.point !== ""
+
+                  ? `
+
+                    <span class="market-point">
+
+                      ${escapeHtml(
+                        String(
+                          betclic.point
+                        )
+                      )}
+
+                    </span>
+
+                  `
+
+                  : ""
+              }
+
+            </span>
+
+          `
+
+          : "";
+
+
+      // =======================================================
+      // ODD BETCLIC
+      // =======================================================
+
+      const betclicHtml =
+        `
+
+          <div
+            class="
+              market-betclic
+              ${
+                hasBetclicOdd
+                  ? ""
+                  : "unavailable"
+              }
+            "
+          >
+
+            <span class="market-betclic-label">
+
+              BETCLIC
+
+            </span>
+
+
+            <strong class="market-betclic-odd">
+
+              ${
+                hasBetclicOdd
+                  ? betclicOdd.toFixed(2)
+                  : "—"
+              }
+
+            </strong>
+
+          </div>
+
+        `;
+
+
+      // =======================================================
+      // HTML
+      // =======================================================
+
+      return `
+
+        <div
+          class="
+            prob
+            ${result.className}
+            market-card-betclic
+          "
+        >
+
+          <div class="prob-main">
+
+
+            <!-- MERCADO -->
+
+            <div class="prob-name">
+
+              <span class="market-result-icon-small">
+
+                ${result.icon}
+
+              </span>
+
+
+              <div class="market-name-wrapper">
+
+
+                <!-- TIPO DE MERCADO -->
+
+                <strong class="market-type">
+
+                  ${escapeHtml(
+                    enriched?.market ||
+                    ""
+                  )}
+
+                </strong>
+
+
+                <!-- SELEÇÃO BETCLIC -->
+
+                ${selectionHtml}
+
+
+              </div>
+
+            </div>
+
+
+            <!-- PROBABILIDADE -->
+
+            <div class="prob-value">
+
+              ${escapeHtml(
+                String(
+                  enriched?.probability ??
+                  ""
+                )
+              )}%
+
+            </div>
+
+
+          </div>
+
+
+          <!-- ODD BETCLIC -->
+
+          ${betclicHtml}
+
+
+          <!-- RESULTADO -->
+
+          ${renderMarketStatus(
+            enriched,
+            fixture
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    // =========================================================
+    // MINUTO LIVE
+    // =========================================================
+
+    function formatLiveMinute(match) {
+
+      const status =
+        String(
+          match?.status ||
+          ""
+        ).toUpperCase();
+
+
+      if (
+        status === "PAUSED"
+      ) {
+
+        return "Intervalo";
+
+      }
+
+
+      if (
+        match?.liveMinuteDisplay
+      ) {
+
+        return String(
+          match.liveMinuteDisplay
+        );
+
+      }
+
+
+      if (
+        match?.minute !== null &&
+        match?.minute !== undefined
+      ) {
+
+        const raw =
+          String(
+            match.minute
+          );
+
+
+        if (
+          raw.trim()
+        ) {
+
+          const minute =
+            Number(
+              raw
+            );
+
+
+          if (
+            Number.isFinite(minute)
+          ) {
+
+            const injury =
+              Number(
+                match.injuryTime
+              );
+
+
+            if (
+              Number.isFinite(injury) &&
+              injury > 0
+            ) {
+
+              return `${minute}' +${injury}`;
+
+            }
+
+
+            return `${minute}'`;
+
+          }
+
+        }
+
+      }
+
+
+      if (
+        match?.liveMinute !== null &&
+        match?.liveMinute !== undefined
+      ) {
+
+        const minute =
+          Number(
+            match.liveMinute
+          );
+
+
+        if (
+          Number.isFinite(minute)
+        ) {
+
+          return `${minute}'`;
+
+        }
+
+      }
+
+
+      if (
+        match?.utcDate
+      ) {
+
+        const kickoff =
+          new Date(
+            match.utcDate
+          );
+
+
+        if (
+          !Number.isNaN(
+            kickoff.getTime()
+          )
+        ) {
+
+          const elapsed =
+            Math.floor(
+              (
+                Date.now() -
+                kickoff.getTime()
+              ) /
+              60000
+            );
+
+
+          if (
+            elapsed >= 0 &&
+            elapsed <= 180
+          ) {
+
+            if (
+              elapsed <= 45
+            ) {
+
+              return `${elapsed}'`;
+
+            }
+
+
+            if (
+              elapsed <= 60
+            ) {
+
+              return "45'";
+
+            }
+
+
+            return `${Math.min(
+              90,
+              elapsed - 15
+            )}'`;
+
+          }
+
+        }
+
+      }
+
+
+      return "Em jogo";
+
+    }
+
+
+    // =========================================================
+    // HORA
+    // =========================================================
+
+    function formatTime(date) {
+
+      if (
+        !(date instanceof Date)
+      ) {
+
+        return "--:--";
+
+      }
+
+
+      return date.toLocaleTimeString(
+        "pt-PT",
+        {
+          timeZone:
+            "Europe/Lisbon",
+
+          hour:
+            "2-digit",
+
+          minute:
+            "2-digit",
+
+          second:
+            "2-digit"
+        }
+      );
+
+    }
+
+
+    // =========================================================
+    // JOGO JÁ COMEÇOU
+    // =========================================================
+
+    function matchHasStarted(match) {
+
+      const status =
+        String(
+          match?.status ||
+          ""
+        ).toUpperCase();
+
+
+      return [
+
+        "IN_PLAY",
+        "PAUSED",
+        "FINISHED",
+        "SUSPENDED",
+        "AWARDED"
+
+      ].includes(status);
+
+    }
+
+
+    // =========================================================
+    // HORA / STATUS DO JOGO
+    // =========================================================
+
+    function getMatchTimeDisplay(match) {
+
+      const status =
+        String(
+          match?.status ||
+          ""
+        ).toUpperCase();
+
+
+      if (
+        status === "IN_PLAY" ||
+        status === "LIVE"
+      ) {
+
+        return `
+
+          <div class="time match-started">
+
+            <span class="match-live-status">
+
+              <span class="match-live-status-dot"></span>
+
+              🔴 EM LIVE
+
+            </span>
+
+          </div>
+
+        `;
+
+      }
+
+
+      if (
+        status === "PAUSED"
+      ) {
+
+        return `
+
+          <div class="time match-started">
+
+            <span class="match-live-status">
+
+              <span class="match-live-status-dot"></span>
+
+              ⏸ INTERVALO
+
+            </span>
+
+          </div>
+
+        `;
+
+      }
+
+
+      if (
+        status === "FINISHED" ||
+        status === "SUSPENDED" ||
+        status === "AWARDED"
+      ) {
+
+        return `
+
+          <div class="time match-started">
+
+            <span class="finished-match-status">
+              🏁 FINAL
+            </span>
+
+          </div>
+
+        `;
+
+      }
+
+
+      if (
+        status === "POSTPONED"
+      ) {
+
+        return `
+
+          <div class="time">
+            ⏸ ADIADO
+          </div>
+
+        `;
+
+      }
+
+
+      if (
+        status === "CANCELLED"
+      ) {
+
+        return `
+
+          <div class="time">
+            ❌ CANCELADO
+          </div>
+
+        `;
+
+      }
+
+
+      return `
+
+        <div class="time">
+
+          🕒 ${escapeHtml(
+            formatMatchTime(
+              match?.utcDate
+            )
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    // =========================================================
+    // RENDER JOGOS
+    // =========================================================
+
+    function renderGames(matches) {
+
+      currentMatches =
+        Array.isArray(matches)
+          ? matches
+          : [];
+
+
+      gamesContainer.innerHTML =
+        "";
+
+
+      gamesCount.textContent =
+        currentMatches.length;
+
+
+      if (!currentMatches.length) {
+
+        gamesContainer.innerHTML =
+          `
+
+            <div class="empty">
+
+              <strong>
+                Nenhum jogo encontrado.
+              </strong>
+
+              <br><br>
+
+              A API não disponibilizou jogos
+              das competições configuradas
+              para esta data.
+
+            </div>
+
+          `;
+
+        return;
+
+      }
+
+
+      for (
+        const match of currentMatches
+      ) {
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        const status =
+          String(
+            match.status || ""
+          ).toUpperCase();
+
+
+        const isLive =
+          status === "IN_PLAY" ||
+          status === "PAUSED" ||
+          status === "LIVE";
+
+
+        const isFinished =
+          status === "FINISHED" ||
+          status === "AWARDED";
+
+
+        card.className =
+          `game ${
+            isFinished
+              ? "game-finished"
+              : ""
+          }`;
+
+
+        const liveScore =
+          isLive
+
+            ? `
+
+              <div class="game-live-score">
+
+                ${escapeHtml(
+                  String(
+                    getScore(
+                      match,
+                      "home"
+                    )
+                  )
+                )}
+
+                -
+
+                ${escapeHtml(
+                  String(
+                    getScore(
+                      match,
+                      "away"
+                    )
+                  )
+                )}
+
+              </div>
+
+            `
+
+            : "";
+
+
+        const finishedScore =
+          isFinished
+            ? getFinishedScore(
+                match
+              )
+            : null;
+
+
+        const finalScoreHtml =
+          finishedScore
+
+            ? `
+
+              <div class="game-final-score">
+
+                <span>
+
+                  ${escapeHtml(
+                    String(
+                      finishedScore.home
+                    )
+                  )}
+
+                </span>
+
+
+                <span class="game-final-score-separator">
+                  -
+                </span>
+
+
+                <span>
+
+                  ${escapeHtml(
+                    String(
+                      finishedScore.away
+                    )
+                  )}
+
+                </span>
+
+              </div>
+
+            `
+
+            : "";
+
+
+        card.innerHTML =
+          `
+
+            <div class="competition">
+
+              ${escapeHtml(
+                match.competition?.name ||
+                ""
+              )}
+
+            </div>
+
+
+            <div class="teams">
+
+
+              <div class="team">
+
+                ${teamCrest(
+                  match.homeTeam
+                )}
+
+
+                <span class="team-name">
+
+                  ${escapeHtml(
+                    match.homeTeam?.name ||
+                    ""
+                  )}
+
+                </span>
+
+              </div>
+
+
+              <div class="game-time-column">
+
+                ${getMatchTimeDisplay(
+                  match
+                )}
+
+                ${liveScore}
+
+                ${finalScoreHtml}
+
+              </div>
+
+
+              <div class="team">
+
+                <span class="team-name">
+
+                  ${escapeHtml(
+                    match.awayTeam?.name ||
+                    ""
+                  )}
+
+                </span>
+
+
+                ${teamCrest(
+                  match.awayTeam
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="game-footer">
+
+              <span>
+
+                ${escapeHtml(
+                  match.status ||
+                  ""
+                )}
+
+              </span>
+
+
+              <span>
+
+                ID ${escapeHtml(
+                  match.id
+                )}
+
+              </span>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="individual-analysis-button"
+              data-match-id="${escapeHtml(
+                match.id
+              )}"
+            >
+
+              🔎 Analisar jogo
+
+            </button>
+
+
+            <div
+              class="individual-analysis"
+              id="individual-analysis-${escapeHtml(
+                match.id
+              )}"
+            ></div>
+
+          `;
+
+
+        gamesContainer.appendChild(
+          card
+        );
+
+      }
+
+    }
+
+
+    // =========================================================
+    // ANÁLISE INDIVIDUAL
+    // =========================================================
+
+    async function analyzeIndividualGame(
+      matchId,
+      button
+    ) {
+
+      const resultContainer =
+        document.getElementById(
+          `individual-analysis-${matchId}`
+        );
+
+
+      if (!resultContainer) {
+
+        return;
+
+      }
+
+
+      const originalText =
+        button.textContent;
+
+
+      button.disabled =
+        true;
+
+
+      button.textContent =
+        "A analisar...";
+
+
+      resultContainer.innerHTML =
+        `
+
+          <div class="individual-loading">
+
+            <div class="individual-loading-spinner"></div>
+
+
+            <div>
+
+              <strong>
+                A analisar este jogo...
+              </strong>
+
+
+              <span>
+                A consultar a forma recente das duas equipas.
+              </span>
+
+            </div>
+
+          </div>
+
+        `;
+
+
+      try {
+
+        const analysis =
+          await api(
+            `/api/bets/analyze/${encodeURIComponent(
+              matchId
+            )}`
+          );
+
+
+        renderIndividualAnalysis(
+          resultContainer,
+          analysis
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Erro na análise individual:",
+          error
+        );
+
+
+        resultContainer.innerHTML =
+          `
+
+            <div class="error individual-error">
+
+              Não foi possível analisar este jogo.
+
+              <br><br>
+
+              ${escapeHtml(
+                error.message
+              )}
+
+            </div>
+
+          `;
+
+      } finally {
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          originalText;
+
+      }
+
+    }
+
+
+    // =========================================================
+    // RENDER ANÁLISE INDIVIDUAL
+    // =========================================================
+
+    function renderIndividualAnalysis(
+      container,
+      data
+    ) {
+
+      if (
+        !data ||
+        !data.recommendation
+      ) {
+
+        container.innerHTML =
+          `
+
+            <div class="empty">
+
+              Não existem dados suficientes
+              para analisar este jogo.
+
+            </div>
+
+          `;
+
+        return;
+
+      }
+
+
+      const fixture =
+        data.fixture || {};
+
+
+      const home =
+        data.home || {};
+
+
+      const away =
+        data.away || {};
+
+
+      const alternatives =
+        Array.isArray(
+          data.alternatives
+        )
+          ? data.alternatives
+          : [];
+
+
+      const enrichedAlternatives =
+        alternatives.map(
+          (item) =>
+            enrichMarketItem(
+              item,
+              fixture
+            )
+        );
+
+
+      const recommendation =
+        enrichRecommendation(
+          data.recommendation,
+          enrichedAlternatives,
+          fixture
+        );
+
+
+      const fixtureStatus =
+        String(
+          fixture.status ||
+          ""
+        ).toUpperCase();
+
+
+      const isLive =
+        fixture.isLive === true ||
+        fixtureStatus === "IN_PLAY" ||
+        fixtureStatus === "PAUSED" ||
+        fixtureStatus === "LIVE";
+
+
+      const isPaused =
+        fixtureStatus === "PAUSED";
+
+
+      const isFinished =
+        fixtureStatus === "FINISHED" ||
+        fixtureStatus === "AWARDED";
+
+
+      const confidence =
+        confidenceClass(
+          recommendation.confidence
+        );
+
+
+      const recommendationResult =
+        getMarketResult(
+          recommendation,
+          fixture
+        );
+
+
+      const liveBadge =
+        isLive
+
+          ? `
+
+            <div class="live-analysis-badge">
+
+              <span class="live-analysis-dot"></span>
+
+              🔴 EM LIVE
+
+            </div>
+
+          `
+
+          : "";
+
+
+      const liveNotice =
+        isLive
+
+          ? `
+
+            <div class="live-analysis-notice">
+
+              <span class="live-analysis-notice-icon">
+                🔴
+              </span>
+
+
+              <div>
+
+                <strong>
+                  Este jogo está a decorrer.
+                </strong>
+
+
+                <br>
+
+
+                ${
+                  isPaused
+                    ? "O jogo está neste momento no intervalo."
+                    : "Os dados apresentados são baseados nas estatísticas disponíveis para este jogo."
+                }
+
+              </div>
+
+            </div>
+
+          `
+
+          : "";
+
+
+      const liveScoreHtml =
+        isLive
+
+          ? `
+
+            <div class="individual-score-live">
+
+              <span class="score-number">
+
+                ${escapeHtml(
+                  String(
+                    getScore(
+                      fixture,
+                      "home"
+                    )
+                  )
+                )}
+
+              </span>
+
+
+              <span class="score-separator">
+                -
+              </span>
+
+
+              <span class="score-number">
+
+                ${escapeHtml(
+                  String(
+                    getScore(
+                      fixture,
+                      "away"
+                    )
+                  )
+                )}
+
+              </span>
+
+
+              <span>
+
+                ${
+                  isPaused
+                    ? "⏸ Intervalo"
+                    : "🔴 LIVE"
+                }
+
+              </span>
+
+            </div>
+
+          `
+
+          : "";
+
+
+      const finishedScore =
+        isFinished
+          ? getFinishedScore(
+              fixture
+            )
+          : null;
+
+
+      const finalScoreHtml =
+        finishedScore
+
+          ? `
+
+            <div class="individual-score-final">
+
+              <span>
+
+                ${escapeHtml(
+                  String(
+                    finishedScore.home
+                  )
+                )}
+
+              </span>
+
+
+              <span>
+                -
+              </span>
+
+
+              <span>
+
+                ${escapeHtml(
+                  String(
+                    finishedScore.away
+                  )
+                )}
+
+              </span>
+
+            </div>
+
+
+            <div class="individual-score-final-label">
+              🏁 Resultado final
+            </div>
+
+          `
+
+          : "";
+
+
+      const probabilityHtml =
+        enrichedAlternatives
+          .map(
+            (item) =>
+              renderMarketItem(
+                item,
+                fixture
+              )
+          )
+          .join("");
+
+
+      // =======================================================
+      // ODD BETCLIC DA RECOMENDAÇÃO
+      // =======================================================
+
+      const recommendationBetclicOdd =
+        Number(
+          recommendation?.betclic?.odd
+        );
+
+
+      const hasRecommendationBetclicOdd =
+        Number.isFinite(
+          recommendationBetclicOdd
+        ) &&
+        recommendationBetclicOdd > 1;
+
+
+      const recommendationBetclicHtml =
+        `
+
+          <div
+            class="
+              individual-recommendation-betclic
+              ${
+                hasRecommendationBetclicOdd
+                  ? ""
+                  : "unavailable"
+              }
+            "
+          >
+
+            <span>
+              BETCLIC
+            </span>
+
+
+            <strong>
+
+              ${
+                hasRecommendationBetclicOdd
+                  ? recommendationBetclicOdd.toFixed(2)
+                  : "—"
+              }
+
+            </strong>
+
+          </div>
+
+        `;
+
+
+      container.innerHTML =
+        `
+
+          <div class="individual-analysis-header">
+
+            <div class="individual-analysis-title">
+              🔎 Análise individual
+            </div>
+
+
+            <button
+              type="button"
+              class="close-individual-analysis"
+              title="Fechar análise individual"
+              aria-label="Fechar análise individual"
+            >
+
+              ✕ Fechar
+
+            </button>
+
+          </div>
+
+
+          <div class="analysis-card individual-card">
+
+
+            ${liveBadge}
+
+
+            <div class="individual-analysis-label">
+              🔎 ANÁLISE INDIVIDUAL
+            </div>
+
+
+            <div class="competition">
+
+              ${escapeHtml(
+                fixture?.competition?.name ||
+                ""
+              )}
+
+            </div>
+
+
+            <div class="analysis-match">
+
+
+              <div class="analysis-team">
+
+                ${teamCrest(
+                  fixture?.homeTeam,
+                  "large"
+                )}
+
+
+                <span>
+
+                  ${escapeHtml(
+                    fixture?.homeTeam?.name ||
+                    ""
+                  )}
+
+                </span>
+
+              </div>
+
+
+              <div class="analysis-vs">
+                VS
+              </div>
+
+
+              <div class="analysis-team">
+
+                <span>
+
+                  ${escapeHtml(
+                    fixture?.awayTeam?.name ||
+                    ""
+                  )}
+
+                </span>
+
+
+                ${teamCrest(
+                  fixture?.awayTeam,
+                  "large"
+                )}
+
+              </div>
+
+            </div>
+
+
+            ${liveScoreHtml}
+
+
+            ${
+              isFinished
+                ? finalScoreHtml
+                : ""
+            }
+
+
+            <div class="muted individual-date">
+
+              ${escapeHtml(
+                fixture?.date ||
+                ""
+              )}
+
+              ·
+
+              ${escapeHtml(
+                fixture?.time ||
+                ""
+              )}
+
+            </div>
+
+
+            ${liveNotice}
+
+
+            <div
+              class="
+                individual-recommendation
+                ${confidence}
+                ${recommendationResult.className}
+              "
+            >
+
+
+              <!-- MERCADO -->
+
+              <div class="individual-recommendation-market">
+
+                ${escapeHtml(
+                  recommendation.market
+                )}
+
+              </div>
+
+
+              <!-- PROBABILIDADE -->
+
+              <div class="individual-recommendation-probability">
+
+                ${escapeHtml(
+                  String(
+                    recommendation.probability
+                  )
+                )}%
+
+              </div>
+
+
+              <!-- ODD BETCLIC -->
+
+              ${recommendationBetclicHtml}
+
+
+              <!-- CONFIANÇA -->
+
+              <div class="individual-recommendation-confidence">
+
+                Confiança:
+
+                ${escapeHtml(
+                  recommendation.confidence
+                )}
+
+              </div>
+
+
+              <!-- RESULTADO -->
+
+              <div class="recommendation-result">
+
+                ${recommendationResult.icon}
+
+                ${escapeHtml(
+                  recommendationResult.label
+                )}
+
+                ${
+                  recommendationResult.score
+                    ? `
+
+                      <span>
+
+                        · ${escapeHtml(
+                          recommendationResult.score
+                        )}
+
+                      </span>
+
+                    `
+                    : ""
+                }
+
+              </div>
+
+            </div>
+
+
+            ${
+              probabilityHtml
+
+                ? `
+
+                  <div class="prob-grid individual-prob-grid">
+
+                    ${probabilityHtml}
+
+                  </div>
+
+                `
+
+                : ""
+            }
+
+
+            <div class="team-stats">
+
+
+              <div class="team-box">
+
+                <div class="team-box-header">
+
+                  ${teamCrest(
+                    home?.team,
+                    "medium"
+                  )}
+
+
+                  <h4>
+
+                    ${escapeHtml(
+                      home?.team?.name ||
+                      ""
+                    )}
+
+                  </h4>
+
+                </div>
+
+
+                ${renderTeamStats(
+                  home
+                )}
+
+              </div>
+
+
+              <div class="team-box">
+
+                <div class="team-box-header">
+
+                  ${teamCrest(
+                    away?.team,
+                    "medium"
+                  )}
+
+
+                  <h4>
+
+                    ${escapeHtml(
+                      away?.team?.name ||
+                      ""
+                    )}
+
+                  </h4>
+
+                </div>
+
+
+                ${renderTeamStats(
+                  away
+                )}
+
+              </div>
+
+
+            </div>
+
+
+            <div class="info individual-reason">
+
+              <strong>
+                Motivo:
+              </strong>
+
+
+              ${escapeHtml(
+                recommendation.reason
+              )}
+
+
+              <br><br>
+
+
+              <strong>
+                Golos esperados:
+              </strong>
+
+
+              ${escapeHtml(
+                String(
+                  data?.expectedGoals?.home ??
+                  ""
+                )
+              )}
+
+
+              -
+
+
+              ${escapeHtml(
+                String(
+                  data?.expectedGoals?.away ??
+                  ""
+                )
+              )}
+
+            </div>
+
+
+          </div>
+
+        `;
+
+
+      const closeButton =
+        container.querySelector(
+          ".close-individual-analysis"
+        );
+
+
+      if (closeButton) {
+
+        closeButton.addEventListener(
+          "click",
+          () => {
+
+            container.innerHTML =
+              "";
+
+          }
+        );
+
+      }
+
+    }
+
+
+    // =========================================================
+    // ESTATÍSTICAS DA EQUIPA
+    // =========================================================
+
+    function renderTeamStats(data) {
+
+      const stats =
+        data?.stats ||
+        {};
+
+
+      const venueStats =
+        data?.homeStats ||
+        data?.awayStats ||
+        data?.venueStats ||
+        {};
+
+
+      const isHome =
+        Boolean(
+          data?.homeStats
+        );
+
+
+      const venueLabel =
+        isHome
+          ? "Últimos jogos em casa"
+          : "Últimos jogos fora";
+
+
+      const team =
+        data?.team ||
+        {};
+
+
+      const standings =
+        data?.standings ||
+        data?.league ||
+        {};
+
+
+      const nestedStanding =
+        data?.team?.standing ||
+        data?.team?.standings ||
+        data?.team?.leagueStanding ||
+        {};
+
+
+      function firstDefined(...values) {
+
+        for (
+          const value of values
+        ) {
+
+          if (
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+          ) {
+
+            return value;
+
+          }
+
+        }
+
+
+        return null;
+
+      }
+
+
+      const leaguePosition =
+        firstDefined(
+
+          team?.leaguePosition,
+
+          team?.position,
+
+          nestedStanding?.position,
+
+          nestedStanding?.rank,
+
+          standings?.position,
+
+          standings?.rank
+
+        );
+
+
+      const leaguePoints =
+        firstDefined(
+
+          team?.leaguePoints,
+
+          team?.points,
+
+          nestedStanding?.points,
+
+          standings?.points
+
+        );
+
+
+      const leaguePlayed =
+        firstDefined(
+
+          team?.leaguePlayed,
+
+          team?.played,
+
+          team?.gamesPlayed,
+
+          nestedStanding?.played,
+
+          nestedStanding?.playedGames,
+
+          nestedStanding?.gamesPlayed,
+
+          standings?.played,
+
+          standings?.playedGames,
+
+          standings?.gamesPlayed
+
+        );
+
+
+      const leagueWins =
+        firstDefined(
+
+          team?.leagueWins,
+
+          team?.wins,
+
+          nestedStanding?.wins,
+
+          standings?.wins
+
+        );
+
+
+      const leagueDraws =
+        firstDefined(
+
+          team?.leagueDraws,
+
+          team?.draws,
+
+          nestedStanding?.draws,
+
+          standings?.draws
+
+        );
+
+
+      const leagueLosses =
+        firstDefined(
+
+          team?.leagueLosses,
+
+          team?.losses,
+
+          nestedStanding?.losses,
+
+          standings?.losses
+
+        );
+
+
+      const leagueGoalsFor =
+        firstDefined(
+
+          team?.leagueGoalsFor,
+
+          team?.goalsFor,
+
+          team?.goalsScored,
+
+          nestedStanding?.goalsFor,
+
+          nestedStanding?.goalsScored,
+
+          standings?.goalsFor,
+
+          standings?.goalsScored
+
+        );
+
+
+      const leagueGoalsAgainst =
+        firstDefined(
+
+          team?.leagueGoalsAgainst,
+
+          team?.goalsAgainst,
+
+          team?.goalsConceded,
+
+          nestedStanding?.goalsAgainst,
+
+          nestedStanding?.goalsConceded,
+
+          standings?.goalsAgainst,
+
+          standings?.goalsConceded
+
+        );
+
+
+      const leagueGoalDifference =
+        firstDefined(
+
+          team?.leagueGoalDifference,
+
+          team?.goalDifference,
+
+          nestedStanding?.goalDifference,
+
+          nestedStanding?.goalDiff,
+
+          standings?.goalDifference,
+
+          standings?.goalDiff
+
+        );
+
+
+      let calculatedGoalDifference =
+        leagueGoalDifference;
+
+
+      if (
+        calculatedGoalDifference === null &&
+        leagueGoalsFor !== null &&
+        leagueGoalsAgainst !== null
+      ) {
+
+        const goalsFor =
+          Number(
+            leagueGoalsFor
+          );
+
+
+        const goalsAgainst =
+          Number(
+            leagueGoalsAgainst
+          );
+
+
+        if (
+          Number.isFinite(goalsFor) &&
+          Number.isFinite(goalsAgainst)
+        ) {
+
+          calculatedGoalDifference =
+            goalsFor -
+            goalsAgainst;
+
+        }
+
+      }
+
+
+      function statValue(value) {
+
+        if (
+          value === undefined ||
+          value === null ||
+          value === ""
+        ) {
+
+          return "-";
+
+        }
+
+
+        return escapeHtml(
+          String(value)
+        );
+
+      }
+
+
+      function percentage(value) {
+
+        if (
+          value === undefined ||
+          value === null ||
+          value === ""
+        ) {
+
+          return "-";
+
+        }
+
+
+        return formatPercent(
+          value
+        );
+
+      }
+
+
+      function formatGoalDifference(value) {
+
+        if (
+          value === undefined ||
+          value === null ||
+          value === ""
+        ) {
+
+          return "-";
+
+        }
+
+
+        const number =
+          Number(value);
+
+
+        if (
+          !Number.isFinite(number)
+        ) {
+
+          return escapeHtml(
+            String(value)
+          );
+
+        }
+
+
+        if (
+          number > 0
+        ) {
+
+          return `+${number}`;
+
+        }
+
+
+        return String(
+          number
+        );
+
+      }
+
+
+      function goalDifferenceClass(value) {
+
+        const number =
+          Number(value);
+
+
+        if (
+          !Number.isFinite(number)
+        ) {
+
+          return "league-neutral";
+
+        }
+
+
+        if (
+          number > 0
+        ) {
+
+          return "league-positive";
+
+        }
+
+
+        if (
+          number < 0
+        ) {
+
+          return "league-negative";
+
+        }
+
+
+        return "league-neutral";
+
+      }
+
+
+      const hasLeaguePosition =
+        leaguePosition !== null;
+
+
+      const hasLeagueData =
+        leaguePosition !== null ||
+        leaguePoints !== null ||
+        leaguePlayed !== null ||
+        leagueWins !== null ||
+        leagueDraws !== null ||
+        leagueLosses !== null ||
+        leagueGoalsFor !== null ||
+        leagueGoalsAgainst !== null ||
+        calculatedGoalDifference !== null;
+
+
+      const leaguePositionDisplay =
+        hasLeaguePosition
+          ? `${statValue(
+              leaguePosition
+            )}º`
+          : "-";
+
+
+      const goalDifferenceDisplay =
+        formatGoalDifference(
+          calculatedGoalDifference
+        );
+
+
+      const goalDifferenceClassName =
+        goalDifferenceClass(
+          calculatedGoalDifference
+        );
+
+
+      const leagueSection =
+        hasLeagueData
+
+          ? `
+
+            <div class="team-league-position">
+
+              <div class="team-league-position-main">
+
+                <div class="team-league-position-icon">
+                  🏆
+                </div>
+
+
+                <div>
+
+                  <span class="team-league-position-label">
+                    Lugar na liga
+                  </span>
+
+
+                  <strong>
+                    ${leaguePositionDisplay}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="team-league-position-details">
+
+                <span>
+
+                  ⭐
+                  ${statValue(
+                    leaguePoints
+                  )}
+                  pts
+
+                </span>
+
+
+                <span>
+
+                  🎮
+                  ${statValue(
+                    leaguePlayed
+                  )}
+                  jogos
+
+                </span>
+
+
+                <span
+                  class="${goalDifferenceClassName}"
+                >
+
+                  📊 DG
+
+                  ${escapeHtml(
+                    goalDifferenceDisplay
+                  )}
+
+                </span>
+
+
+                <span>
+
+                  ⚽
+                  ${statValue(
+                    leagueGoalsFor
+                  )}
+                  marcados
+
+                </span>
+
+
+                <span>
+
+                  🛡️
+                  ${statValue(
+                    leagueGoalsAgainst
+                  )}
+                  sofridos
+
+                </span>
+
+              </div>
+
+            </div>
+
+          `
+
+          : `
+
+            <div class="team-league-position">
+
+              <div class="team-league-table-title">
+
+                <div class="team-stats-section-title">
+                  🏆 Classificação na liga
+                </div>
+
+
+                <span>
+                  Dados indisponíveis
+                </span>
+
+              </div>
+
+
+              <div class="team-league-position-main">
+
+                <div class="team-league-position-icon">
+                  🏆
+                </div>
+
+
+                <div>
+
+                  <span class="team-league-position-label">
+                    Lugar na liga
+                  </span>
+
+
+                  <strong>
+                    -
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="team-league-position-details">
+
+                <span>
+                  Classificação não disponível
+                </span>
+
+              </div>
+
+            </div>
+
+          `;
+
+
+      return `
+
+        ${leagueSection}
+
+
+        <div class="team-stats-section">
+
+          <div class="team-stats-section-title">
+            📊 Forma geral
+          </div>
+
+
+          <p>
+
+            <span>
+              Jogos analisados:
+            </span>
+
+            <strong>
+              ${statValue(
+                stats.games
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Vitórias:
+            </span>
+
+            <strong>
+              ${statValue(
+                stats.wins
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Empates:
+            </span>
+
+            <strong>
+              ${statValue(
+                stats.draws
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Derrotas:
+            </span>
+
+            <strong>
+              ${statValue(
+                stats.losses
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Golos marcados/jogo:
+            </span>
+
+            <strong>
+              ${statValue(
+                stats.avgGoalsFor
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Golos sofridos/jogo:
+            </span>
+
+            <strong>
+              ${statValue(
+                stats.avgGoalsAgainst
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Over 1.5:
+            </span>
+
+            <strong>
+              ${percentage(
+                stats.over15Rate
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Over 2.5:
+            </span>
+
+            <strong>
+              ${percentage(
+                stats.over25Rate
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              BTTS:
+            </span>
+
+            <strong>
+              ${percentage(
+                stats.bttsYesRate
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Clean sheets:
+            </span>
+
+            <strong>
+              ${percentage(
+                stats.cleanSheetRate
+              )}
+            </strong>
+
+          </p>
+
+        </div>
+
+
+        <div class="team-stats-section venue-stats">
+
+          <div class="team-stats-section-title">
+
+            ${
+              isHome
+                ? "🏠"
+                : "✈️"
+            }
+
+            ${venueLabel}
+
+          </div>
+
+
+          <p>
+
+            <span>
+              Jogos analisados:
+            </span>
+
+            <strong>
+              ${statValue(
+                venueStats.games
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Vitórias:
+            </span>
+
+            <strong>
+              ${statValue(
+                venueStats.wins
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Empates:
+            </span>
+
+            <strong>
+              ${statValue(
+                venueStats.draws
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Derrotas:
+            </span>
+
+            <strong>
+              ${statValue(
+                venueStats.losses
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Golos marcados/jogo:
+            </span>
+
+            <strong>
+              ${statValue(
+                venueStats.avgGoalsFor
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Golos sofridos/jogo:
+            </span>
+
+            <strong>
+              ${statValue(
+                venueStats.avgGoalsAgainst
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Over 1.5:
+            </span>
+
+            <strong>
+              ${percentage(
+                venueStats.over15Rate
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Over 2.5:
+            </span>
+
+            <strong>
+              ${percentage(
+                venueStats.over25Rate
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              BTTS:
+            </span>
+
+            <strong>
+              ${percentage(
+                venueStats.bttsYesRate
+              )}
+            </strong>
+
+          </p>
+
+
+          <p>
+
+            <span>
+              Clean sheets:
+            </span>
+
+            <strong>
+              ${percentage(
+                venueStats.cleanSheetRate
+              )}
+            </strong>
+
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    // =========================================================
+    // CONFIANÇA
+    // =========================================================
+
+    function confidenceClass(confidence) {
+
+      const text =
+        String(
+          confidence || ""
+        ).toLowerCase();
+
+
+      if (
+        text.includes("alta")
+      ) {
+
+        return "high";
+
+      }
+
+
+      if (
+        text.includes("média") ||
+        text.includes("media")
+      ) {
+
+        return "medium";
+
+      }
+
+
+      return "low";
+
+    }
+
+
+    // =========================================================
+    // MELHORES DO DIA
+    // =========================================================
+
+    function renderAnalyses(analyses) {
+
+      analysisContainer.innerHTML =
+        "";
+
+
+      const valid =
+        Array.isArray(analyses)
+          ? analyses.filter(
+              (item) =>
+                item &&
+                item.recommendation
+            )
+          : [];
+
+
+      analysisCount.textContent =
+        valid.length;
+
+
+      if (!valid.length) {
+
+        analysisContainer.innerHTML =
+          `
+
+            <div class="empty">
+
+              Não foi possível realizar análises
+              suficientes para esta data.
+
+            </div>
+
+          `;
+
+        return;
+
+      }
+
+
+      for (
+        const analysis of valid
+      ) {
+
+        const fixture =
+          analysis.fixture || {};
+
+
+        const rawAlternatives =
+          Array.isArray(
+            analysis.alternatives
+          )
+            ? analysis.alternatives
+            : [];
+
+
+        const alternatives =
+          rawAlternatives.map(
+            (item) =>
+              enrichMarketItem(
+                item,
+                fixture
+              )
+          );
+
+
+        const recommendation =
+          enrichRecommendation(
+            analysis.recommendation,
+            alternatives,
+            fixture
+          );
+
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        const confidence =
+          confidenceClass(
+            recommendation.confidence
+          );
+
+
+        const recommendationResult =
+          getMarketResult(
+            recommendation,
+            fixture
+          );
+
+
+        card.className =
+          "analysis-card";
+
+
+        const home =
+          analysis.home || {};
+
+
+        const away =
+          analysis.away || {};
+
+
+        const fixtureStatus =
+          String(
+            fixture?.status ||
+            ""
+          ).toUpperCase();
+
+
+        const isLive =
+          fixture?.isLive === true ||
+          fixtureStatus === "IN_PLAY" ||
+          fixtureStatus === "PAUSED" ||
+          fixtureStatus === "LIVE";
+
+
+        const isPaused =
+          fixtureStatus === "PAUSED";
+
+
+        const isFinished =
+          fixtureStatus === "FINISHED" ||
+          fixtureStatus === "AWARDED";
+
+
+        const liveBadge =
+          isLive
+
+            ? `
+
+              <div class="live-analysis-badge">
+
+                <span class="live-analysis-dot"></span>
+
+                🔴 EM LIVE
+
+              </div>
+
+            `
+
+            : "";
+
+
+        const liveNotice =
+          isLive
+
+            ? `
+
+              <div class="live-analysis-notice">
+
+                <span class="live-analysis-notice-icon">
+                  🔴
+                </span>
+
+
+                <div>
+
+                  <strong>
+                    Este jogo está a decorrer.
+                  </strong>
+
+
+                  <br>
+
+
+                  ${
+                    isPaused
+                      ? "O jogo está neste momento no intervalo."
+                      : "Os dados apresentados são baseados nas estatísticas disponíveis para este jogo."
+                  }
+
+                </div>
+
+              </div>
+
+            `
+
+            : "";
+
+
+        const liveScoreHtml =
+          isLive
+
+            ? `
+
+              <div class="individual-score-live">
+
+                <span class="score-number">
+
+                  ${escapeHtml(
+                    String(
+                      getScore(
+                        fixture,
+                        "home"
+                      )
+                    )
+                  )}
+
+                </span>
+
+
+                <span class="score-separator">
+                  -
+                </span>
+
+
+                <span class="score-number">
+
+                  ${escapeHtml(
+                    String(
+                      getScore(
+                        fixture,
+                        "away"
+                      )
+                    )
+                  )}
+
+                </span>
+
+
+                <span>
+
+                  ${
+                    isPaused
+                      ? "⏸ Intervalo"
+                      : "🔴 LIVE"
+                  }
+
+                </span>
+
+              </div>
+
+            `
+
+            : "";
+
+
+        const finishedScore =
+          isFinished
+            ? getFinishedScore(
+                fixture
+              )
+            : null;
+
+
+        const finalScoreHtml =
+          finishedScore
+
+            ? `
+
+              <div class="individual-score-final">
+
+                <span>
+
+                  ${escapeHtml(
+                    String(
+                      finishedScore.home
+                    )
+                  )}
+
+                </span>
+
+
+                <span>
+                  -
+                </span>
+
+
+                <span>
+
+                  ${escapeHtml(
+                    String(
+                      finishedScore.away
+                    )
+                  )}
+
+                </span>
+
+              </div>
+
+
+              <div class="individual-score-final-label">
+                🏁 Resultado final
+              </div>
+
+            `
+
+            : "";
+
+
+        const probabilityHtml =
+          alternatives
+            .map(
+              (item) =>
+                renderMarketItem(
+                  item,
+                  fixture
+                )
+            )
+            .join("");
+
+
+        // =====================================================
+        // ODD DA RECOMENDAÇÃO
+        // =====================================================
+
+        const recommendationOdd =
+          Number(
+            recommendation?.betclic?.odd
+          );
+
+
+        const hasRecommendationOdd =
+          Number.isFinite(
+            recommendationOdd
+          ) &&
+          recommendationOdd > 1;
+
+
+        const recommendationBetclicHtml =
+          `
+
+            <div
+              class="
+                recommendation-betclic
+                ${
+                  hasRecommendationOdd
+                    ? ""
+                    : "unavailable"
+                }
+              "
+            >
+
+              <span>
+                BETCLIC
+              </span>
+
+
+              <strong>
+
+                ${
+                  hasRecommendationOdd
+                    ? recommendationOdd.toFixed(2)
+                    : "—"
+                }
+
+              </strong>
+
+            </div>
+
+          `;
+
+
+        card.innerHTML =
+          `
+
+            ${liveBadge}
+
+
+            <div class="analysis-head">
+
+              <div>
+
+
+                <div class="competition">
+
+                  ${escapeHtml(
+                    fixture?.competition?.name ||
+                    ""
+                  )}
+
+                </div>
+
+
+                <div class="analysis-match">
+
+
+                  <div class="analysis-team">
+
+                    ${teamCrest(
+                      fixture?.homeTeam,
+                      "large"
+                    )}
+
+
+                    <span>
+
+                      ${escapeHtml(
+                        fixture?.homeTeam?.name ||
+                        ""
+                      )}
+
+                    </span>
+
+                  </div>
+
+
+                  <div class="analysis-vs">
+                    VS
+                  </div>
+
+
+                  <div class="analysis-team">
+
+                    <span>
+
+                      ${escapeHtml(
+                        fixture?.awayTeam?.name ||
+                        ""
+                      )}
+
+                    </span>
+
+
+                    ${teamCrest(
+                      fixture?.awayTeam,
+                      "large"
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <div class="muted">
+
+                  ${escapeHtml(
+                    fixture?.date ||
+                    ""
+                  )}
+
+                  ·
+
+                  ${escapeHtml(
+                    fixture?.time ||
+                    ""
+                  )}
+
+                </div>
+
+              </div>
+
+
+              <!-- =========================================
+                   RECOMENDAÇÃO
+              ========================================== -->
+
+              <div
+                class="
+                  recommendation
+                  ${confidence}
+                  ${recommendationResult.className}
+                "
+              >
+
+
+                <!-- TIPO DE MERCADO -->
+
+                <div class="market">
+
+                  ${escapeHtml(
+                    recommendation.market
+                  )}
+
+                </div>
+
+
+                <!-- PROBABILIDADE -->
+
+                <div
+                  class="
+                    probability
+                    ${confidence}
+                  "
+                >
+
+                  ${escapeHtml(
+                    String(
+                      recommendation.probability
+                    )
+                  )}%
+
+                </div>
+
+
+                <!-- ODD BETCLIC -->
+
+                ${recommendationBetclicHtml}
+
+
+                <!-- CONFIANÇA -->
+
+                <div class="muted">
+
+                  Confiança:
+
+                  ${escapeHtml(
+                    recommendation.confidence
+                  )}
+
+                </div>
+
+
+                <!-- RESULTADO -->
+
+                <div class="recommendation-result">
+
+                  ${recommendationResult.icon}
+
+                  ${escapeHtml(
+                    recommendationResult.label
+                  )}
+
+
+                  ${
+                    recommendationResult.score
+                      ? `
+
+                        <span>
+
+                          · ${escapeHtml(
+                            recommendationResult.score
+                          )}
+
+                        </span>
+
+                      `
+                      : ""
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            ${liveScoreHtml}
+
+
+            ${
+              isFinished
+                ? finalScoreHtml
+                : ""
+            }
+
+
+            ${liveNotice}
+
+
+            ${
+              probabilityHtml
+
+                ? `
+
+                  <div class="prob-grid">
+
+                    ${probabilityHtml}
+
+                  </div>
+
+                `
+
+                : ""
+            }
+
+
+            <div class="team-stats">
+
+
+              <div class="team-box">
+
+                <div class="team-box-header">
+
+                  ${teamCrest(
+                    home?.team,
+                    "medium"
+                  )}
+
+
+                  <h4>
+
+                    ${escapeHtml(
+                      home?.team?.name ||
+                      ""
+                    )}
+
+                  </h4>
+
+                </div>
+
+
+                ${renderTeamStats(
+                  home
+                )}
+
+              </div>
+
+
+              <div class="team-box">
+
+                <div class="team-box-header">
+
+                  ${teamCrest(
+                    away?.team,
+                    "medium"
+                  )}
+
+
+                  <h4>
+
+                    ${escapeHtml(
+                      away?.team?.name ||
+                      ""
+                    )}
+
+                  </h4>
+
+                </div>
+
+
+                ${renderTeamStats(
+                  away
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="info">
+
+              <strong>
+                Motivo:
+              </strong>
+
+
+              ${escapeHtml(
+                recommendation.reason
+              )}
+
+
+              <br><br>
+
+
+              <strong>
+                Golos esperados:
+              </strong>
+
+
+              ${escapeHtml(
+                String(
+                  analysis?.expectedGoals?.home ??
+                  ""
+                )
+              )}
+
+
+              -
+
+
+              ${escapeHtml(
+                String(
+                  analysis?.expectedGoals?.away ??
+                  ""
+                )
+              )}
+
+            </div>
+
+          `;
+
+
+        analysisContainer.appendChild(
+          card
+        );
+
+      }
+
+    }
+
+
+    // =========================================================
+    // PROCURAR JOGOS
+    // =========================================================
+
+    async function search() {
+
+      clearError();
+
+
+      const date =
+        dateInput.value;
+
+
+      if (!date) {
+
+        showError(
+          "Escolha uma data."
+        );
+
+        return;
+
+      }
+
+
+      currentGamesDate =
+        date;
+
+
+      dateLabel.textContent =
+        formatDateForDisplay(
+          date
+        );
+
+
+      dailyAnalysisDate =
+        null;
+
+
+      analysisDateLabel.textContent =
+        "";
+
+
+      analysisCount.textContent =
+        "0";
+
+
+      analysisContainer.innerHTML =
+        `
+
+          <div class="empty">
+
+            Escolha o número de análises e clique
+            em <strong>⭐ Melhores do dia</strong>.
+
+          </div>
+
+        `;
+
+
+      searchButton.disabled =
+        true;
+
+
+      loading.style.display =
+        "block";
+
+
+      infoBox.innerHTML =
+        `
+
+          A consultar
+
+          <strong>
+            football-data.org
+          </strong>
+
+          para
+
+          <strong>
+
+            ${escapeHtml(
+              formatDateForDisplay(
+                date
+              )
+            )}
+
+          </strong>...
+
+        `;
+
+
+      try {
+
+        const games =
+          await api(
+            `/api/matches?date=${encodeURIComponent(
+              date
+            )}`
+          );
+
+
+        const matches =
+          Array.isArray(
+            games?.matches
+          )
+            ? games.matches
+            : [];
+
+
+        renderGames(
+          matches
+        );
+
+
+        if (!matches.length) {
+
+          infoBox.innerHTML =
+            `
+
+              <strong>
+                Nenhum jogo encontrado.
+              </strong>
+
+              <br><br>
+
+              A API está online, mas não
+              disponibilizou jogos das
+              competições configuradas para
+
+              ${escapeHtml(
+                formatDateForDisplay(
+                  date
+                )
+              )}.
+
+            `;
+
+          return;
+
+        }
+
+
+        infoBox.innerHTML =
+          `
+
+            Encontrados
+
+            <strong>
+              ${matches.length}
+            </strong>
+
+            jogos para
+
+            <strong>
+
+              ${escapeHtml(
+                formatDateForDisplay(
+                  date
+                )
+              )}
+
+            </strong>.
+
+            <br><br>
+
+            Escolha o número de análises e
+            clique em
+
+            <strong>
+              ⭐ Melhores do dia
+            </strong>.
+
+          `;
+
+
+      } catch (error) {
+
+        console.error(
+          "Erro ao procurar jogos:",
+          error
+        );
+
+
+        showError(
+          error.message
+        );
+
+
+        gamesContainer.innerHTML =
+          `
+
+            <div class="empty">
+
+              Não foi possível carregar os jogos.
+
+            </div>
+
+          `;
+
+
+        currentMatches =
+          [];
+
+
+        gamesCount.textContent =
+          "0";
+
+      } finally {
+
+        loading.style.display =
+          "none";
+
+
+        searchButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    // =========================================================
+    // MELHORES DO DIA
+    // =========================================================
+
+    async function analyzeDaily() {
+
+      clearError();
+
+
+      const date =
+        dateInput.value;
+
+
+      if (!date) {
+
+        showError(
+          "Escolha uma data."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        currentGamesDate !== date
+      ) {
+
+        showError(
+          "Primeiro clique em «Procurar jogos» para carregar esta data."
+        );
+
+        return;
+
+      }
+
+
+      const limit =
+        Math.min(
+          20,
+          Math.max(
+            0,
+            Number(
+              limitInput.value
+            ) || 0
+          )
+        );
+
+
+      limitInput.value =
+        limit;
+
+
+      dailyButton.disabled =
+        true;
+
+
+      const originalText =
+        dailyButton.textContent;
+
+
+      dailyButton.textContent =
+        "⭐ A analisar...";
+
+
+      dailyAnalysisDate =
+        date;
+
+
+      analysisDateLabel.textContent =
+        formatDateForDisplay(
+          date
+        );
+
+
+      if (limit === 0) {
+
+        analysisCount.textContent =
+          "0";
+
+
+        analysisContainer.innerHTML =
+          `
+
+            <div class="empty">
+
+              Foram solicitadas
+
+              <strong>
+                0 análises
+              </strong>.
+
+              <br><br>
+
+              A lista de jogos permanece
+              exatamente como estava.
+
+            </div>
+
+          `;
+
+
+        infoBox.innerHTML =
+          `
+
+            <strong>
+              ${currentMatches.length}
+            </strong>
+
+            jogos continuam carregados.
+
+            <br>
+
+            Foram solicitadas
+
+            <strong>
+              0 análises
+            </strong>.
+
+          `;
+
+
+        dailyButton.disabled =
+          false;
+
+
+        dailyButton.textContent =
+          originalText;
+
+
+        return;
+
+      }
+
+
+      analysisContainer.innerHTML =
+        `
+
+          <div class="info">
+
+            A preparar os melhores do dia...
+
+            <br>
+
+            A realizar até
+
+            <strong>
+              ${limit}
+            </strong>
+
+            análises.
+
+          </div>
+
+        `;
+
+
+      try {
+
+        const daily =
+          await api(
+            `/api/bets/daily?date=${encodeURIComponent(
+              date
+            )}&limit=${limit}`
+          );
+
+
+        renderAnalyses(
+          daily?.analyses || []
+        );
+
+
+        infoBox.innerHTML =
+          `
+
+            <strong>
+              ${currentMatches.length}
+            </strong>
+
+            jogos continuam carregados.
+
+            <br>
+
+            <strong>
+              ${daily?.analyzed || 0}
+            </strong>
+
+            análises realizadas.
+
+            <br><br>
+
+            A lista de jogos não foi recarregada.
+
+          `;
+
+
+      } catch (error) {
+
+        console.error(
+          "Erro nos melhores do dia:",
+          error
+        );
+
+
+        showError(
+          error.message
+        );
+
+
+        analysisContainer.innerHTML =
+          `
+
+            <div class="empty">
+
+              Não foi possível realizar
+              os melhores do dia.
+
+              <br><br>
+
+              ${escapeHtml(
+                error.message
+              )}
+
+            </div>
+
+          `;
+
+      } finally {
+
+        dailyButton.disabled =
+          false;
+
+
+        dailyButton.textContent =
+          originalText;
+
+      }
+
+    }
+
+
+    // =========================================================
+    // BOTÕES DE ANÁLISE INDIVIDUAL
+    // =========================================================
+
+    gamesContainer.addEventListener(
+      "click",
+      (event) => {
+
+        const button =
+          event.target.closest(
+            "[data-match-id]"
+          );
+
+
+        if (!button) {
+
+          return;
+
+        }
+
+
+        const matchId =
+          button.dataset.matchId;
+
+
+        if (!matchId) {
+
+          return;
+
+        }
+
+
+        analyzeIndividualGame(
+          matchId,
+          button
+        );
+
+      }
+    );
+
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
+
+    function formatPercent(value) {
+
+      const n =
+        Number(value);
+
+
+      if (
+        !Number.isFinite(n)
+      ) {
+
+        return "0%";
+
+      }
+
+
+      return (
+        n * 100
+      ).toFixed(1) + "%";
+
+    }
+
+
+    function formatDateForDisplay(value) {
+
+      if (!value) {
+
+        return "";
+
+      }
+
+
+      const parts =
+        String(
+          value
+        ).split("-");
+
+
+      if (
+        parts.length !== 3
+      ) {
+
+        return value;
+
+      }
+
+
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+    }
+
+
+    function formatMatchTime(utcDate) {
+
+      if (!utcDate) {
+
+        return "--:--";
+
+      }
+
+
+      const date =
+        new Date(
+          utcDate
+        );
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+
+        return "--:--";
+
+      }
+
+
+      return date.toLocaleTimeString(
+        "pt-PT",
+        {
+          timeZone:
+            "Europe/Lisbon",
+
+          hour:
+            "2-digit",
+
+          minute:
+            "2-digit"
+        }
+      );
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(
+        value ?? ""
+      )
+
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+
+        .replace(
+          /</g,
+          "&lt;"
+        )
+
+        .replace(
+          />/g,
+          "&gt;"
+        )
+
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    // =========================================================
+    // EVENTOS
+    // =========================================================
+
+    searchButton.addEventListener(
+      "click",
+      search
+    );
+
+
+    dailyButton.addEventListener(
+      "click",
+      analyzeDaily
+    );
+
+
+    dateInput.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          search();
+
+        }
+
+      }
+    );
+
+
+    limitInput.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          analyzeDaily();
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // VISIBILIDADE DA PÁGINA
+    // =========================================================
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+
+        if (
+          document.visibilityState ===
+          "visible"
+        ) {
+
+          loadLiveMatches();
+
+          checkLiveHealth();
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // START
+    // =========================================================
+
+    async function startFrontend() {
+
+      await checkHealth();
+
+      await checkLiveHealth();
+
+      await loadLiveMatches();
+
+
+      liveRefreshTimer =
+        setInterval(
+          () => {
+
+            loadLiveMatches();
+
+          },
+          LIVE_REFRESH_INTERVAL
+        );
+
+
+      liveHealthTimer =
+        setInterval(
+          () => {
+
+            checkLiveHealth();
+
+          },
+          60_000
+        );
+
+
+      await search();
+
+    }
+
+
+    // =========================================================
+    // LIMPEZA
+    // =========================================================
+
+    window.addEventListener(
+      "beforeunload",
+      () => {
+
+        if (
+          liveRefreshTimer
+        ) {
+
+          clearInterval(
+            liveRefreshTimer
+          );
+
+        }
+
+
+        if (
+          liveHealthTimer
+        ) {
+
+          clearInterval(
+            liveHealthTimer
+          );
+
+        }
+
+      }
+    );
+
+
+    // =========================================================
+    // INICIAR
+    // =========================================================
+
+    startFrontend()
+      .catch(
+        (error) => {
+
+          console.error(
+            "Erro ao iniciar frontend:",
+            error
+          );
+
+
+          showError(
+            error.message ||
+            "Erro ao iniciar a aplicação."
+          );
+
+        }
+      );
+
+  </script>
+
+
+  <!-- ======================================================
+       SISTEMA GLOBAL DE NOTIFICAÇÕES
+  ======================================================= -->
+
+  <script src="js/notifications.cjs"></script>
+
+  <script src="js/floating-bets-badge.cjs"></script>
+
+  <script src="js/bets-stats.cjs"></script>
+
+
+</body>
+
+</html>

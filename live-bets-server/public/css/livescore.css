@@ -1,0 +1,2056 @@
+/* =========================================================
+   LIVE SCORE — FUTURISTIC GLASS / PURPLE BLUE
+========================================================= */
+
+.live-section {
+  position: relative;
+  margin: 34px 0;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.live-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.live-title-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.live-title-left h2 {
+  margin: 0;
+  color: #f8f7ff;
+  font-size: 20px;
+  font-weight: 850;
+  letter-spacing: -0.035em;
+}
+
+/* =========================================================
+   LIVE BADGE
+========================================================= */
+
+.live-badge {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px 11px;
+
+  border: 1px solid rgba(167, 139, 250, .26);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(139, 92, 246, .16),
+      rgba(56, 189, 248, .08)
+    );
+
+  color: #c4b5fd;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 0 22px rgba(139, 92, 246, .10),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+
+  border-radius: 50%;
+
+  background: #22d3ee;
+
+  box-shadow:
+    0 0 0 0 rgba(34, 211, 238, .55),
+    0 0 12px rgba(34, 211, 238, .75);
+
+  animation: livePulse 1.7s infinite;
+}
+
+@keyframes livePulse {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 0 rgba(34, 211, 238, .55),
+      0 0 12px rgba(34, 211, 238, .65);
+  }
+
+  70% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 0 7px rgba(34, 211, 238, 0),
+      0 0 16px rgba(34, 211, 238, .75);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 0 rgba(34, 211, 238, 0),
+      0 0 12px rgba(34, 211, 238, .65);
+  }
+}
+
+.live-updated {
+  color: #aaa4c0;
+  opacity: .65;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.live-games {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(320px, 1fr)
+  );
+
+  gap: 16px;
+}
+
+/* =========================================================
+   GAME CARD
+========================================================= */
+
+.live-game {
+  position: relative;
+  overflow: hidden;
+
+  padding: 18px;
+
+  border: 1px solid rgba(167, 139, 250, .14);
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(56, 189, 248, .10),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(139, 92, 246, .11),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(22, 18, 48, .76),
+      rgba(9, 12, 29, .66)
+    );
+
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+
+  box-shadow:
+    0 18px 55px rgba(0, 0, 0, .24),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 0 1px rgba(255,255,255,.015);
+
+  transition:
+    transform .24s ease,
+    border-color .24s ease,
+    box-shadow .24s ease;
+}
+
+/* brilho superior */
+
+.live-game::after {
+  content: "";
+
+  position: absolute;
+  pointer-events: none;
+
+  left: 15%;
+  right: 15%;
+  top: 0;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(167, 139, 250, .65),
+    rgba(56, 189, 248, .55),
+    transparent
+  );
+
+  opacity: .65;
+}
+
+/* linha lateral */
+
+.live-game::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+
+  width: 3px;
+
+  border-radius: 0 5px 5px 0;
+
+  background: linear-gradient(
+    180deg,
+    #8b5cf6,
+    #38bdf8,
+    rgba(56, 189, 248, .05)
+  );
+
+  box-shadow:
+    0 0 14px rgba(139, 92, 246, .45);
+}
+
+.live-game:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(139, 92, 246, .32);
+
+  box-shadow:
+    0 24px 65px rgba(0, 0, 0, .34),
+    0 0 28px rgba(139, 92, 246, .08),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* =========================================================
+   GAME HEADER
+========================================================= */
+
+.live-game-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.live-competition {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #a8a2bc;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  flex-shrink: 0;
+
+  padding: 5px 9px;
+
+  border: 1px solid rgba(34, 211, 238, .20);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(34, 211, 238, .11),
+      rgba(56, 189, 248, .06)
+    );
+
+  color: #67e8f9;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 0 16px rgba(34, 211, 238, .06),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.live-status::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  box-shadow: 0 0 8px currentColor;
+}
+
+.live-status.paused {
+  border-color: rgba(251, 191, 36, .22);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(251, 191, 36, .12),
+      rgba(245, 158, 11, .05)
+    );
+
+  color: #fbbf24;
+}
+
+/* =========================================================
+   TEAMS
+========================================================= */
+
+.live-teams {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.live-team {
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+  gap: 10px;
+}
+
+.live-team.away {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.live-team-name {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #f4f2fb;
+
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+/* =========================================================
+   CRESTS
+========================================================= */
+
+.team-crest {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 42px;
+
+  padding: 5px;
+
+  border: 1px solid rgba(167, 139, 250, .14);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.07),
+      rgba(255,255,255,.025)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 7px 18px rgba(0,0,0,.18);
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.team-crest-img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  display: block;
+
+  transition: transform .22s ease;
+}
+
+.live-game:hover .team-crest {
+  border-color: rgba(139, 92, 246, .30);
+
+  box-shadow:
+    0 0 20px rgba(139, 92, 246, .10),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.live-game:hover .team-crest-img {
+  transform: scale(1.07);
+}
+
+.team-crest-placeholder {
+  color: #8e88a6;
+  font-size: 20px;
+  opacity: .65;
+}
+
+/* =========================================================
+   SCORE
+========================================================= */
+
+.live-score {
+  min-width: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 11px;
+
+  border: 1px solid rgba(139, 92, 246, .17);
+  border-radius: 14px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(139, 92, 246, .13),
+      transparent 65%
+    ),
+    rgba(5, 7, 20, .42);
+
+  color: #ffffff;
+
+  font-size: 27px;
+  font-weight: 950;
+  line-height: 1;
+
+  letter-spacing: -.045em;
+  font-variant-numeric: tabular-nums;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 8px 20px rgba(0,0,0,.16);
+}
+
+.live-score-separator {
+  margin: 0 5px;
+
+  color: #8b83a1;
+  opacity: .65;
+
+  font-size: 20px;
+}
+
+/* =========================================================
+   MINUTE
+========================================================= */
+
+.live-minute {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  margin-top: 14px;
+
+  color: #67e8f9;
+
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .04em;
+}
+
+.live-minute::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  box-shadow: 0 0 9px currentColor;
+
+  animation: liveMinutePulse 1.5s infinite;
+}
+
+@keyframes liveMinutePulse {
+  0%,
+  100% {
+    opacity: .45;
+    transform: scale(.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+.live-minute.paused {
+  color: #fbbf24;
+}
+
+.live-minute.paused::before {
+  animation: none;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.live-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 16px;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(167, 139, 250, .10);
+
+  color: #8f89a7;
+
+  font-size: 10px;
+  font-weight: 650;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.live-empty {
+  position: relative;
+  overflow: hidden;
+
+  padding: 34px 20px;
+
+  text-align: center;
+
+  border: 1px dashed rgba(139, 92, 246, .22);
+  border-radius: 18px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(139, 92, 246, .08),
+      transparent 45%
+    ),
+    rgba(12, 10, 28, .42);
+
+  color: #aaa4bd;
+
+  font-size: 13px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.live-empty::before {
+  content: "LIVE";
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #8b5cf6;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.live-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 16px;
+
+  border: 1px solid rgba(251, 113, 133, .20);
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(251, 113, 133, .09),
+      rgba(139, 92, 246, .04)
+    );
+
+  color: #fda4af;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 10px 28px rgba(0,0,0,.14);
+}
+
+/* =========================================================
+   REFRESHING
+========================================================= */
+
+.live-refreshing {
+  opacity: .48;
+  pointer-events: none;
+
+  filter: saturate(.75);
+
+  transition:
+    opacity .2s ease,
+    filter .2s ease;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .live-section {
+    margin: 26px 0;
+  }
+
+  .live-section-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .live-title-left {
+    width: 100%;
+  }
+
+  .live-games {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .live-game {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .live-game-head {
+    margin-bottom: 17px;
+  }
+
+  .live-team-name {
+    font-size: 13px;
+  }
+
+  .team-crest {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    border-radius: 11px;
+  }
+
+  .live-score {
+    min-width: 64px;
+    font-size: 23px;
+  }
+
+  .live-score-separator {
+    font-size: 18px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+.live-game {
+  padding: 14px;
+  border-radius: 16px;
+}
+
+.live-teams {
+  gap: 8px;
+}
+
+.live-team {
+  gap: 7px;
+}
+
+.live-team-name {
+  font-size: 12px;
+}
+
+.team-crest {
+  width: 34px;
+  height: 34px;
+  flex-basis: 34px;
+  border-radius: 9px;
+  padding: 4px;
+}
+
+.live-score {
+  min-width: 57px;
+  padding: 7px 6px;
+  font-size: 21px;
+  border-radius: 11px;
+}
+
+.live-score-separator {
+  margin: 0 3px;
+  font-size: 16px;
+}
+
+.live-status {
+  padding: 4px 7px;
+  font-size: 8px;
+}
+
+.live-competition {
+  font-size: 9px;
+}
+}
+
+/* =========================================================
+  REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+.live-dot,
+.live-minute::before {
+  animation: none;
+}
+
+.live-game,
+.team-crest,
+.team-crest-img,
+.live-refreshing {
+  transition: none;
+}
+}
+
+.live-events {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .live-event {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.04);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .live-event.goal {
+    background: rgba(46,204,113,.10);
+    border-left: 3px solid #2ecc71;
+  }
+
+  .live-event-icon {
+    flex: 0 0 auto;
+    font-size: 16px;
+  }
+
+  .live-event-minute {
+    min-width: 42px;
+    font-weight: 800;
+    opacity: .85;
+  }
+
+  .live-event-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .live-event-scorer {
+    font-weight: 800;
+  }
+
+  .live-event-assist {
+    margin-top: 2px;
+    font-size: 11px;
+    opacity: .65;
+  }
+
+  .live-event-type {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: .65;
+    margin-left: 4px;
+  }
+
+  .live-event-score {
+    flex: 0 0 auto;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .live-no-events {
+    padding: 5px 0;
+    font-size: 12px;
+    opacity: .5;
+  }
+
+  .live-event-new {
+    animation: liveGoalFlash .9s ease;
+  }
+
+  .live-game.live-goal-update {
+    animation: liveCardGoalFlash 1s ease;
+  }
+
+  @keyframes liveGoalFlash {
+
+    0% {
+      transform: scale(1.02);
+      background: rgba(46,204,113,.25);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+
+  }
+
+  @keyframes liveCardGoalFlash {
+
+    0% {
+      box-shadow: 0 0 0 3px rgba(46,204,113,.45);
+    }
+
+    100% {
+      box-shadow: none;
+    }
+
+  }
+
+  .live-event-side {
+    font-size: 10px;
+    opacity: .55;
+    white-space: nowrap;
+  }
+
+  /* ============================================================
+   LIVE SCORE — JIZONN / TWITCH DARK THEME
+   Colocar NO FINAL do live-score.css atual
+   ============================================================ */
+
+
+/* ============================================================
+   SECTION / HEADER
+   ============================================================ */
+
+.live-section {
+  position: relative;
+  margin: 34px 0;
+}
+
+.live-section-title {
+  margin-bottom: 18px;
+}
+
+.live-title-left h2 {
+  color: #f4f4f5;
+
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.live-updated {
+  color: #858591;
+  opacity: 1;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   LIVE BADGE
+   ============================================================ */
+
+.live-badge {
+  padding: 5px 10px;
+
+  border:
+    1px solid
+    rgba(145, 71, 255, .25);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(145, 71, 255, .10);
+
+  color:
+    #ff7c7c;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .08em;
+
+  box-shadow:
+    none;
+}
+
+
+/* ============================================================
+   LIVE DOT
+   ============================================================ */
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  flex-basis: 6px;
+
+  background:
+    #9147ff;
+
+  box-shadow:
+    0 0 0 0
+    rgba(145, 71, 255, .35);
+
+  animation:
+    livePulseTwitch 1.8s infinite;
+}
+
+@keyframes livePulseTwitch {
+
+  0% {
+    transform:
+      scale(1);
+
+    box-shadow:
+      0 0 0 0
+      rgba(145, 71, 255, .35);
+  }
+
+  70% {
+    transform:
+      scale(1.05);
+
+    box-shadow:
+      0 0 0 6px
+      rgba(145, 71, 255, 0);
+  }
+
+  100% {
+    transform:
+      scale(1);
+
+    box-shadow:
+      0 0 0 0
+      rgba(145, 71, 255, 0);
+  }
+}
+
+
+/* ============================================================
+   GAME GRID
+   ============================================================ */
+
+.live-games {
+  gap: 14px;
+}
+
+
+/* ============================================================
+   GAME CARD
+   ============================================================ */
+
+.live-game {
+  position: relative;
+  overflow: hidden;
+
+  padding: 18px;
+
+  border:
+    1px solid
+    #29292f;
+
+  border-radius:
+    10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #18181d 0%,
+      #151519 100%
+    );
+
+  -webkit-backdrop-filter:
+    none;
+
+  backdrop-filter:
+    none;
+
+  box-shadow:
+    none;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+}
+
+
+/* ============================================================
+   REMOVE OLD TOP GLOW
+   ============================================================ */
+
+.live-game::after {
+  display: none;
+}
+
+
+/* ============================================================
+   LEFT PURPLE ACCENT
+   ============================================================ */
+
+.live-game::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+
+  width: 2px;
+
+  border-radius:
+    0 3px 3px 0;
+
+  background:
+    #ff0000;
+
+  box-shadow:
+    none;
+}
+
+
+/* ============================================================
+   CARD HOVER
+   ============================================================ */
+
+.live-game:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    #3b3b43;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1b1b20,
+      #17171c
+    );
+
+  box-shadow:
+    none;
+}
+
+
+/* ============================================================
+   GAME HEADER
+   ============================================================ */
+
+.live-game-head {
+  margin-bottom:
+    18px;
+}
+
+.live-competition {
+  color:
+    #8f8f9b;
+
+  font-size:
+    10px;
+
+  font-weight:
+    750;
+
+  letter-spacing:
+    .06em;
+}
+
+
+/* ============================================================
+   LIVE STATUS
+   ============================================================ */
+
+.live-status {
+  padding:
+    4px 8px;
+
+  border:
+    1px solid
+    rgba(145, 71, 255, .22);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(145, 71, 255, .08);
+
+  color:
+    #f80000;
+
+  font-size:
+    9px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    .06em;
+
+  box-shadow:
+    none;
+}
+
+.live-status::before {
+  width:
+    5px;
+
+  height:
+    5px;
+
+  background:
+    currentColor;
+
+  box-shadow:
+    none;
+}
+
+
+/* ============================================================
+   PAUSED STATUS
+   ============================================================ */
+
+.live-status.paused {
+  border-color:
+    rgba(245, 166, 35, .22);
+
+  background:
+    rgba(245, 166, 35, .08);
+
+  color:
+    #f5a623;
+}
+
+
+/* ============================================================
+   TEAMS
+   ============================================================ */
+
+.live-teams {
+  gap:
+    14px;
+}
+
+.live-team {
+  gap:
+    10px;
+}
+
+.live-team-name {
+  color:
+    #eeeeF1;
+
+  font-size:
+    14px;
+
+  font-weight:
+    750;
+}
+
+
+/* ============================================================
+   TEAM CRESTS
+   ============================================================ */
+
+.team-crest {
+  width:
+    42px;
+
+  height:
+    42px;
+
+  flex-basis:
+    42px;
+
+  padding:
+    5px;
+
+  border:
+    1px solid
+    #303037;
+
+  border-radius:
+    8px;
+
+  background:
+    #1b1b20;
+
+  box-shadow:
+    none;
+
+  transition:
+    border-color .18s ease,
+    background .18s ease;
+}
+
+.team-crest-img {
+  transition:
+    transform .18s ease;
+}
+
+.live-game:hover .team-crest {
+  border-color:
+    #42424a;
+
+  background:
+    #202026;
+
+  box-shadow:
+    none;
+}
+
+.live-game:hover .team-crest-img {
+  transform:
+    scale(1.04);
+}
+
+.team-crest-placeholder {
+  color:
+    #777783;
+
+  opacity:
+    1;
+}
+
+
+/* ============================================================
+   SCORE
+   ============================================================ */
+
+.live-score {
+  min-width:
+    76px;
+
+  padding:
+    9px 11px;
+
+  border:
+    1px solid
+    #303037;
+
+  border-radius:
+    8px;
+
+  background:
+    #101014;
+
+  color:
+    #ffffff;
+
+  font-size:
+    27px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -.035em;
+
+  box-shadow:
+    none;
+}
+
+.live-score-separator {
+  margin:
+    0 5px;
+
+  color:
+    #686873;
+
+  opacity:
+    1;
+
+  font-size:
+    20px;
+}
+
+
+/* ============================================================
+   LIVE MINUTE
+   ============================================================ */
+
+.live-minute {
+  margin-top:
+    14px;
+
+  color:
+    #a970ff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .03em;
+}
+
+.live-minute::before {
+  width:
+    5px;
+
+  height:
+    5px;
+
+  background:
+    currentColor;
+
+  box-shadow:
+    none;
+
+  animation:
+    liveMinutePulseTwitch
+    1.6s infinite;
+}
+
+@keyframes liveMinutePulseTwitch {
+
+  0%,
+  100% {
+    opacity:
+      .45;
+
+    transform:
+      scale(.9);
+  }
+
+  50% {
+    opacity:
+      1;
+
+    transform:
+      scale(1.05);
+  }
+}
+
+.live-minute.paused {
+  color:
+    #f5a623;
+}
+
+.live-minute.paused::before {
+  animation:
+    none;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.live-footer {
+  margin-top:
+    16px;
+
+  padding-top:
+    12px;
+
+  border-top:
+    1px solid
+    #27272d;
+
+  color:
+    #777783;
+
+  font-size:
+    10px;
+
+  font-weight:
+    600;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.live-empty {
+  padding:
+    34px 20px;
+
+  border:
+    1px dashed
+    #34343b;
+
+  border-radius:
+    9px;
+
+  background:
+    #151519;
+
+  color:
+    #8f8f9b;
+
+  font-size:
+    13px;
+
+  box-shadow:
+    none;
+}
+
+.live-empty::before {
+  margin-bottom:
+    8px;
+
+  color:
+    #9147ff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    .12em;
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.live-error {
+  padding:
+    14px 16px;
+
+  border:
+    1px solid
+    rgba(235, 91, 103, .22);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(235, 91, 103, .07);
+
+  color:
+    #eb7a84;
+
+  font-size:
+    13px;
+
+  font-weight:
+    650;
+
+  box-shadow:
+    none;
+}
+
+
+/* ============================================================
+   REFRESHING
+   ============================================================ */
+
+.live-refreshing {
+  opacity:
+    .45;
+
+  pointer-events:
+    none;
+
+  filter:
+    none;
+
+  transition:
+    opacity .18s ease;
+}
+
+
+/* ============================================================
+   EVENTS CONTAINER
+   ============================================================ */
+
+.live-events {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    6px;
+
+  margin-top:
+    13px;
+
+  padding-top:
+    11px;
+
+  border-top:
+    1px solid
+    #27272d;
+}
+
+
+/* ============================================================
+   EVENT
+   ============================================================ */
+
+.live-event {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    #29292f;
+
+  border-radius:
+    7px;
+
+  background:
+    #18181d;
+
+  color:
+    #cfcfd5;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.3;
+}
+
+
+/* ============================================================
+   GOAL EVENT
+   ============================================================ */
+
+.live-event.goal {
+  border:
+    1px solid
+    rgba(0, 201, 107, .18);
+
+  border-left:
+    2px solid
+    #00c96b;
+
+  background:
+    rgba(0, 201, 107, .055);
+}
+
+
+/* ============================================================
+   EVENT ICON
+   ============================================================ */
+
+.live-event-icon {
+  flex:
+    0 0 auto;
+
+  font-size:
+    15px;
+}
+
+
+/* ============================================================
+   EVENT MINUTE
+   ============================================================ */
+
+.live-event-minute {
+  min-width:
+    40px;
+
+  color:
+    #a970ff;
+
+  font-weight:
+    800;
+
+  opacity:
+    1;
+}
+
+
+/* goal minute */
+
+.live-event.goal
+.live-event-minute {
+  color:
+    #36dc8b;
+}
+
+
+/* ============================================================
+   EVENT TEXT
+   ============================================================ */
+
+.live-event-text {
+  flex:
+    1;
+
+  min-width:
+    0;
+
+  color:
+    #bdbdc6;
+}
+
+.live-event-scorer {
+  color:
+    #f0f0f2;
+
+  font-weight:
+    800;
+}
+
+.live-event-assist {
+  margin-top:
+    2px;
+
+  color:
+    #777783;
+
+  font-size:
+    11px;
+
+  opacity:
+    1;
+}
+
+.live-event-type {
+  margin-left:
+    4px;
+
+  color:
+    #777783;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  opacity:
+    1;
+}
+
+
+/* ============================================================
+   EVENT SCORE
+   ============================================================ */
+
+.live-event-score {
+  flex:
+    0 0 auto;
+
+  color:
+    #f4f4f5;
+
+  font-weight:
+    900;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ============================================================
+   EVENT SIDE
+   ============================================================ */
+
+.live-event-side {
+  color:
+    #777783;
+
+  font-size:
+    10px;
+
+  opacity:
+    1;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ============================================================
+   NO EVENTS
+   ============================================================ */
+
+.live-no-events {
+  padding:
+    5px 0;
+
+  color:
+    #70707c;
+
+  font-size:
+    12px;
+
+  opacity:
+    1;
+}
+
+
+/* ============================================================
+   NEW GOAL ANIMATION
+   ============================================================ */
+
+.live-event-new {
+  animation:
+    liveGoalFlashTwitch
+    .75s ease;
+}
+
+.live-game.live-goal-update {
+  animation:
+    liveCardGoalFlashTwitch
+    .85s ease;
+}
+
+@keyframes liveGoalFlashTwitch {
+
+  0% {
+    background:
+      rgba(0, 201, 107, .18);
+
+    border-color:
+      rgba(0, 201, 107, .45);
+  }
+
+  100% {
+    background:
+      rgba(0, 201, 107, .055);
+
+    border-color:
+      rgba(0, 201, 107, .18);
+  }
+}
+
+@keyframes liveCardGoalFlashTwitch {
+
+  0% {
+    border-color:
+      rgba(0, 201, 107, .65);
+
+    box-shadow:
+      0 0 0 2px
+      rgba(0, 201, 107, .14);
+  }
+
+  100% {
+    border-color:
+      #29292f;
+
+    box-shadow:
+      none;
+  }
+}
+
+
+/* ============================================================
+   OPTIONAL — GOAL EMPHASIS
+   ============================================================ */
+
+.live-event.goal
+.live-event-scorer {
+  color:
+    #e8fff3;
+}
+
+.live-event.goal
+.live-event-score {
+  color:
+    #36dc8b;
+}
+
+
+/* ============================================================
+   MOBILE — 700PX
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .live-section {
+    margin:
+      26px 0;
+  }
+
+  .live-games {
+    gap:
+      12px;
+  }
+
+  .live-game {
+    padding:
+      16px;
+
+    border-radius:
+      9px;
+  }
+
+  .live-game-head {
+    margin-bottom:
+      17px;
+  }
+
+  .live-team-name {
+    font-size:
+      13px;
+  }
+
+  .team-crest {
+    width:
+      38px;
+
+    height:
+      38px;
+
+    flex-basis:
+      38px;
+
+    border-radius:
+      7px;
+  }
+
+  .live-score {
+    min-width:
+      64px;
+
+    font-size:
+      23px;
+  }
+
+  .live-score-separator {
+    font-size:
+      18px;
+  }
+}
+
+
+/* ============================================================
+   SMALL MOBILE — 420PX
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+  .live-game {
+    padding:
+      14px;
+
+    border-radius:
+      8px;
+  }
+
+  .live-game::before {
+    top:
+      14px;
+
+    bottom:
+      14px;
+  }
+
+  .live-teams {
+    gap:
+      8px;
+  }
+
+  .live-team {
+    gap:
+      7px;
+  }
+
+  .live-team-name {
+    font-size:
+      12px;
+  }
+
+  .team-crest {
+    width:
+      34px;
+
+    height:
+      34px;
+
+    flex-basis:
+      34px;
+
+    border-radius:
+      7px;
+
+    padding:
+      4px;
+  }
+
+  .live-score {
+    min-width:
+      57px;
+
+    padding:
+      7px 6px;
+
+    font-size:
+      21px;
+
+    border-radius:
+      7px;
+  }
+
+  .live-score-separator {
+    margin:
+      0 3px;
+
+    font-size:
+      16px;
+  }
+
+  .live-status {
+    padding:
+      4px 7px;
+
+    font-size:
+      8px;
+  }
+
+  .live-competition {
+    font-size:
+      9px;
+  }
+
+  .live-event {
+    padding:
+      7px 8px;
+
+    gap:
+      6px;
+
+    font-size:
+      11px;
+  }
+
+  .live-event-minute {
+    min-width:
+      34px;
+
+    font-size:
+      10px;
+  }
+
+  .live-event-icon {
+    font-size:
+      14px;
+  }
+
+  .live-event-side {
+    font-size:
+      9px;
+  }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .live-dot,
+  .live-minute::before,
+  .live-event-new,
+  .live-game.live-goal-update {
+    animation:
+      none !important;
+  }
+
+  .live-game,
+  .team-crest,
+  .team-crest-img,
+  .live-refreshing {
+    transition:
+      none !important;
+  }
+}

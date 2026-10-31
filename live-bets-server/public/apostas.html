@@ -1,0 +1,8710 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Apostas</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/apostas.css">
+  <link rel="stylesheet" href="css/notification.css">
+  <link rel="stylesheet" href="css/pagination.css">
+</head>
+
+<body>
+
+<script src="js/mouthBets.cjs"></script>
+
+<main class="container bets-page">
+
+  <header>
+
+    <div class="brand">
+
+      <a href="http://localhost:3000/index.html" class="aHref">
+        <div class="logo">
+          ⚽
+        </div>
+      </a>
+
+      <div class="brand-content">
+
+        <div class="page-title-row">
+
+          <h1>
+            Minhas Apostas
+          </h1>
+
+          <div
+            id="streakBadge"
+            class="streak-badge"
+            style="display:none;"
+          >
+
+            <span
+              id="streakBadgeIcon"
+              class="streak-badge-icon"
+            >
+              ×
+            </span>
+
+            <strong id="streakBadgeNumber">
+              2
+            </strong>
+
+            <span id="streakBadgeText">
+              Loss Streak
+            </span>
+
+            <span id="streakBadgeLabel">
+              Reds seguidos
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="subtitle">
+          Histórico, resultados e estatísticas
+        </div>
+
+      </div>
+
+    </div>
+
+    <a
+      href="index.html"
+      class="bets-button"
+    >
+      ← Analisador
+    </a>
+
+  </header>
+
+
+  <!-- ======================================================
+       AÇÕES
+  ======================================================= -->
+
+  <div class="dashboard-actions">
+
+    <a
+      href="nova-aposta.html"
+      class="primary-button dashboard-new-bet"
+    >
+      + Nova aposta
+    </a>
+
+  </div>
+
+
+  <!-- ======================================================
+       ESTATÍSTICAS
+  ======================================================= -->
+
+  <section>
+
+    <div class="section-title">
+
+      <div>
+        <h2>Resumo financeiro</h2>
+      </div>
+
+      <select
+        id="summaryMonthFilter"
+        class="summary-month-filter"
+      >
+        <option value="all">
+          Todos os meses
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="dashboard-stats">
+
+      <div class="dashboard-stat">
+
+        <span>
+          Total apostado
+        </span>
+
+        <strong id="totalInvested">
+          0,00 €
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <span>
+          Dinheiro ganho
+        </span>
+
+        <strong
+          id="totalWon"
+          class="profit-positive"
+        >
+          0,00 €
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <span>
+          Lucro / Prejuízo
+        </span>
+
+        <strong id="netProfit">
+          0,00 €
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <span>
+          Dinheiro em jogo
+        </span>
+
+        <strong id="moneyPending">
+          0,00 €
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="dashboard-secondary">
+
+      <div class="secondary-stat">
+        <strong id="totalBets">0</strong>
+        <span>Total</span>
+      </div>
+
+      <div class="secondary-stat">
+        <strong id="pendingBets">0</strong>
+        <span>Pendentes</span>
+      </div>
+
+      <div class="secondary-stat">
+        <strong id="liveBets">0</strong>
+        <span>Em curso</span>
+      </div>
+
+      <div class="secondary-stat">
+        <strong id="wonBets">0</strong>
+        <span>Ganhas</span>
+      </div>
+
+      <div class="secondary-stat">
+        <strong id="lostBets">0</strong>
+        <span>Perdidas</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       HISTÓRICO
+  ======================================================= -->
+
+  <section>
+
+    <div class="section-title">
+      <h2>Todas as apostas</h2>
+    </div>
+
+
+    <div class="filters">
+
+      <button
+        type="button"
+        class="filter-button active"
+        data-filter="all"
+      >
+        Todas
+      </button>
+
+      <button
+        type="button"
+        class="filter-button"
+        data-filter="pending"
+      >
+        Pendentes
+      </button>
+
+      <button
+        type="button"
+        class="filter-button"
+        data-filter="live"
+      >
+        Em curso
+      </button>
+
+      <button
+        type="button"
+        class="filter-button"
+        data-filter="won"
+      >
+        Ganhas
+      </button>
+
+      <button
+        type="button"
+        class="filter-button"
+        data-filter="lost"
+      >
+        Perdidas
+      </button>
+
+    </div>
+
+
+    <div id="betsHistory"></div>
+
+
+    <!-- ====================================================
+         PAGINAÇÃO
+    ===================================================== -->
+
+    <div
+      id="betsPagination"
+      class="bets-pagination"
+      aria-label="Paginação das apostas"
+    ></div>
+
+  </section>
+
+
+  <footer>
+    Minhas Apostas
+  </footer>
+
+</main>
+
+
+<!-- ======================================================
+     MODAL DE CONFIRMAÇÃO DE ELIMINAÇÃO
+======================================================= -->
+
+<div
+  id="deleteBetModal"
+  class="delete-modal"
+  aria-hidden="true"
+>
+
+  <div class="delete-modal-overlay"></div>
+
+
+  <div
+    class="delete-modal-content"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="deleteModalTitle"
+  >
+
+    <div class="delete-modal-icon">
+      🗑️
+    </div>
+
+
+    <h3 id="deleteModalTitle">
+      Eliminar aposta?
+    </h3>
+
+
+    <p>
+      Tens a certeza que queres eliminar esta aposta do histórico?
+    </p>
+
+
+    <small>
+      Esta ação não pode ser anulada.
+    </small>
+
+
+    <div class="delete-modal-actions">
+
+      <button
+        type="button"
+        id="cancelDeleteBet"
+        class="delete-modal-cancel"
+      >
+        Cancelar
+      </button>
+
+
+      <button
+        type="button"
+        id="confirmDeleteBet"
+        class="delete-modal-confirm"
+      >
+        Eliminar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     MODAL DE RESULTADO MANUAL
+======================================================= -->
+
+<div
+  id="manualBetModal"
+  class="delete-modal"
+  aria-hidden="true"
+>
+
+  <div class="delete-modal-overlay"></div>
+
+
+  <div
+    class="delete-modal-content"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="manualBetModalTitle"
+  >
+
+    <div
+      id="manualBetModalIcon"
+      class="delete-modal-icon"
+    >
+      🎟️
+    </div>
+
+
+    <h3 id="manualBetModalTitle">
+      Alterar resultado
+    </h3>
+
+
+    <p id="manualBetModalText">
+      Escolhe o estado final desta aposta.
+    </p>
+
+
+    <small id="manualBetCurrentState">
+      Estado atual: Pendente
+    </small>
+
+
+    <div class="delete-modal-actions">
+
+      <button
+        type="button"
+        id="manualBetWon"
+        class="delete-modal-cancel"
+      >
+        ✓ Ganha
+      </button>
+
+
+      <button
+        type="button"
+        id="manualBetLost"
+        class="delete-modal-confirm"
+      >
+        ✕ Perdida
+      </button>
+
+    </div>
+
+
+    <div class="delete-modal-actions">
+
+      <button
+        type="button"
+        id="manualBetVoid"
+        class="delete-modal-cancel"
+      >
+        Anulada
+      </button>
+
+
+      <button
+        type="button"
+        id="manualBetPending"
+        class="delete-modal-cancel"
+      >
+        ⏳ Pendente
+      </button>
+
+    </div>
+
+
+    <div class="delete-modal-actions">
+
+      <button
+        type="button"
+        id="cancelManualBet"
+        class="delete-modal-cancel"
+      >
+        Cancelar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   CONFIGURAÇÃO
+========================================================== */
+
+const STORAGE_KEY =
+  "footballMultiples";
+
+const REFRESH_INTERVAL =
+  60 * 1000;
+
+const LIVE_SERVER_URL =
+  "http://localhost:3001";
+
+const LIVE_REFRESH_INTERVAL =
+  5 * 1000;
+
+
+/* ==========================================================
+   PAGINAÇÃO
+========================================================== */
+
+const BETS_PER_PAGE =
+  10;
+
+let currentPage =
+  1;
+
+
+/* ==========================================================
+   EARLY PAY
+========================================================== */
+
+const EARLY_PAY_MARKETS =
+  new Set([
+    "HOME",
+    "AWAY"
+  ]);
+
+const EARLY_PAY_GOAL_ADVANTAGE =
+  2;
+
+const FINAL_RESULT_RETRY_DELAYS = [
+  1000,
+  5000,
+  15000
+];
+
+
+let savedBets =
+  loadSavedBets();
+
+let currentFilter =
+  "all";
+
+let isUpdating =
+  false;
+
+
+/* ==========================================================
+   ESTADO SPORTScore LIVE
+========================================================== */
+
+const liveMatches =
+  new Map();
+
+const finishedLiveMatches =
+  new Map();
+
+let liveEventSource =
+  null;
+
+let liveRefreshInFlight =
+  false;
+
+let liveReconnectTimer =
+  null;
+
+
+/* ==========================================================
+   MODAL DE ELIMINAÇÃO
+========================================================== */
+
+const deleteBetModal =
+  document.getElementById(
+    "deleteBetModal"
+  );
+
+const cancelDeleteBet =
+  document.getElementById(
+    "cancelDeleteBet"
+  );
+
+const confirmDeleteBet =
+  document.getElementById(
+    "confirmDeleteBet"
+  );
+
+let betToDelete =
+  null;
+
+
+function deleteBet(id) {
+
+  betToDelete =
+    id;
+
+  deleteBetModal.classList.add(
+    "show"
+  );
+
+  deleteBetModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  cancelDeleteBet.focus();
+
+}
+
+
+function closeDeleteBetModal() {
+
+  deleteBetModal.classList.remove(
+    "show"
+  );
+
+  deleteBetModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  betToDelete =
+    null;
+
+}
+
+
+if (cancelDeleteBet) {
+
+  cancelDeleteBet.addEventListener(
+    "click",
+    closeDeleteBetModal
+  );
+
+}
+
+
+if (confirmDeleteBet) {
+
+  confirmDeleteBet.addEventListener(
+    "click",
+    () => {
+
+      if (
+        betToDelete === null
+      ) {
+        return;
+      }
+
+      savedBets =
+        savedBets.filter(
+          bet =>
+            String(bet.id) !==
+            String(betToDelete)
+        );
+
+      saveSavedBets();
+
+      closeDeleteBetModal();
+
+      updateSummaryMonthFilter();
+
+      renderEverything();
+
+    }
+  );
+
+}
+
+
+if (deleteBetModal) {
+
+  const overlay =
+    deleteBetModal.querySelector(
+      ".delete-modal-overlay"
+    );
+
+  if (overlay) {
+
+    overlay.addEventListener(
+      "click",
+      closeDeleteBetModal
+    );
+
+  }
+
+}
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape" &&
+      deleteBetModal &&
+      deleteBetModal.classList.contains(
+        "show"
+      )
+    ) {
+
+      closeDeleteBetModal();
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   DESPORTOS
+========================================================== */
+
+function normalizeSportName(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+
+  if (
+    typeof value === "object"
+  ) {
+
+    value =
+      value.name ??
+      value.slug ??
+      value.code ??
+      "";
+
+  }
+
+
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    );
+
+}
+
+
+function getSelectionSport(
+  selection
+) {
+
+  if (!selection) {
+    return "football";
+  }
+
+
+  const candidates = [
+
+    selection.sport,
+    selection.sportName,
+    selection.sport_name,
+
+    selection.category?.sport,
+    selection.category?.sport?.name,
+
+    selection.competition?.sport,
+    selection.competition?.sport?.name,
+
+    selection.event?.sport,
+    selection.event?.sport?.name,
+
+    selection.fixture?.sport,
+    selection.fixture?.sport?.name,
+
+    selection.match?.sport,
+    selection.match?.sport?.name
+
+  ];
+
+
+  for (
+    const candidate of
+    candidates
+  ) {
+
+    const sport =
+      normalizeSportName(
+        candidate
+      );
+
+    if (sport) {
+      return sport;
+    }
+
+  }
+
+
+  return "football";
+
+}
+
+
+function isFootballSport(
+  sport
+) {
+
+  const normalized =
+    normalizeSportName(
+      sport
+    );
+
+
+  return [
+    "football",
+    "soccer",
+    "futebol",
+    "association football",
+    "associationfootball"
+  ].includes(
+    normalized
+  );
+
+}
+
+
+function isFootballSelection(
+  selection
+) {
+
+  return isFootballSport(
+    getSelectionSport(
+      selection
+    )
+  );
+
+}
+
+
+/* ==========================================================
+   TÉNIS
+========================================================== */
+
+function isTennisSport(
+  sport
+) {
+
+  const normalized =
+    normalizeSportName(
+      sport
+    );
+
+
+  return [
+    "tennis",
+    "tenis"
+  ].includes(
+    normalized
+  );
+
+}
+
+
+function isTennisSelection(
+  selection
+) {
+
+  return isTennisSport(
+    getSelectionSport(
+      selection
+    )
+  );
+
+}
+
+
+function isFootballOnlyBet(
+  bet
+) {
+
+  const selections =
+    bet?.selections ||
+    [];
+
+
+  if (
+    selections.length === 0
+  ) {
+    return true;
+  }
+
+
+  return selections.every(
+    selection =>
+      isFootballSelection(
+        selection
+      )
+  );
+
+}
+
+
+function requiresManualSettlement(bet) {
+
+  const selections =
+    bet?.selections || [];
+
+  if (
+    selections.some(
+      selection =>
+        (selection.manualBet === true || selection.manual === true)
+    )
+  ) {
+    return true;
+  }
+
+  return !isFootballOnlyBet(bet);
+
+}
+
+
+/* ==========================================================
+   VERIFICAR SE TODOS OS JOGOS ESTÃO RESOLVIDOS
+========================================================== */
+
+function allBetSelectionsSettled(
+  bet
+) {
+
+  const selections =
+    bet?.selections ||
+    [];
+
+
+  if (
+    selections.length === 0
+  ) {
+    return false;
+  }
+
+
+  return selections.every(
+    selection =>
+      [
+        "won",
+        "lost",
+        "void"
+      ].includes(
+        selection.outcome
+      )
+  );
+
+}
+
+
+/* ==========================================================
+   CARREGAR / NORMALIZAR
+========================================================== */
+
+function loadSavedBets() {
+
+  try {
+
+    const stored =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+
+    if (!stored) {
+      return [];
+    }
+
+
+    const parsed =
+      JSON.parse(
+        stored
+      );
+
+
+    if (
+      !Array.isArray(parsed)
+    ) {
+      return [];
+    }
+
+
+    return parsed.map(
+      normalizeBet
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao carregar apostas:",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+function normalizeBet(
+  bet
+) {
+
+  const selections =
+    Array.isArray(
+      bet.selections
+    )
+      ? bet.selections
+      : [];
+
+
+  const odd =
+    Number(
+      bet.odd ??
+      bet.totalOdd ??
+      0
+    );
+
+
+  const stake =
+    Number(
+      bet.stake || 0
+    );
+
+
+  return {
+
+    ...bet,
+
+    id:
+      bet.id ||
+      createId(),
+
+    type:
+      bet.type ||
+      (
+        selections.length === 1
+          ? "simples"
+          : "multipla"
+      ),
+
+    selections:
+      selections.map(
+        normalizeSelection
+      ),
+
+    odd,
+
+    totalOdd:
+      odd,
+
+    stake,
+
+    potentialReturn:
+      Number(
+        bet.potentialReturn ??
+        stake * odd
+      ),
+
+    status:
+      bet.status ||
+      "pending",
+
+    outcome:
+      bet.outcome ??
+      null,
+
+    createdAt:
+      bet.createdAt ||
+      new Date().toISOString()
+
+  };
+
+}
+
+
+function isManualFootballSelection(selection) {
+  return isFootballSelection(selection) && (
+    selection?.manualBet === true ||
+    selection?.manual === true
+  );
+}
+
+
+function normalizeSelection(
+  selection
+) {
+
+  let homeTeam =
+    selection.homeTeam ??
+    selection.home ??
+    selection.teams?.home;
+
+  let awayTeam =
+    selection.awayTeam ??
+    selection.away ??
+    selection.teams?.away;
+
+
+  if (
+    typeof homeTeam ===
+    "string"
+  ) {
+
+    homeTeam = {
+      name:
+        homeTeam,
+      crest:
+        ""
+    };
+
+  }
+
+
+  if (
+    typeof awayTeam ===
+    "string"
+  ) {
+
+    awayTeam = {
+      name:
+        awayTeam,
+      crest:
+        ""
+    };
+
+  }
+
+
+  /*
+   * ========================================================
+   * EARLY PAY
+   *
+   * IMPORTANTE:
+   * Early Pay só é permitido quando a seleção
+   * tem explicitamente earlyPay === true.
+   *
+   * Isto impede que HOME/AWAY normais recebam
+   * Early Pay automaticamente.
+   * ========================================================
+   */
+
+  const hasEarlyPay =
+    selection.earlyPay === true;
+
+
+  /*
+   * Se não tiver Early Pay, qualquer estado antigo
+   * de earlyPayTriggered é eliminado.
+   *
+   * Isto também corrige apostas antigas guardadas
+   * no localStorage antes desta correção.
+   */
+
+  const earlyPayTriggered =
+    hasEarlyPay &&
+    (
+      selection.earlyPayTriggered === true ||
+      Boolean(
+        selection.earlyPayAt
+      )
+    );
+
+
+  return {
+
+    ...selection,
+
+    sport:
+      getSelectionSport(
+        selection
+      ),
+
+    fixtureId:
+      selection.fixtureId ??
+      selection.matchId ??
+      selection.fixture_id ??
+      selection.id,
+
+    liveMatchId:
+      selection.liveMatchId ??
+      selection.live_match_id ??
+      null,
+
+    date:
+      selection.date ||
+      "",
+
+    utcDate:
+      selection.utcDate ||
+      "",
+
+    time:
+      selection.time ||
+      "",
+
+    homeTeam:
+      homeTeam || {
+        name:
+          "Casa",
+        crest:
+          ""
+      },
+
+    awayTeam:
+      awayTeam || {
+        name:
+          "Fora",
+        crest:
+          ""
+      },
+
+    marketCode:
+      String(
+        selection.marketCode ||
+        ""
+      ).toUpperCase(),
+
+    market:
+      selection.market ||
+      "Mercado",
+
+    manualBet:
+      (
+        selection.manualBet === true ||
+        selection.manual === true
+      ),
+
+    combo:
+      selection.combo === true ||
+      String(
+        selection.marketCode || ""
+      ).toUpperCase() === "COMBO",
+
+    comboMarkets:
+      Array.isArray(
+        selection.comboMarkets
+      )
+        ? selection.comboMarkets.map(
+            market => ({
+              code:
+                String(
+                  market?.code || ""
+                ).toUpperCase(),
+
+              label:
+                market?.label ||
+                "Mercado"
+            })
+          )
+        : [],
+
+    matchStatus:
+      selection.matchStatus ||
+      "pending",
+
+    outcome:
+      selection.outcome ??
+      null,
+
+    score:
+      selection.score ??
+      selection.result ??
+      null,
+
+    liveMinute:
+      selection.liveMinute ??
+      null,
+
+    liveMinuteLabel:
+      selection.liveMinuteLabel ||
+      "",
+
+    liveLabel:
+      selection.liveLabel ||
+      "",
+
+
+    /*
+     * ======================================================
+     * EARLY PAY
+     * ======================================================
+     */
+
+    earlyPay:
+      hasEarlyPay,
+
+    earlyPayTriggered:
+      earlyPayTriggered,
+
+    earlyPayAt:
+      earlyPayTriggered
+        ? (
+            selection.earlyPayAt ||
+            null
+          )
+        : null,
+
+    earlyPaySource:
+      earlyPayTriggered
+        ? (
+            selection.earlyPaySource ||
+            null
+          )
+        : null,
+
+
+    manualSettlement:
+      selection.manualSettlement === true
+
+  };
+
+}
+
+
+/* ==========================================================
+   ODDS EFETIVAS
+========================================================== */
+
+function getEffectiveBetOdd(
+  bet
+) {
+
+  const selections =
+    (bet?.selections || [])
+      .filter(
+        selection =>
+          selection.outcome !== "void"
+      );
+
+
+  if (
+    selections.length === 0
+  ) {
+    return 1;
+  }
+
+
+  return selections.reduce(
+    (total, selection) => {
+
+      const odd =
+        Number(
+          selection.odd ??
+          selection.odds ??
+          1
+        );
+
+
+      return total *
+        (
+          Number.isFinite(odd)
+            ? odd
+            : 1
+        );
+
+    },
+    1
+  );
+
+}
+
+
+function getEffectivePotentialReturn(
+  bet
+) {
+
+  const stake =
+    Number(
+      bet?.stake || 0
+    );
+
+
+  return (
+    stake *
+    getEffectiveBetOdd(
+      bet
+    )
+  );
+
+}
+
+
+/* ==========================================================
+   SPORTScore
+========================================================== */
+
+function normalizeLiveMatch(
+  match
+) {
+
+  if (!match) {
+    return null;
+  }
+
+
+  /*
+   * Alguns servidores usam:
+   * id
+   * fixtureId
+   * fixture_id
+   * matchId
+   */
+  const rawId =
+    match.id ??
+    match.fixtureId ??
+    match.fixture_id ??
+    match.matchId ??
+    match.match_id;
+
+
+  if (
+    rawId == null
+  ) {
+    return null;
+  }
+
+
+  const homeTeam =
+    normalizeLiveTeam(
+      match.homeTeam ??
+      match.home ??
+      match.teams?.home ??
+      match.home_team
+    );
+
+
+  const awayTeam =
+    normalizeLiveTeam(
+      match.awayTeam ??
+      match.away ??
+      match.teams?.away ??
+      match.away_team
+    );
+
+
+  const homeScore =
+    match.score?.home ??
+    match.score?.current?.home ??
+    match.score?.fullTime?.home ??
+    match.score?.full_time?.home ??
+    match.homeScore ??
+    match.home_score ??
+    match.scores?.home ??
+    match.result?.home ??
+    null;
+
+
+  const awayScore =
+    match.score?.away ??
+    match.score?.current?.away ??
+    match.score?.fullTime?.away ??
+    match.score?.full_time?.away ??
+    match.awayScore ??
+    match.away_score ??
+    match.scores?.away ??
+    match.result?.away ??
+    null;
+
+
+  const status =
+    String(
+      match.status ??
+      match.matchStatus ??
+      match.match_status ??
+      ""
+    ).toUpperCase();
+
+
+  return {
+
+    ...match,
+
+    id:
+      String(
+        rawId
+      ),
+
+    fixtureId:
+      match.fixtureId ??
+      match.fixture_id ??
+      rawId,
+
+    liveMatchId:
+      match.liveMatchId ??
+      match.live_match_id ??
+      rawId,
+
+    status,
+
+    phase:
+      match.phase ??
+      null,
+
+    phaseLabel:
+      match.phaseLabel ??
+      match.phase_label ??
+      null,
+
+    liveMinute:
+      match.liveMinute ??
+      match.live_minute ??
+      match.minute ??
+      null,
+
+    liveMinuteLabel:
+      match.liveMinuteLabel ??
+      match.live_minute_label ??
+      null,
+
+    liveLabel:
+      match.liveLabel ??
+      match.live_label ??
+      null,
+
+    homeTeam,
+
+    awayTeam,
+
+    score: {
+
+      home:
+        scoreNumber(
+          homeScore
+        ),
+
+      away:
+        scoreNumber(
+          awayScore
+        )
+
+    }
+
+  };
+
+}
+
+
+function normalizeLiveTeam(
+  team
+) {
+
+  if (!team) {
+    return null;
+  }
+
+
+  if (
+    typeof team ===
+    "string"
+  ) {
+
+    return {
+      name:
+        team,
+      shortName:
+        team,
+      crest:
+        ""
+    };
+
+  }
+
+
+  return {
+
+    ...team,
+
+    id:
+      team.id ??
+      team.teamId ??
+      team.team_id ??
+      null,
+
+    name:
+      team.name ??
+      team.title ??
+      team.team?.name ??
+      "",
+
+    shortName:
+      team.shortName ??
+      team.short_name ??
+      team.abbreviation ??
+      team.team?.shortName ??
+      team.name ??
+      "",
+
+    crest:
+      team.crest ??
+      team.logo ??
+      team.image ??
+      team.team?.crest ??
+      ""
+
+  };
+
+}
+
+
+/* ==========================================================
+   LIVE — HELPERS
+========================================================== */
+
+function omitEmpty(object) {
+
+  return Object.fromEntries(
+    Object.entries(
+      object || {}
+    ).filter(
+      ([, value]) =>
+        value !== null &&
+        value !== undefined &&
+        value !== ""
+    )
+  );
+
+}
+
+
+function setLiveMatch(
+  match
+) {
+
+  const normalized =
+    normalizeLiveMatch(
+      match
+    );
+
+
+  if (!normalized) {
+    return;
+  }
+
+
+  const id =
+    String(
+      normalized.id
+    );
+
+
+  const previous =
+    liveMatches.get(id) ||
+    finishedLiveMatches.get(id) ||
+    null;
+
+
+  /*
+   * O servidor SSE pode enviar apenas
+   * uma parte do jogo.
+   *
+   * Preservar os dados anteriores evita
+   * perder score, equipas ou status.
+   */
+  const merged =
+    previous
+      ? normalizeLiveMatch({
+          ...previous,
+          ...omitEmpty(normalized),
+
+          score: {
+            ...(previous.score || {}),
+            ...(normalized.score || {})
+          },
+
+          homeTeam:
+            normalized.homeTeam ||
+            previous.homeTeam,
+
+          awayTeam:
+            normalized.awayTeam ||
+            previous.awayTeam,
+
+          phase:
+            normalized.phase ??
+            previous.phase,
+
+          phaseLabel:
+            normalized.phaseLabel ??
+            previous.phaseLabel,
+
+          liveMinute:
+            normalized.liveMinute ??
+            previous.liveMinute,
+
+          liveMinuteLabel:
+            normalized.liveMinuteLabel ??
+            previous.liveMinuteLabel,
+
+          liveLabel:
+            normalized.liveLabel ??
+            previous.liveLabel
+        })
+      : normalized;
+
+
+  if (!merged) {
+    return;
+  }
+
+
+  const finalStatus =
+    String(
+      merged.status ||
+      ""
+    ).toUpperCase();
+
+
+  if (
+    finalStatus === "FINISHED" ||
+    finalStatus === "AWARDED"
+  ) {
+
+    liveMatches.delete(
+      id
+    );
+
+    finishedLiveMatches.set(
+      id,
+      merged
+    );
+
+    return;
+
+  }
+
+
+  if (
+    isSportScoreLiveStatus(
+      finalStatus
+    )
+  ) {
+
+    finishedLiveMatches.delete(
+      id
+    );
+
+    liveMatches.set(
+      id,
+      merged
+    );
+
+    return;
+
+  }
+
+
+  liveMatches.set(
+    id,
+    merged
+  );
+
+}
+
+
+function removeLiveMatch(
+  matchId
+) {
+
+  if (
+    matchId == null
+  ) {
+    return;
+  }
+
+
+  const id =
+    String(
+      matchId
+    );
+
+
+  liveMatches.delete(
+    id
+  );
+
+  finishedLiveMatches.delete(
+    id
+  );
+
+}
+
+
+function getLiveMatch(
+  fixtureId
+) {
+
+  if (
+    fixtureId == null
+  ) {
+    return null;
+  }
+
+
+  const id =
+    String(
+      fixtureId
+    );
+
+
+  const direct =
+    liveMatches.get(id) ||
+    finishedLiveMatches.get(id);
+
+
+  if (direct) {
+    return direct;
+  }
+
+
+  for (
+    const match of
+    liveMatches.values()
+  ) {
+
+    if (
+      String(match.fixtureId ?? "") === id ||
+      String(match.liveMatchId ?? "") === id
+    ) {
+      return match;
+    }
+
+  }
+
+
+  for (
+    const match of
+    finishedLiveMatches.values()
+  ) {
+
+    if (
+      String(match.fixtureId ?? "") === id ||
+      String(match.liveMatchId ?? "") === id
+    ) {
+      return match;
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+function isSportScoreLiveStatus(
+  status
+) {
+
+  return [
+    "LIVE",
+    "IN_PLAY",
+    "INPLAY",
+    "PAUSED"
+  ].includes(
+    String(
+      status ||
+      ""
+    ).toUpperCase()
+  );
+
+}
+
+
+/* ==========================================================
+   NOMES
+========================================================== */
+
+function normalizeTeamName(
+  name
+) {
+
+  return String(
+    name || ""
+  )
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^a-z0-9]/g,
+      ""
+    );
+
+}
+
+
+function getTeamName(
+  team
+) {
+
+  if (!team) {
+    return "";
+  }
+
+
+  if (
+    typeof team ===
+    "string"
+  ) {
+    return team;
+  }
+
+
+  return (
+    team.name ||
+    team.shortName ||
+    team.short_name ||
+    team.title ||
+    team.team?.name ||
+    team.team?.shortName ||
+    ""
+  );
+
+}
+
+
+const GENERIC_TEAM_TOKENS =
+  new Set([
+    "united",
+    "city",
+    "town",
+    "club",
+    "football",
+    "sporting",
+    "sport",
+    "rovers",
+    "athletic",
+    "real",
+    "deportivo",
+    "racing"
+  ]);
+
+
+function teamTokens(
+  name
+) {
+
+  return normalizeTeamName(
+    name
+  )
+    .split(/\s+/)
+    .map(
+      token =>
+        token.trim()
+    )
+    .filter(
+      token =>
+        token.length >= 4 &&
+        !GENERIC_TEAM_TOKENS.has(
+          token
+        )
+    );
+
+}
+
+
+function teamNamesMatch(
+  nameA,
+  nameB
+) {
+
+  const a =
+    normalizeTeamName(
+      nameA
+    );
+
+  const b =
+    normalizeTeamName(
+      nameB
+    );
+
+
+  if (
+    !a ||
+    !b
+  ) {
+    return false;
+  }
+
+
+  if (
+    a === b
+  ) {
+    return true;
+  }
+
+
+  if (
+    a.includes(b) ||
+    b.includes(a)
+  ) {
+    return true;
+  }
+
+
+  const tokensA =
+    teamTokens(
+      nameA
+    );
+
+  const tokensB =
+    teamTokens(
+      nameB
+    );
+
+
+  return tokensA.some(
+    token =>
+      tokensB.includes(
+        token
+      )
+  );
+
+}
+
+
+/* ==========================================================
+   PROCURAR LIVE
+========================================================== */
+
+function findLiveMatchForSelection(
+  selection
+) {
+
+  if (!selection) {
+    return null;
+  }
+
+
+  /*
+   * 1. Procurar pelos IDs LIVE.
+   */
+  const liveIds = [
+
+    selection.liveMatchId,
+    selection.live_match_id,
+    selection.liveId,
+    selection.live_id,
+    selection.fixtureId,
+    selection.fixture_id,
+    selection.matchId,
+    selection.match_id
+
+  ].filter(
+    value =>
+      value !== null &&
+      value !== undefined &&
+      value !== ""
+  );
+
+
+  for (
+    const liveId of
+    liveIds
+  ) {
+
+    const match =
+      getLiveMatch(
+        liveId
+      );
+
+
+    if (match) {
+      return match;
+    }
+
+  }
+
+
+  /*
+   * 2. Procurar pelas equipas.
+   */
+  const home =
+    getTeamName(
+      selection.homeTeam ??
+      selection.home ??
+      selection.teams?.home
+    );
+
+
+  const away =
+    getTeamName(
+      selection.awayTeam ??
+      selection.away ??
+      selection.teams?.away
+    );
+
+
+  if (
+    !home ||
+    !away
+  ) {
+    return null;
+  }
+
+
+  const candidates = [
+
+    ...liveMatches.values(),
+    ...finishedLiveMatches.values()
+
+  ];
+
+
+  for (
+    const candidate of
+    candidates
+  ) {
+
+    const candidateHome =
+      getTeamName(
+        candidate.homeTeam ??
+        candidate.home ??
+        candidate.teams?.home
+      );
+
+
+    const candidateAway =
+      getTeamName(
+        candidate.awayTeam ??
+        candidate.away ??
+        candidate.teams?.away
+      );
+
+
+    if (
+      teamNamesMatch(
+        home,
+        candidateHome
+      ) &&
+      teamNamesMatch(
+        away,
+        candidateAway
+      )
+    ) {
+
+      return candidate;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* ==========================================================
+   APLICAR LIVE ÀS APOSTAS
+========================================================== */
+
+function applyLiveUpdate() {
+
+  const before =
+    JSON.stringify(
+      savedBets
+    );
+
+
+  refreshSavedBetsWithLiveData();
+
+
+  const after =
+    JSON.stringify(
+      savedBets
+    );
+
+
+  if (
+    before !== after
+  ) {
+
+    renderEverything();
+
+  }
+
+}
+
+
+/* ==========================================================
+   SPORTScore LIVE
+========================================================== */
+
+async function refreshLiveMatches() {
+
+  if (liveRefreshInFlight) {
+    return;
+  }
+
+  liveRefreshInFlight = true;
+
+  const controller = new AbortController();
+
+  const timeout = setTimeout(
+    () => {
+      controller.abort();
+    },
+    8000
+  );
+
+  try {
+
+    const response = await fetch(
+      `${LIVE_SERVER_URL}/api/live`,
+      {
+        cache: "no-store",
+        signal: controller.signal
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Live server respondeu ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    const matches =
+      Array.isArray(data)
+        ? data
+        : (
+            data.matches ||
+            data.live ||
+            data.events ||
+            []
+          );
+
+
+    /*
+     * ======================================================
+     * SNAPSHOT LIVE
+     *
+     * O endpoint /api/live representa apenas os jogos
+     * que estão atualmente em direto.
+     *
+     * Portanto, guardamos os IDs recebidos nesta resposta.
+     * ======================================================
+     */
+
+    const receivedLiveIds = new Set();
+
+
+    for (const match of matches) {
+
+      const normalized =
+        normalizeLiveMatch(match);
+
+      if (!normalized) {
+        continue;
+      }
+
+      const id =
+        String(normalized.id);
+
+      receivedLiveIds.add(id);
+
+      setLiveMatch(normalized);
+
+    }
+
+
+    /*
+     * ======================================================
+     * REMOVER JOGOS QUE JÁ NÃO ESTÃO NO FEED LIVE
+     *
+     * Isto é fundamental.
+     *
+     * Se um jogo estava LIVE e deixou de aparecer no
+     * /api/live, não podemos continuar a tratá-lo como LIVE.
+     * ======================================================
+     */
+
+    for (
+      const [id, match] of
+      liveMatches.entries()
+    ) {
+
+      if (
+        !receivedLiveIds.has(id)
+      ) {
+
+        liveMatches.delete(id);
+
+        /*
+         * Não sabemos necessariamente o resultado final
+         * neste momento.
+         *
+         * Guardamos como terminado/fora do LIVE apenas para
+         * impedir que continue a aparecer como LIVE.
+         */
+
+        finishedLiveMatches.set(
+          id,
+          {
+            ...match,
+
+            status:
+              "FINISHED",
+
+            isLive:
+              false,
+
+            isFinished:
+              true,
+
+            liveMinute:
+              null,
+
+            liveMinuteLabel:
+              "",
+
+            liveLabel:
+              ""
+          }
+        );
+
+      }
+
+    }
+
+
+    applyLiveUpdate();
+
+
+  } catch (error) {
+
+    if (
+      error?.name === "AbortError"
+    ) {
+
+      console.warn(
+        "Pedido LIVE cancelado por timeout."
+      );
+
+    } else {
+
+      console.error(
+        "Erro ao obter jogos LIVE do SportScore:",
+        error
+      );
+
+    }
+
+  } finally {
+
+    clearTimeout(timeout);
+
+    liveRefreshInFlight = false;
+
+  }
+
+}
+
+
+/* ==========================================================
+   MERGE LIVE
+========================================================== */
+
+function mergeLiveDataIntoMatch(
+  match
+) {
+
+  if (!match) {
+    return match;
+  }
+
+
+  const possibleIds = [
+
+    match.id,
+    match.fixtureId,
+    match.fixture_id
+
+  ].filter(
+    value =>
+      value !== null &&
+      value !== undefined
+  );
+
+
+  let liveMatch =
+    null;
+
+
+  for (
+    const id of
+    possibleIds
+  ) {
+
+    liveMatch =
+      getLiveMatch(
+        id
+      );
+
+
+    if (liveMatch) {
+      break;
+    }
+
+  }
+
+
+  if (!liveMatch) {
+
+    liveMatch =
+      findLiveMatchForSelection({
+        fixtureId:
+          match.id ??
+          match.fixtureId ??
+          match.fixture_id,
+
+        homeTeam:
+          match.homeTeam ??
+          match.home ??
+          match.teams?.home,
+
+        awayTeam:
+          match.awayTeam ??
+          match.away ??
+          match.teams?.away
+      });
+
+  }
+
+
+  if (!liveMatch) {
+    return match;
+  }
+
+
+  const footballStatus =
+    String(
+      match.status ||
+      ""
+    ).toUpperCase();
+
+
+  const liveStatus =
+    String(
+      liveMatch.status ||
+      ""
+    ).toUpperCase();
+
+
+  const liveMatchFinished =
+    liveStatus === "FINISHED" ||
+    liveStatus === "AWARDED" ||
+    liveMatch.isFinished === true ||
+    liveMatch.isLive === false;
+
+
+  const officialFinished =
+    footballStatus === "FINISHED" ||
+    footballStatus === "AWARDED";
+
+
+  const sportScoreIsLive =
+    !liveMatchFinished &&
+    isSportScoreLiveStatus(
+      liveStatus
+    );
+
+
+  const liveHome =
+    getHomeScore(
+      liveMatch
+    );
+
+
+  const liveAway =
+    getAwayScore(
+      liveMatch
+    );
+
+
+  const officialHome =
+    getHomeScore(
+      match
+    );
+
+
+  const officialAway =
+    getAwayScore(
+      match
+    );
+
+
+  const mergedScore = {
+
+    ...(match.score || {}),
+
+    ...(liveMatch.score || {})
+
+  };
+
+
+  /*
+   * Durante LIVE o score do SportScore
+   * tem prioridade.
+   */
+  if (
+    !officialFinished &&
+    liveHome !== null &&
+    liveAway !== null
+  ) {
+
+    mergedScore.fullTime = {
+
+      home:
+        liveHome,
+
+      away:
+        liveAway
+
+    };
+
+
+    mergedScore.current = {
+
+      home:
+        liveHome,
+
+      away:
+        liveAway
+
+    };
+
+  }
+
+
+  /*
+   * Se o jogo já terminou oficialmente,
+   * o resultado oficial permanece
+   * autoritativo.
+   */
+  if (
+    officialFinished
+  ) {
+
+    mergedScore.fullTime = {
+
+      home:
+        officialHome,
+
+      away:
+        officialAway
+
+    };
+
+  }
+
+
+  return {
+
+    ...match,
+
+    status:
+      officialFinished
+        ? match.status
+        : (
+            sportScoreIsLive
+              ? liveStatus
+              : match.status
+          ),
+
+    homeTeam:
+      liveMatch.homeTeam ||
+      match.homeTeam,
+
+    awayTeam:
+      liveMatch.awayTeam ||
+      match.awayTeam,
+
+    score:
+      mergedScore,
+
+    phase:
+      liveMatch.phase ??
+      match.phase,
+
+    phaseLabel:
+      liveMatch.phaseLabel ??
+      match.phaseLabel,
+
+    liveMinute:
+      liveMatch.liveMinute ??
+      match.liveMinute,
+
+    liveMinuteLabel:
+      liveMatch.liveMinuteLabel ??
+      match.liveMinuteLabel,
+
+    liveLabel:
+      liveMatch.liveLabel ??
+      match.liveLabel,
+
+    isLive:
+      officialFinished
+        ? false
+        : sportScoreIsLive
+
+  };
+
+}
+
+
+/* ==========================================================
+   ATUALIZAR APOSTAS
+========================================================== */
+
+async function updateAllBets() {
+
+  if (
+    savedBets.length === 0
+  ) {
+
+    renderEverything();
+
+    return;
+
+  }
+
+
+  if (isUpdating) {
+    return;
+  }
+
+
+  isUpdating =
+    true;
+
+
+  try {
+
+    await refreshLiveMatches();
+
+
+    const dates =
+      [
+        ...new Set(
+
+          savedBets.flatMap(
+            bet =>
+
+              (
+                bet.selections ||
+                []
+              )
+                .filter(
+                  selection =>
+                    isFootballSelection(
+                      selection
+                    )
+                )
+                .map(
+                  selection =>
+                    selection.date
+                )
+                .filter(Boolean)
+
+          )
+
+        )
+      ];
+
+
+    const matchesById =
+      new Map();
+
+
+    for (
+      const date of
+      dates
+    ) {
+
+      try {
+
+        const response =
+          await fetch(
+
+            `/api/matches?date=${encodeURIComponent(
+              date
+            )}`,
+
+            {
+              cache:
+                "no-store"
+            }
+
+          );
+
+
+        if (!response.ok) {
+          continue;
+        }
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          data.ok === false
+        ) {
+          continue;
+        }
+
+
+        (
+          data.matches ||
+          []
+        ).forEach(
+          match => {
+
+            const mergedMatch =
+              mergeLiveDataIntoMatch(
+                match
+              );
+
+
+            const matchId =
+              match.id ??
+              match.fixtureId ??
+              match.fixture_id;
+
+
+            if (
+              matchId != null
+            ) {
+
+              matchesById.set(
+                String(matchId),
+                mergedMatch
+              );
+
+            }
+
+          }
+        );
+
+
+      } catch (error) {
+
+        console.warn(
+          "Erro ao atualizar jogos:",
+          error
+        );
+
+      }
+
+    }
+
+
+    savedBets =
+      savedBets.map(
+        bet => {
+
+          if (
+            requiresManualSettlement(
+              bet
+            )
+          ) {
+
+            const selections =
+              (
+                bet.selections ||
+                []
+              ).map(
+                selection => {
+
+                  if (
+                    selection.outcome ===
+                      "void" ||
+                    selection.matchStatus ===
+                      "cancelled"
+                  ) {
+
+                    return {
+
+                      ...selection,
+
+                      outcome:
+                        "void",
+
+                      matchStatus:
+                        "cancelled",
+
+                      manualSettlement:
+                        false
+
+                    };
+
+                  }
+
+
+                  const liveMatch =
+                    findLiveMatchForSelection(
+                      selection
+                    );
+
+
+                  /*
+                   * FUTEBOL:
+                   * automático.
+                   */
+                  if (
+                    isFootballSelection(
+                      selection
+                    )
+                  ) {
+
+                    if (
+                      liveMatch
+                    ) {
+
+                      return updateSelectionFromLive(
+                        selection,
+                        liveMatch
+                      );
+
+                    }
+
+
+                    const match =
+                      matchesById.get(
+                        String(
+                          selection.fixtureId
+                        )
+                      );
+
+
+                    if (
+                      match
+                    ) {
+
+                      return updateSelection(
+                        selection,
+                        match
+                      );
+
+                    }
+
+
+                    if (
+                      isManualFootballSelection(
+                        selection
+                      )
+                    ) {
+                      return selection;
+                    }
+
+                  }
+
+
+                  /*
+                   * OUTROS DESPORTOS:
+                   * manuais.
+                   */
+                  if (
+                    liveMatch
+                  ) {
+
+                    return updateManualSelectionLiveData(
+                      selection,
+                      liveMatch
+                    );
+
+                  }
+
+
+                  return selection;
+
+                }
+              );
+
+
+            const updatedBet = {
+
+              ...bet,
+
+              selections
+
+            };
+
+
+            const state =
+              calculateManualBetState(
+                updatedBet
+              );
+
+
+            return {
+
+              ...updatedBet,
+
+              status:
+                state.status,
+
+              outcome:
+                state.outcome
+
+            };
+
+          }
+
+
+          const selections =
+            (
+              bet.selections ||
+              []
+            ).map(
+              selection => {
+
+                const match =
+                  matchesById.get(
+                    String(
+                      selection.fixtureId
+                    )
+                  );
+
+
+                const liveMatch =
+                  findLiveMatchForSelection(
+                    selection
+                  );
+
+
+                if (
+                  liveMatch
+                ) {
+
+                  return updateSelectionFromLive(
+                    selection,
+                    liveMatch
+                  );
+
+                }
+
+
+                if (!match) {
+                  return selection;
+                }
+
+
+                return updateSelection(
+                  selection,
+                  match
+                );
+
+              }
+            );
+
+
+          const state =
+            calculateBetState(
+              selections
+            );
+
+
+          return {
+
+            ...bet,
+
+            selections,
+
+            status:
+              state.status,
+
+            outcome:
+              state.outcome
+
+          };
+
+        }
+      );
+
+
+    saveSavedBets();
+
+    renderEverything();
+
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao atualizar apostas:",
+      error
+    );
+
+  } finally {
+
+    isUpdating =
+      false;
+
+  }
+
+}
+
+
+/* ==========================================================
+   EARLY PAY
+========================================================== */
+
+function isEarlyPayMarket(
+  marketCode
+) {
+
+  return EARLY_PAY_MARKETS.has(
+    String(
+      marketCode ||
+      ""
+    ).toUpperCase()
+  );
+
+}
+
+/* ==========================================================
+   VERIFICAR ELEGIBILIDADE EARLY PAY
+========================================================== */
+
+function isEarlyPayEligible(
+  selection
+) {
+
+  if (!selection) {
+    return false;
+  }
+
+
+  /*
+   * Early Pay tem de estar explicitamente
+   * ativado nesta seleção.
+   *
+   * Não basta ser HOME ou AWAY.
+   */
+
+  return selection.earlyPay === true;
+
+}
+
+
+/* ==========================================================
+   EARLY PAY
+========================================================== */
+
+function isEarlyPayMarket(
+  marketCode
+) {
+
+  return EARLY_PAY_MARKETS.has(
+    String(
+      marketCode ||
+      ""
+    ).toUpperCase()
+  );
+
+}
+
+
+function isEarlyPayEligible(
+  selection
+) {
+
+  if (!selection) {
+    return false;
+  }
+
+
+  /*
+   * O jogo só pode usar Early Pay quando
+   * essa funcionalidade estiver explicitamente
+   * atribuída à seleção.
+   *
+   * HOME/AWAY por si só NÃO significa Early Pay.
+   */
+
+  return selection.earlyPay === true;
+
+}
+
+
+function evaluateEarlyPay(
+  selection,
+  match
+) {
+
+  if (!selection) {
+    return null;
+  }
+
+
+  /*
+   * ========================================================
+   * PRIMEIRO GUARD:
+   *
+   * Se a seleção não tem Early Pay,
+   * termina imediatamente.
+   *
+   * Isto é o que impede HOME/AWAY normais
+   * de receberem Early Pay.
+   * ========================================================
+   */
+
+  if (
+    !isEarlyPayEligible(
+      selection
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  /*
+   * Early Pay só funciona em futebol.
+   */
+
+  if (
+    !isFootballSelection(
+      selection
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  /*
+   * Apenas mercados configurados
+   * para Early Pay.
+   */
+
+  if (
+    !isEarlyPayMarket(
+      selection.marketCode
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  /*
+   * Se já foi ativado anteriormente,
+   * mantém o Green.
+   */
+
+  if (
+    selection.earlyPayTriggered === true
+  ) {
+
+    return "won";
+
+  }
+
+
+  const status =
+    String(
+      match?.status ||
+      ""
+    ).toUpperCase();
+
+
+  /*
+   * Early Pay só pode ser acionado
+   * enquanto o jogo está LIVE.
+   */
+
+  if (
+    ![
+      "LIVE",
+      "IN_PLAY",
+      "INPLAY",
+      "PAUSED"
+    ].includes(
+      status
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  const home =
+    getHomeScore(
+      match
+    );
+
+
+  const away =
+    getAwayScore(
+      match
+    );
+
+
+  if (
+    home === null ||
+    away === null
+  ) {
+
+    return null;
+
+  }
+
+
+  const marketCode =
+    String(
+      selection.marketCode ||
+      ""
+    ).toUpperCase();
+
+
+  /*
+   * HOME:
+   * equipa da casa tem de estar pelo menos
+   * 2 golos à frente.
+   */
+
+  if (
+    marketCode === "HOME" &&
+    (
+      home - away >=
+      EARLY_PAY_GOAL_ADVANTAGE
+    )
+  ) {
+
+    return "won";
+
+  }
+
+
+  /*
+   * AWAY:
+   * equipa visitante tem de estar pelo menos
+   * 2 golos à frente.
+   */
+
+  if (
+    marketCode === "AWAY" &&
+    (
+      away - home >=
+      EARLY_PAY_GOAL_ADVANTAGE
+    )
+  ) {
+
+    return "won";
+
+  }
+
+
+  return null;
+
+}
+
+
+/* ==========================================================
+   FUTEBOL
+========================================================== */
+
+function updateSelection(
+  selection,
+  match
+) {
+
+  if (
+    selection.outcome === "void" ||
+    selection.matchStatus === "cancelled"
+  ) {
+
+    return {
+
+      ...selection,
+
+      outcome:
+        "void",
+
+      matchStatus:
+        "cancelled"
+
+    };
+
+  }
+
+
+  const currentMatch =
+    mergeLiveDataIntoMatch(
+      match
+    );
+
+
+  const status =
+    String(
+      currentMatch.status ||
+      ""
+    ).toUpperCase();
+
+
+  const score =
+    getScore(
+      currentMatch
+    );
+
+
+  const currentHomeTeam =
+    currentMatch.homeTeam ??
+    currentMatch.home ??
+    currentMatch.teams?.home;
+
+
+  const currentAwayTeam =
+    currentMatch.awayTeam ??
+    currentMatch.away ??
+    currentMatch.teams?.away;
+
+
+  const updatedTeams = {
+
+    homeTeam: {
+
+      ...selection.homeTeam,
+
+      id:
+        currentHomeTeam?.id ??
+        selection.homeTeam?.id,
+
+      name:
+        getTeamName(
+          currentHomeTeam
+        ) ||
+        selection.homeTeam?.name ||
+        "Casa",
+
+      shortName:
+        currentHomeTeam?.shortName ||
+        selection.homeTeam?.shortName ||
+        "",
+
+      crest:
+        currentHomeTeam?.crest ||
+        currentHomeTeam?.logo ||
+        selection.homeTeam?.crest ||
+        ""
+
+    },
+
+
+    awayTeam: {
+
+      ...selection.awayTeam,
+
+      id:
+        currentAwayTeam?.id ??
+        selection.awayTeam?.id,
+
+      name:
+        getTeamName(
+          currentAwayTeam
+        ) ||
+        selection.awayTeam?.name ||
+        "Fora",
+
+      shortName:
+        currentAwayTeam?.shortName ||
+        selection.awayTeam?.shortName ||
+        "",
+
+      crest:
+        currentAwayTeam?.crest ||
+        currentAwayTeam?.logo ||
+        selection.awayTeam?.crest ||
+        ""
+
+    }
+
+  };
+
+
+  let earlyPayOutcome = null;
+
+
+  /*
+  * Early Pay só pode ser avaliado se
+  * a seleção tiver Early Pay explicitamente.
+  */
+
+  if (
+    isEarlyPayEligible(
+      selection
+    )
+  ) {
+
+    earlyPayOutcome =
+      evaluateEarlyPay(
+        selection,
+        currentMatch
+      );
+
+  }
+
+
+  if (
+    earlyPayOutcome === "won"
+  ) {
+
+    return {
+
+      ...selection,
+
+      ...updatedTeams,
+
+      fixtureId:
+        selection.fixtureId ??
+        currentMatch.id,
+
+      utcDate:
+        currentMatch.utcDate ||
+        selection.utcDate,
+
+      time:
+        currentMatch.time ||
+        selection.time,
+
+      matchStatus:
+        "live",
+
+      outcome:
+        "won",
+
+      earlyPayTriggered:
+        true,
+
+      earlyPayAt:
+        selection.earlyPayAt ||
+        new Date().toISOString(),
+
+      earlyPaySource:
+        selection.earlyPaySource ||
+        "sportscore-live",
+
+      score,
+
+      liveMinute:
+        currentMatch.liveMinute ??
+        null,
+
+      liveMinuteLabel:
+        currentMatch.liveMinuteLabel ||
+        "",
+
+      liveLabel:
+        currentMatch.liveLabel ||
+        "",
+
+      phase:
+        currentMatch.phase ||
+        null,
+
+      phaseLabel:
+        currentMatch.phaseLabel ||
+        null
+
+    };
+
+  }
+
+
+  if (
+    isSportScoreLiveStatus(
+      status
+    )
+  ) {
+
+    return {
+
+      ...selection,
+
+      ...updatedTeams,
+
+      fixtureId:
+        selection.fixtureId ??
+        currentMatch.id,
+
+      utcDate:
+        currentMatch.utcDate ||
+        selection.utcDate,
+
+      time:
+        currentMatch.time ||
+        selection.time,
+
+      matchStatus:
+        "live",
+
+      outcome:
+        "live",
+
+      score,
+
+      liveMinute:
+        currentMatch.liveMinute ??
+        null,
+
+      liveMinuteLabel:
+        currentMatch.liveMinuteLabel ||
+        "",
+
+      liveLabel:
+        currentMatch.liveLabel ||
+        "",
+
+      phase:
+        currentMatch.phase ||
+        null,
+
+      phaseLabel:
+        currentMatch.phaseLabel ||
+        null
+
+    };
+
+  }
+
+
+  if (
+    status === "FINISHED" ||
+    status === "AWARDED"
+  ) {
+
+    const earlyPayWasTriggered =
+      selection.earlyPayTriggered === true;
+
+
+    const outcome =
+      earlyPayWasTriggered
+        ? "won"
+        : evaluateSelection(
+            selection,
+            currentMatch
+          );
+
+
+    return {
+
+      ...selection,
+
+      ...updatedTeams,
+
+      fixtureId:
+        selection.fixtureId ??
+        currentMatch.id,
+
+      utcDate:
+        currentMatch.utcDate ||
+        selection.utcDate,
+
+      time:
+        currentMatch.time ||
+        selection.time,
+
+      matchStatus:
+        "finished",
+
+      outcome,
+
+      earlyPayTriggered:
+        earlyPayWasTriggered,
+
+      earlyPayAt:
+        earlyPayWasTriggered
+          ? (
+              selection.earlyPayAt ||
+              null
+            )
+          : null,
+
+      earlyPaySource:
+        earlyPayWasTriggered
+          ? (
+              selection.earlyPaySource ||
+              null
+            )
+          : null,
+
+      score,
+
+      liveMinute:
+        null,
+
+      liveMinuteLabel:
+        "",
+
+      liveLabel:
+        ""
+
+    };
+
+  }
+
+
+  if (
+    [
+      "CANCELLED",
+      "POSTPONED",
+      "SUSPENDED",
+      "ABANDONED"
+    ].includes(
+      status
+    )
+  ) {
+
+    return {
+
+      ...selection,
+
+      ...updatedTeams,
+
+      matchStatus:
+        "cancelled",
+
+      outcome:
+        "void",
+
+      score
+
+    };
+
+  }
+
+
+  return {
+
+    ...selection,
+
+    ...updatedTeams,
+
+    utcDate:
+      currentMatch.utcDate ||
+      selection.utcDate,
+
+    time:
+      currentMatch.time ||
+      selection.time,
+
+    matchStatus:
+      "pending",
+
+    outcome:
+      "pending",
+
+    score
+
+  };
+
+}
+
+
+/* ==========================================================
+   FUTEBOL VIA SPORTScore
+========================================================== */
+
+function updateSelectionFromLive(
+  selection,
+  liveMatch
+) {
+
+  if (!liveMatch) {
+    return selection;
+  }
+
+
+  if (
+    selection.outcome === "void" ||
+    selection.matchStatus === "cancelled"
+  ) {
+
+    return {
+
+      ...selection,
+
+      outcome:
+        "void",
+
+      matchStatus:
+        "cancelled"
+
+    };
+
+  }
+
+
+  const updated = {
+    ...selection,
+    manualBet: isManualFootballSelection(selection) ? true : selection.manualBet,
+    manual: isManualFootballSelection(selection) ? true : selection.manual
+  };
+
+
+  const status =
+    String(
+      liveMatch.status ||
+      ""
+    ).toUpperCase();
+
+
+  const scoreObject = {
+
+    home:
+      getHomeScore(
+        liveMatch
+      ),
+
+    away:
+      getAwayScore(
+        liveMatch
+      )
+
+  };
+
+
+  updated.score =
+    (
+      scoreObject.home !== null &&
+      scoreObject.away !== null
+    )
+      ? `${scoreObject.home} - ${scoreObject.away}`
+      : updated.score;
+
+
+  updated.liveMatchId =
+    String(
+      liveMatch.id
+    );
+
+
+  if (
+    liveMatch.fixtureId != null &&
+    !updated.fixtureId
+  ) {
+
+    updated.fixtureId =
+      liveMatch.fixtureId;
+
+  }
+
+
+  const liveHomeTeam =
+    liveMatch.homeTeam ??
+    liveMatch.home ??
+    liveMatch.teams?.home;
+
+
+  const liveAwayTeam =
+    liveMatch.awayTeam ??
+    liveMatch.away ??
+    liveMatch.teams?.away;
+
+
+  if (liveHomeTeam) {
+
+    updated.homeTeam = {
+
+      ...updated.homeTeam,
+
+      id:
+        liveHomeTeam.id ??
+        updated.homeTeam?.id,
+
+      name:
+        getTeamName(
+          liveHomeTeam
+        ) ||
+        updated.homeTeam?.name,
+
+      shortName:
+        liveHomeTeam.shortName ||
+        updated.homeTeam?.shortName,
+
+      crest:
+        liveHomeTeam.crest ||
+        liveHomeTeam.logo ||
+        updated.homeTeam?.crest
+
+    };
+
+  }
+
+
+  if (liveAwayTeam) {
+
+    updated.awayTeam = {
+
+      ...updated.awayTeam,
+
+      id:
+        liveAwayTeam.id ??
+        updated.awayTeam?.id,
+
+      name:
+        getTeamName(
+          liveAwayTeam
+        ) ||
+        updated.awayTeam?.name,
+
+      shortName:
+        liveAwayTeam.shortName ||
+        updated.awayTeam?.shortName,
+
+      crest:
+        liveAwayTeam.crest ||
+        liveAwayTeam.logo ||
+        updated.awayTeam?.crest
+
+    };
+
+  }
+
+
+  updated.liveMinute =
+    liveMatch.liveMinute ??
+    null;
+
+
+  updated.liveMinuteLabel =
+    liveMatch.liveMinuteLabel ||
+    "";
+
+
+  updated.liveLabel =
+    liveMatch.liveLabel ||
+    "";
+
+
+  updated.phase =
+    liveMatch.phase ||
+    null;
+
+
+  updated.phaseLabel =
+    liveMatch.phaseLabel ||
+    null;
+
+
+  if (isManualFootballSelection(selection)) {
+
+    if (
+      isSportScoreLiveStatus(
+        status
+      )
+    ) {
+
+      updated.matchStatus =
+        "live";
+
+      updated.outcome =
+        "live";
+
+    } else if (
+      status === "FINISHED" ||
+      status === "AWARDED"
+    ) {
+
+      updated.matchStatus =
+        "finished";
+
+      updated.outcome =
+        [
+          "won",
+          "lost",
+          "void"
+        ].includes(
+          selection.outcome
+        )
+          ? selection.outcome
+          : "pending";
+
+    } else {
+
+      updated.matchStatus =
+        "pending";
+
+      updated.outcome =
+        [
+          "won",
+          "lost",
+          "void"
+        ].includes(
+          selection.outcome
+        )
+          ? selection.outcome
+          : "pending";
+
+    }
+
+    return updated;
+
+  }
+
+
+  let earlyPayOutcome = null;
+
+
+  /*
+  * Só avaliar Early Pay quando a seleção
+  * estiver explicitamente marcada como elegível.
+  */
+
+  if (
+    isEarlyPayEligible(
+      updated
+    )
+  ) {
+
+    earlyPayOutcome =
+      evaluateEarlyPay(
+        updated,
+        {
+          status,
+          score:
+            scoreObject
+        }
+      );
+
+  }
+
+
+  if (
+    earlyPayOutcome === "won"
+  ) {
+
+    updated.earlyPayTriggered =
+      true;
+
+    updated.earlyPayAt =
+      updated.earlyPayAt ||
+      new Date().toISOString();
+
+    updated.earlyPaySource =
+      updated.earlyPaySource ||
+      "sportscore-live";
+
+    updated.matchStatus =
+      "live";
+
+    updated.outcome =
+      "won";
+
+    return updated;
+
+  }
+
+
+  if (
+    isSportScoreLiveStatus(
+      status
+    )
+  ) {
+
+    updated.matchStatus =
+      "live";
+
+    updated.outcome =
+      "live";
+
+    return updated;
+
+  }
+
+
+  if (
+    status === "FINISHED" ||
+    status === "AWARDED"
+  ) {
+
+    updated.matchStatus =
+      "finished";
+
+
+    const finalOutcome =
+      updated.earlyPayTriggered === true
+        ? "won"
+        : evaluateSelection(
+            updated,
+            {
+              status,
+              score:
+                scoreObject
+            }
+          );
+
+
+    updated.outcome =
+      finalOutcome;
+
+
+    updated.earlyPayTriggered =
+      updated.earlyPayTriggered === true;
+
+
+    updated.earlyPayAt =
+      updated.earlyPayAt ||
+      null;
+
+
+    updated.earlyPaySource =
+      updated.earlyPaySource ||
+      null;
+
+
+    updated.liveMinute =
+      null;
+
+    updated.liveMinuteLabel =
+      "";
+
+    updated.liveLabel =
+      "";
+
+    return updated;
+
+  }
+
+
+  if (
+    [
+      "CANCELLED",
+      "POSTPONED",
+      "ABANDONED"
+    ].includes(
+      status
+    )
+  ) {
+
+    updated.matchStatus =
+      "cancelled";
+
+    updated.outcome =
+      "void";
+
+    return updated;
+
+  }
+
+
+  return updated;
+
+}
+
+
+/* ==========================================================
+   LIVE DOS DESPORTOS MANUAIS
+========================================================== */
+
+function updateManualSelectionLiveData(
+  selection,
+  liveMatch
+) {
+
+  if (
+    selection.outcome === "void" ||
+    selection.matchStatus === "cancelled"
+  ) {
+
+    return {
+
+      ...selection,
+
+      outcome:
+        "void",
+
+      matchStatus:
+        "cancelled",
+
+      manualSettlement:
+        false
+
+    };
+
+  }
+
+
+  if (!liveMatch) {
+    return selection;
+  }
+
+
+  const status =
+    String(
+      liveMatch.status ||
+      ""
+    ).toUpperCase();
+
+
+  const homeScore =
+    getHomeScore(
+      liveMatch
+    );
+
+
+  const awayScore =
+    getAwayScore(
+      liveMatch
+    );
+
+
+  const score =
+    (
+      homeScore !== null &&
+      awayScore !== null
+    )
+      ? `${homeScore} - ${awayScore}`
+      : selection.score;
+
+
+  const updated = {
+
+    ...selection,
+
+    liveMatchId:
+      liveMatch.id != null
+        ? String(
+            liveMatch.id
+          )
+        : selection.liveMatchId,
+
+    score,
+
+    liveMinute:
+      liveMatch.liveMinute ??
+      selection.liveMinute ??
+      null,
+
+    liveMinuteLabel:
+      liveMatch.liveMinuteLabel ||
+      selection.liveMinuteLabel ||
+      "",
+
+    liveLabel:
+      liveMatch.liveLabel ||
+      selection.liveLabel ||
+      "",
+
+    phase:
+      liveMatch.phase ||
+      selection.phase ||
+      null,
+
+    phaseLabel:
+      liveMatch.phaseLabel ||
+      selection.phaseLabel ||
+      null
+
+  };
+
+
+  if (
+    selection.manualSettlement === true
+  ) {
+    return updated;
+  }
+
+
+  if (
+    isSportScoreLiveStatus(
+      status
+    )
+  ) {
+
+    updated.matchStatus =
+      "live";
+
+    updated.outcome =
+      "live";
+
+    return updated;
+
+  }
+
+
+  if (
+    status === "FINISHED" ||
+    status === "AWARDED"
+  ) {
+
+    updated.matchStatus =
+      "finished";
+
+    updated.outcome =
+      null;
+
+    updated.liveMinute =
+      null;
+
+    updated.liveMinuteLabel =
+      "";
+
+    updated.liveLabel =
+      "";
+
+    return updated;
+
+  }
+
+
+  if (
+    [
+      "CANCELLED",
+      "POSTPONED",
+      "SUSPENDED",
+      "ABANDONED"
+    ].includes(
+      status
+    )
+  ) {
+
+    updated.matchStatus =
+      "cancelled";
+
+    updated.outcome =
+      null;
+
+    return updated;
+
+  }
+
+
+  return updated;
+
+}
+
+
+/* ==========================================================
+   ESTADO MANUAL DA APOSTA
+========================================================== */
+
+function calculateManualBetState(
+  bet
+) {
+
+  const selections =
+    bet?.selections ||
+    [];
+
+
+  if (!selections.length) {
+
+    return {
+
+      status:
+        "pending",
+
+      outcome:
+        null
+
+    };
+
+  }
+
+
+  const activeSelections =
+    selections.filter(
+      selection =>
+        selection.outcome !== "void"
+    );
+
+
+  if (
+    activeSelections.length === 0
+  ) {
+
+    return {
+
+      status:
+        "finished",
+
+      outcome:
+        "void"
+
+    };
+
+  }
+
+
+  const hasLost =
+    activeSelections.some(
+      selection =>
+        selection.outcome ===
+        "lost"
+    );
+
+
+  if (hasLost) {
+
+    return {
+
+      status:
+        "finished",
+
+      outcome:
+        "lost"
+
+    };
+
+  }
+
+
+  const allWon =
+    activeSelections.every(
+      selection =>
+        selection.outcome ===
+        "won"
+    );
+
+
+  if (allWon) {
+
+    return {
+
+      status:
+        "finished",
+
+      outcome:
+        "won"
+
+    };
+
+  }
+
+
+  const hasLive =
+    activeSelections.some(
+      selection =>
+        selection.matchStatus ===
+        "live"
+    );
+
+
+  if (hasLive) {
+
+    return {
+
+      status:
+        "live",
+
+      outcome:
+        null
+
+    };
+
+  }
+
+
+  return {
+
+    status:
+      "pending",
+
+    outcome:
+      null
+
+  };
+
+}
+
+
+/* ==========================================================
+   CANCELAR SELEÇÃO MANUALMENTE
+========================================================== */
+
+function cancelManualSelection(
+  betId,
+  selectionIndex
+) {
+
+  const betIndex =
+    savedBets.findIndex(
+      item =>
+        String(item.id) ===
+        String(betId)
+    );
+
+
+  if (
+    betIndex === -1
+  ) {
+    return;
+  }
+
+
+  const bet =
+    savedBets[betIndex];
+
+
+  const selection =
+    bet.selections?.[
+      selectionIndex
+    ];
+
+
+  if (!selection) {
+    return;
+  }
+
+
+  if (
+    !isTennisSelection(
+      selection
+    )
+  ) {
+    return;
+  }
+
+
+  if (
+    [
+      "won",
+      "lost",
+      "void"
+    ].includes(
+      selection.outcome
+    )
+  ) {
+    return;
+  }
+
+
+  const updatedSelection = {
+
+    ...selection,
+
+    outcome:
+      "void",
+
+    matchStatus:
+      "cancelled",
+
+    manualSettlement:
+      false
+
+  };
+
+
+  const updatedBet = {
+
+    ...bet,
+
+    selections:
+      bet.selections.map(
+        (item, index) =>
+          index === selectionIndex
+            ? updatedSelection
+            : item
+      )
+
+  };
+
+
+  const state =
+    calculateManualBetState(
+      updatedBet
+    );
+
+
+  savedBets[betIndex] = {
+
+    ...updatedBet,
+
+    status:
+      state.status,
+
+    outcome:
+      state.outcome
+
+  };
+
+
+  saveSavedBets();
+
+  renderEverything();
+
+}
+
+
+/* ==========================================================
+   RESULTADO INDIVIDUAL
+========================================================== */
+
+function setManualSelectionResult(
+  betId,
+  selectionIndex,
+  outcome
+) {
+
+  const bet =
+    savedBets.find(
+      item =>
+        String(item.id) ===
+        String(betId)
+    );
+
+
+  if (!bet) {
+    return;
+  }
+
+
+  const selection =
+    bet.selections?.[
+      selectionIndex
+    ];
+
+
+  if (!selection) {
+    return;
+  }
+
+
+  if (
+    isFootballSelection(selection) &&
+    selection.manualBet !== true
+  ) {
+    return;
+  }
+
+
+  if (
+    selection.outcome === "void" ||
+    selection.matchStatus === "cancelled"
+  ) {
+    return;
+  }
+
+
+  if (
+    ![
+      "won",
+      "lost"
+    ].includes(
+      outcome
+    )
+  ) {
+    return;
+  }
+
+
+  selection.manualSettlement =
+    true;
+
+
+  selection.outcome =
+    outcome;
+
+
+  selection.matchStatus =
+    "finished";
+
+
+  const state =
+    calculateManualBetState(
+      bet
+    );
+
+
+  bet.status =
+    state.status;
+
+
+  bet.outcome =
+    state.outcome;
+
+
+  saveSavedBets();
+
+  renderEverything();
+
+}
+
+
+/* ==========================================================
+   RESETAR TODA A APOSTA MANUAL
+========================================================== */
+
+function resetManualBetResults(betId) {
+
+  const bet =
+    savedBets.find(
+      item =>
+        String(item.id) ===
+        String(betId)
+    );
+
+  if (!bet) return;
+
+
+  (bet.selections || []).forEach(
+    selection => {
+
+      const manualFootball =
+        isManualFootballSelection(
+          selection
+        );
+
+
+      if (
+        isFootballSelection(selection) &&
+        !manualFootball
+      ) {
+        return;
+      }
+
+
+      if (
+        selection.outcome === "void" ||
+        selection.matchStatus === "cancelled"
+      ) {
+
+        selection.manualSettlement =
+          false;
+
+        selection.outcome =
+          "void";
+
+        selection.matchStatus =
+          "cancelled";
+
+      } else {
+
+        selection.manualSettlement =
+          false;
+
+        selection.outcome =
+          selection.matchStatus === "live"
+            ? "live"
+            : null;
+
+      }
+
+
+      if (manualFootball) {
+
+        selection.manual =
+          true;
+
+        selection.manualBet =
+          true;
+
+      }
+
+    }
+  );
+
+
+  const state =
+    calculateManualBetState(
+      bet
+    );
+
+
+  bet.status =
+    state.status;
+
+  bet.outcome =
+    state.outcome;
+
+
+  saveSavedBets();
+
+  renderEverything();
+
+}
+
+
+/* ==========================================================
+   ATUALIZAR DADOS LIVE GUARDADOS
+========================================================== */
+
+function refreshSavedBetsWithLiveData() {
+
+  if (
+    !Array.isArray(
+      savedBets
+    ) ||
+    savedBets.length === 0
+  ) {
+    return;
+  }
+
+
+  let changed =
+    false;
+
+
+  for (
+    const bet of
+    savedBets
+  ) {
+
+    if (
+      !Array.isArray(
+        bet.selections
+      )
+    ) {
+      continue;
+    }
+
+
+    const manualBet =
+      requiresManualSettlement(
+        bet
+      );
+
+
+    for (
+      let index = 0;
+      index < bet.selections.length;
+      index++
+    ) {
+
+      const selection =
+        bet.selections[index];
+
+
+      if (
+        selection.outcome === "void" ||
+        selection.matchStatus === "cancelled"
+      ) {
+
+        const normalizedVoid = {
+
+          ...selection,
+
+          outcome:
+            "void",
+
+          matchStatus:
+            "cancelled",
+
+          manualSettlement:
+            false
+
+        };
+
+
+        if (
+          JSON.stringify(
+            selection
+          ) !==
+          JSON.stringify(
+            normalizedVoid
+          )
+        ) {
+
+          bet.selections[index] =
+            normalizedVoid;
+
+          changed =
+            true;
+
+        }
+
+
+        continue;
+
+      }
+
+
+      const liveMatch =
+        findLiveMatchForSelection(
+          selection
+        );
+
+
+      if (!liveMatch) {
+        continue;
+      }
+
+
+      const previous =
+        JSON.stringify(
+          selection
+        );
+
+
+      let updatedSelection;
+
+
+      if (
+        isFootballSelection(selection)
+      ) {
+
+        updatedSelection =
+          updateSelectionFromLive(
+            selection,
+            liveMatch
+          );
+
+      } else {
+
+        updatedSelection =
+          updateManualSelectionLiveData(
+            selection,
+            liveMatch
+          );
+
+      }
+
+
+      bet.selections[index] =
+        updatedSelection;
+
+
+      if (
+        previous !==
+        JSON.stringify(
+          updatedSelection
+        )
+      ) {
+
+        changed =
+          true;
+
+      }
+
+    }
+
+
+    const overall =
+      manualBet
+        ? calculateManualBetState(
+            bet
+          )
+        : calculateBetState(
+            bet.selections
+          );
+
+
+    if (
+      bet.status !==
+        overall.status ||
+
+      bet.outcome !==
+        overall.outcome
+    ) {
+
+      bet.status =
+        overall.status;
+
+      bet.outcome =
+        overall.outcome;
+
+      changed =
+        true;
+
+    }
+
+  }
+
+
+  if (changed) {
+    saveSavedBets();
+  }
+
+}
+
+
+/* ==========================================================
+   SCORE
+========================================================== */
+
+function scoreNumber(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return null;
+  }
+
+
+  const number =
+    Number(value);
+
+
+  return Number.isFinite(number)
+    ? number
+    : null;
+
+}
+
+
+function getHomeScore(
+  match
+) {
+
+  return scoreNumber(
+
+    match?.score?.fullTime?.home ??
+    match?.score?.full_time?.home ??
+    match?.score?.current?.home ??
+    match?.score?.home ??
+    match?.homeScore ??
+    match?.home_score ??
+    match?.scores?.home ??
+    match?.result?.home
+
+  );
+
+}
+
+
+function getAwayScore(
+  match
+) {
+
+  return scoreNumber(
+
+    match?.score?.fullTime?.away ??
+    match?.score?.full_time?.away ??
+    match?.score?.current?.away ??
+    match?.score?.away ??
+    match?.awayScore ??
+    match?.away_score ??
+    match?.scores?.away ??
+    match?.result?.away
+
+  );
+
+}
+
+
+function getScore(
+  match
+) {
+
+  const home =
+    getHomeScore(
+      match
+    );
+
+
+  const away =
+    getAwayScore(
+      match
+    );
+
+
+  if (
+    home === null ||
+    away === null
+  ) {
+    return null;
+  }
+
+
+  return `${home} - ${away}`;
+
+}
+
+
+/* ==========================================================
+   AVALIAR SELEÇÃO
+========================================================== */
+
+function evaluateSelection(
+  selection,
+  match
+) {
+
+  if (
+    !isFootballSelection(
+      selection
+    )
+  ) {
+    return "pending";
+  }
+
+
+  const status =
+    String(
+      match?.status ||
+      ""
+    ).toUpperCase();
+
+
+  if (
+    isSportScoreLiveStatus(
+      status
+    )
+  ) {
+    return "live";
+  }
+
+
+  if (
+    status !== "FINISHED" &&
+    status !== "AWARDED"
+  ) {
+    return "pending";
+  }
+
+
+  return evaluateMarket(
+    selection.marketCode,
+    match,
+    selection.comboMarkets
+  );
+
+}
+
+
+/* ==========================================================
+   MERCADOS
+========================================================== */
+
+function evaluateMarket(
+  marketCode,
+  match,
+  comboMarkets = null
+) {
+
+  if (
+    String(
+      marketCode || ""
+    ).toUpperCase() ===
+    "COMBO"
+  ) {
+
+    const legs =
+      Array.isArray(
+        comboMarkets
+      )
+        ? comboMarkets
+        : [];
+
+
+    if (
+      !legs.length
+    ) {
+      return "pending";
+    }
+
+
+    const results =
+      legs.map(
+        leg =>
+          evaluateMarket(
+            leg.code,
+            match
+          )
+      );
+
+
+    if (
+      results.some(
+        result =>
+          result === "lost"
+      )
+    ) {
+      return "lost";
+    }
+
+
+    if (
+      results.some(
+        result =>
+          result === "pending" ||
+          result === "live"
+      )
+    ) {
+
+      return results.includes("live")
+        ? "live"
+        : "pending";
+
+    }
+
+
+    if (
+      results.every(
+        result =>
+          result === "won" ||
+          result === "void"
+      )
+    ) {
+
+      return results.every(
+        result =>
+          result === "void"
+      )
+        ? "void"
+        : "won";
+
+    }
+
+
+    return "pending";
+
+  }
+
+
+  const home =
+    getHomeScore(
+      match
+    );
+
+
+  const away =
+    getAwayScore(
+      match
+    );
+
+
+  if (
+    home === null ||
+    away === null
+  ) {
+    return "pending";
+  }
+
+
+  const totalGoals =
+    home + away;
+
+
+  switch (
+    String(
+      marketCode ||
+      ""
+    ).toUpperCase()
+  ) {
+
+    case "HOME":
+
+      return home > away
+        ? "won"
+        : "lost";
+
+
+    case "DRAW":
+
+      return home === away
+        ? "won"
+        : "lost";
+
+
+    case "AWAY":
+
+      return away > home
+        ? "won"
+        : "lost";
+
+
+    case "HOME_DRAW":
+
+      return home >= away
+        ? "won"
+        : "lost";
+
+
+    case "DRAW_AWAY":
+
+      return away >= home
+        ? "won"
+        : "lost";
+
+
+    case "OVER_1_5":
+
+      return totalGoals > 1.5
+        ? "won"
+        : "lost";
+
+
+    case "UNDER_1_5":
+
+      return totalGoals < 1.5
+        ? "won"
+        : "lost";
+
+
+    case "OVER_2_5":
+
+      return totalGoals > 2.5
+        ? "won"
+        : "lost";
+
+
+    case "UNDER_2_5":
+
+      return totalGoals < 2.5
+        ? "won"
+        : "lost";
+
+
+    case "OVER_3_5":
+
+      return totalGoals > 3.5
+        ? "won"
+        : "lost";
+
+
+    case "UNDER_3_5":
+
+      return totalGoals < 3.5
+        ? "won"
+        : "lost";
+
+
+    case "BTTS_YES":
+
+      return (
+        home > 0 &&
+        away > 0
+      )
+        ? "won"
+        : "lost";
+
+
+    case "BTTS_NO":
+
+      return (
+        home === 0 ||
+        away === 0
+      )
+        ? "won"
+        : "lost";
+
+
+    default:
+
+      return "pending";
+
+  }
+
+}
+
+
+/* ==========================================================
+   ESTADO APOSTA AUTOMÁTICA
+========================================================== */
+
+function calculateBetState(
+  selections
+) {
+
+  if (
+    !selections.length
+  ) {
+
+    return {
+      status:
+        "pending",
+      outcome:
+        null
+    };
+
+  }
+
+
+  const activeSelections =
+    selections.filter(
+      selection =>
+        selection.outcome !== "void"
+    );
+
+
+  if (
+    activeSelections.length === 0
+  ) {
+
+    return {
+
+      status:
+        "finished",
+
+      outcome:
+        "void"
+
+    };
+
+  }
+
+
+  const hasLost =
+    activeSelections.some(
+      selection =>
+        selection.outcome ===
+        "lost"
+    );
+
+
+  if (hasLost) {
+
+    return {
+      status:
+        "finished",
+      outcome:
+        "lost"
+    };
+
+  }
+
+
+  const hasLive =
+    activeSelections.some(
+      selection =>
+
+        selection.matchStatus ===
+          "live" &&
+
+        !(
+          selection.earlyPayTriggered === true &&
+          selection.outcome === "won"
+        )
+    );
+
+
+  if (hasLive) {
+
+    return {
+      status:
+        "live",
+      outcome:
+        null
+    };
+
+  }
+
+
+  const hasUnresolvedFinished =
+    activeSelections.some(
+      selection =>
+
+        selection.matchStatus ===
+          "finished" &&
+
+        ![
+          "won",
+          "lost"
+        ].includes(
+          selection.outcome
+        )
+    );
+
+
+  if (
+    hasUnresolvedFinished
+  ) {
+
+    return {
+      status:
+        "pending",
+      outcome:
+        null
+    };
+
+  }
+
+
+  const allWon =
+    activeSelections.every(
+      selection =>
+        selection.outcome ===
+        "won"
+    );
+
+
+  if (
+    allWon
+  ) {
+
+    return {
+      status:
+        "finished",
+      outcome:
+        "won"
+    };
+
+  }
+
+
+  return {
+    status:
+      "pending",
+    outcome:
+      null
+  };
+
+}
+
+
+/* ==========================================================
+   ESTATÍSTICAS
+========================================================== */
+
+function updateStatistics() {
+
+  const monthFilter =
+    document.getElementById(
+      "summaryMonthFilter"
+    );
+
+
+  const selectedMonth =
+    monthFilter?.value ||
+    "all";
+
+
+  const filteredBets =
+    savedBets.filter(
+      bet => {
+
+        if (
+          selectedMonth === "all"
+        ) {
+          return true;
+        }
+
+
+        if (!bet.createdAt) {
+          return false;
+        }
+
+
+        const date =
+          new Date(
+            bet.createdAt
+          );
+
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+          return false;
+        }
+
+
+        const year =
+          date.getFullYear();
+
+
+        const month =
+          String(
+            date.getMonth() + 1
+          ).padStart(
+            2,
+            "0"
+          );
+
+
+        return (
+          `${year}-${month}` ===
+          selectedMonth
+        );
+
+      }
+    );
+
+
+  const wonBets =
+    filteredBets.filter(
+      bet =>
+        bet.status === "finished" &&
+        bet.outcome === "won"
+    );
+
+
+  const lostBets =
+    filteredBets.filter(
+      bet =>
+        bet.status === "finished" &&
+        bet.outcome === "lost"
+    );
+
+
+  const pendingBets =
+    filteredBets.filter(
+      bet =>
+        bet.status === "pending"
+    );
+
+
+  const liveBets =
+    filteredBets.filter(
+      bet =>
+        bet.status === "live"
+    );
+
+
+  const settledBets =
+    filteredBets
+      .filter(
+        bet =>
+          bet.status === "finished" &&
+          (
+            bet.outcome === "won" ||
+            bet.outcome === "lost"
+          )
+      )
+      .sort(
+        (a, b) =>
+          new Date(
+            b.createdAt || 0
+          ).getTime() -
+          new Date(
+            a.createdAt || 0
+          ).getTime()
+      );
+
+
+  let currentStreak =
+    0;
+
+  let currentStreakType =
+    null;
+
+
+  if (
+    settledBets.length > 0
+  ) {
+
+    currentStreakType =
+      settledBets[0].outcome;
+
+
+    for (
+      const bet of
+      settledBets
+    ) {
+
+      if (
+        bet.outcome ===
+        currentStreakType
+      ) {
+
+        currentStreak++;
+
+      } else {
+
+        break;
+
+      }
+
+    }
+
+  }
+
+
+  const streakBadge =
+    document.getElementById(
+      "streakBadge"
+    );
+
+  const streakBadgeIcon =
+    document.getElementById(
+      "streakBadgeIcon"
+    );
+
+  const streakBadgeNumber =
+    document.getElementById(
+      "streakBadgeNumber"
+    );
+
+  const streakBadgeText =
+    document.getElementById(
+      "streakBadgeText"
+    );
+
+  const streakBadgeLabel =
+    document.getElementById(
+      "streakBadgeLabel"
+    );
+
+
+  if (streakBadge) {
+
+    streakBadge.style.display =
+      "none";
+
+    streakBadge.classList.remove(
+      "green",
+      "loss"
+    );
+
+  }
+
+
+  if (
+    currentStreak >= 2 &&
+    streakBadge
+  ) {
+
+    streakBadge.style.display =
+      "inline-flex";
+
+
+    streakBadgeNumber.textContent =
+      currentStreak;
+
+
+    if (
+      currentStreakType ===
+      "lost"
+    ) {
+
+      streakBadge.classList.add(
+        "loss"
+      );
+
+      streakBadgeIcon.textContent =
+        "×";
+
+      streakBadgeText.textContent =
+        "Loss Streak";
+
+      streakBadgeLabel.textContent =
+        "Reds seguidos";
+
+    }
+
+    else {
+
+      streakBadge.classList.add(
+        "green"
+      );
+
+      streakBadgeIcon.textContent =
+        "✓";
+
+      streakBadgeText.textContent =
+        "Green Streak";
+
+      streakBadgeLabel.textContent =
+        "Greens seguidos";
+
+    }
+
+  }
+
+
+  const totalInvested =
+    filteredBets.reduce(
+      (total, bet) =>
+        total +
+        Number(
+          bet.stake || 0
+        ),
+      0
+    );
+
+
+  const totalWon =
+    wonBets.reduce(
+      (total, bet) => {
+
+        const financial =
+          getBetFinancialResult(
+            bet
+          );
+
+        return (
+          total +
+          Number(
+            financial.returnAmount ||
+            0
+          )
+        );
+
+      },
+      0
+    );
+
+
+  const completedStake =
+    [
+      ...wonBets,
+      ...lostBets
+    ].reduce(
+      (total, bet) =>
+        total +
+        Number(
+          bet.stake || 0
+        ),
+      0
+    );
+
+
+  const netProfit =
+    totalWon -
+    completedStake;
+
+
+  const moneyPending =
+    [
+      ...pendingBets,
+      ...liveBets
+    ].reduce(
+      (total, bet) =>
+        total +
+        Number(
+          bet.stake || 0
+        ),
+      0
+    );
+
+
+  setText(
+    "totalInvested",
+    totalInvested.toFixed(2) +
+    " €"
+  );
+
+  setText(
+    "totalWon",
+    totalWon.toFixed(2) +
+    " €"
+  );
+
+  setText(
+    "netProfit",
+    netProfit.toFixed(2) +
+    " €"
+  );
+
+  setText(
+    "moneyPending",
+    moneyPending.toFixed(2) +
+    " €"
+  );
+
+  setText(
+    "totalBets",
+    filteredBets.length
+  );
+
+  setText(
+    "pendingBets",
+    pendingBets.length
+  );
+
+  setText(
+    "liveBets",
+    liveBets.length
+  );
+
+  setText(
+    "wonBets",
+    wonBets.length
+  );
+
+  setText(
+    "lostBets",
+    lostBets.length
+  );
+
+
+  const profitElement =
+    document.getElementById(
+      "netProfit"
+    );
+
+
+  if (profitElement) {
+
+    profitElement.classList.remove(
+      "profit-positive",
+      "profit-negative"
+    );
+
+
+    if (
+      netProfit > 0
+    ) {
+
+      profitElement.classList.add(
+        "profit-positive"
+      );
+
+    }
+
+    else if (
+      netProfit < 0
+    ) {
+
+      profitElement.classList.add(
+        "profit-negative"
+      );
+
+    }
+
+  }
+
+}
+
+
+function setText(
+  id,
+  value
+) {
+
+  const element =
+    document.getElementById(
+      id
+    );
+
+
+  if (element) {
+    element.textContent =
+      value;
+  }
+
+}
+
+
+/* ==========================================================
+   MESES
+========================================================== */
+
+function updateSummaryMonthFilter() {
+
+  const select =
+    document.getElementById(
+      "summaryMonthFilter"
+    );
+
+
+  if (!select) {
+    return;
+  }
+
+
+  const currentValue =
+    select.value ||
+    "all";
+
+
+  const months =
+    [
+      ...new Set(
+
+        savedBets
+          .filter(
+            bet =>
+              bet.createdAt
+          )
+          .map(
+            bet => {
+
+              const date =
+                new Date(
+                  bet.createdAt
+                );
+
+
+              if (
+                Number.isNaN(
+                  date.getTime()
+                )
+              ) {
+                return null;
+              }
+
+
+              return `${date.getFullYear()}-${String(
+                date.getMonth() + 1
+              ).padStart(
+                2,
+                "0"
+              )}`;
+
+            }
+          )
+          .filter(Boolean)
+
+      )
+    ];
+
+
+  months.sort(
+    (a, b) =>
+      b.localeCompare(a)
+  );
+
+
+  select.innerHTML = `
+    <option value="all">
+      Todos os meses
+    </option>
+  `;
+
+
+  months.forEach(
+    month => {
+
+      const [
+        year,
+        monthNumber
+      ] =
+        month.split("-");
+
+
+      const date =
+        new Date(
+          Number(year),
+          Number(monthNumber) - 1,
+          1
+        );
+
+
+      const label =
+        date.toLocaleDateString(
+          "pt-PT",
+          {
+            month:
+              "long",
+            year:
+              "numeric"
+          }
+        );
+
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        month;
+
+
+      option.textContent =
+        label.charAt(0).toUpperCase() +
+        label.slice(1);
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  select.value =
+    months.includes(
+      currentValue
+    )
+      ? currentValue
+      : "all";
+
+}
+
+
+/* ==========================================================
+   FILTROS
+========================================================== */
+
+function getFilteredBets() {
+
+  switch (
+    currentFilter
+  ) {
+
+    case "pending":
+
+      return savedBets.filter(
+        bet =>
+          bet.status ===
+          "pending"
+      );
+
+
+    case "live":
+
+      return savedBets.filter(
+        bet =>
+          bet.status ===
+          "live"
+      );
+
+
+    case "won":
+
+      return savedBets.filter(
+        bet =>
+          bet.status ===
+            "finished" &&
+          bet.outcome ===
+            "won"
+      );
+
+
+    case "lost":
+
+      return savedBets.filter(
+        bet =>
+          bet.status ===
+            "finished" &&
+          bet.outcome ===
+            "lost"
+      );
+
+
+    default:
+
+      return savedBets;
+
+  }
+
+}
+
+
+/* ==========================================================
+   PAGINAÇÃO
+========================================================== */
+
+function renderPagination(
+  totalBets
+) {
+
+  const pagination =
+    document.getElementById(
+      "betsPagination"
+    );
+
+
+  if (!pagination) {
+    return;
+  }
+
+
+  const totalPages =
+    Math.ceil(
+      totalBets /
+      BETS_PER_PAGE
+    );
+
+
+  pagination.innerHTML =
+    "";
+
+
+  if (
+    totalPages <= 1
+  ) {
+    return;
+  }
+
+
+  if (
+    currentPage >
+    totalPages
+  ) {
+
+    currentPage =
+      totalPages;
+
+  }
+
+
+  if (
+    currentPage < 1
+  ) {
+
+    currentPage =
+      1;
+
+  }
+
+
+  const createButton =
+    (
+      label,
+      page,
+      disabled = false,
+      active = false
+    ) => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "pagination-button";
+
+
+      if (active) {
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+
+
+      button.disabled =
+        disabled;
+
+
+      button.textContent =
+        label;
+
+
+      if (!disabled) {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            if (
+              page === currentPage
+            ) {
+              return;
+            }
+
+
+            currentPage =
+              page;
+
+
+            renderHistory();
+
+
+            document
+              .getElementById(
+                "betsHistory"
+              )
+              ?.scrollIntoView({
+                behavior:
+                  "smooth",
+                block:
+                  "start"
+              });
+
+          }
+        );
+
+      }
+
+
+      return button;
+
+    };
+
+
+  pagination.appendChild(
+    createButton(
+      "←",
+      currentPage - 1,
+      currentPage === 1
+    )
+  );
+
+
+  const maxVisiblePages =
+    5;
+
+
+  let startPage =
+    Math.max(
+      1,
+      currentPage -
+        Math.floor(
+          maxVisiblePages / 2
+        )
+    );
+
+
+  let endPage =
+    Math.min(
+      totalPages,
+      startPage +
+        maxVisiblePages -
+        1
+    );
+
+
+  if (
+    endPage -
+      startPage +
+      1 <
+    maxVisiblePages
+  ) {
+
+    startPage =
+      Math.max(
+        1,
+        endPage -
+          maxVisiblePages +
+          1
+      );
+
+  }
+
+
+  if (
+    startPage > 1
+  ) {
+
+    pagination.appendChild(
+      createButton(
+        "1",
+        1,
+        false,
+        currentPage === 1
+      )
+    );
+
+
+    if (
+      startPage > 2
+    ) {
+
+      const dots =
+        document.createElement(
+          "span"
+        );
+
+
+      dots.className =
+        "pagination-dots";
+
+
+      dots.textContent =
+        "…";
+
+
+      pagination.appendChild(
+        dots
+      );
+
+    }
+
+  }
+
+
+  for (
+    let page = startPage;
+    page <= endPage;
+    page++
+  ) {
+
+    if (
+      page === 1 &&
+      startPage > 1
+    ) {
+      continue;
+    }
+
+
+    pagination.appendChild(
+      createButton(
+        String(page),
+        page,
+        false,
+        currentPage === page
+      )
+    );
+
+  }
+
+
+  if (
+    endPage < totalPages
+  ) {
+
+    if (
+      endPage <
+      totalPages - 1
+    ) {
+
+      const dots =
+        document.createElement(
+          "span"
+        );
+
+
+      dots.className =
+        "pagination-dots";
+
+
+      dots.textContent =
+        "…";
+
+
+      pagination.appendChild(
+        dots
+      );
+
+    }
+
+
+    pagination.appendChild(
+      createButton(
+        String(totalPages),
+        totalPages,
+        false,
+        currentPage === totalPages
+      )
+    );
+
+  }
+
+
+  pagination.appendChild(
+    createButton(
+      "→",
+      currentPage + 1,
+      currentPage === totalPages
+    )
+  );
+
+}
+
+
+/* ==========================================================
+   RENDER HISTÓRICO
+========================================================== */
+
+function renderHistory() {
+
+  const container =
+    document.getElementById(
+      "betsHistory"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const allFilteredBets =
+    getFilteredBets();
+
+
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        allFilteredBets.length /
+        BETS_PER_PAGE
+      )
+    );
+
+
+  if (
+    currentPage >
+    totalPages
+  ) {
+
+    currentPage =
+      totalPages;
+
+  }
+
+
+  if (
+    currentPage < 1
+  ) {
+
+    currentPage =
+      1;
+
+  }
+
+
+  const startIndex =
+    (
+      currentPage - 1
+    ) *
+    BETS_PER_PAGE;
+
+
+  const bets =
+    allFilteredBets.slice(
+      startIndex,
+      startIndex +
+        BETS_PER_PAGE
+    );
+
+
+  container.innerHTML =
+    "";
+
+
+  if (
+    allFilteredBets.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="history-empty">
+
+        <div class="history-empty-icon">
+          🎟️
+        </div>
+
+        <strong>
+          Não existem apostas nesta categoria.
+        </strong>
+
+        <p>
+          As tuas apostas vão aparecer aqui.
+        </p>
+
+      </div>
+
+    `;
+
+
+    renderPagination(
+      0
+    );
+
+    return;
+
+  }
+
+
+  bets.forEach(
+    bet => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "history-card";
+
+
+      const state =
+        getBetDisplayState(
+          bet
+        );
+
+
+      const typeLabel =
+        (
+          bet.selections?.length ||
+          0
+        ) === 1
+          ? "Aposta simples"
+          : "Aposta múltipla";
+
+
+      const selectionsHtml =
+        (
+          bet.selections ||
+          []
+        )
+          .map(
+            (
+              selection,
+              selectionIndex
+            ) =>
+              renderSelection(
+                selection,
+                bet.id,
+                selectionIndex
+              )
+          )
+          .join("");
+
+
+      const financial =
+        getBetFinancialResult(
+          bet
+        );
+
+
+      const manualResetButton =
+        requiresManualSettlement(bet) &&
+        allBetSelectionsSettled(bet)
+          ? `
+
+            <button
+              type="button"
+              class="
+                delete-bet-button
+                manual-reset-bet-button
+              "
+              data-reset-manual-bet="true"
+            >
+              ↺ Reset aposta
+            </button>
+
+          `
+          : "";
+
+
+      card.innerHTML = `
+
+        <div class="history-header">
+
+          <div>
+
+            <div class="history-title">
+              ${typeLabel}
+            </div>
+
+            <div class="history-date">
+              ${formatDateTime(
+                bet.createdAt
+              )}
+            </div>
+
+          </div>
+
+
+          <span
+            class="
+              bet-status
+              ${state.className}
+            "
+          >
+            ${state.label}
+          </span>
+
+        </div>
+
+
+        <div class="history-selections">
+
+          ${selectionsHtml}
+
+        </div>
+
+
+        <div class="history-summary">
+
+          <div class="history-summary-item">
+
+            <span>
+              Jogos
+            </span>
+
+            <strong>
+              ${bet.selections?.length || 0}
+            </strong>
+
+          </div>
+
+
+          <div class="history-summary-item">
+
+            <span>
+              Odd
+            </span>
+
+            <strong>
+              ${formatOdd(
+                getEffectiveBetOdd(
+                  bet
+                )
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="history-summary-item">
+
+            <span>
+              Apostado
+            </span>
+
+            <strong>
+              ${formatMoney(
+                bet.stake
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="history-summary-item">
+
+            <span>
+              Retorno potencial
+            </span>
+
+            <strong>
+              ${formatMoney(
+                getEffectivePotentialReturn(
+                  bet
+                )
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="history-summary-item">
+
+            <span>
+              Retorno real
+            </span>
+
+            <strong>
+              ${financial.returnText}
+            </strong>
+
+          </div>
+
+
+          <div class="history-summary-item">
+
+            <span>
+              Lucro / Prejuízo
+            </span>
+
+            <strong
+              class="${financial.className}"
+            >
+              ${financial.profitText}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="history-actions">
+
+          ${manualResetButton}
+
+
+          <button
+            type="button"
+            class="delete-bet-button"
+            data-delete-bet="true"
+          >
+            Eliminar
+          </button>
+
+        </div>
+
+      `;
+
+
+      card
+        .querySelectorAll(
+          ".selection-result-button"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const selectionElement =
+                  button.closest(
+                    ".history-selection"
+                  );
+
+
+                if (
+                  !selectionElement
+                ) {
+                  return;
+                }
+
+
+                const selectionIndex =
+                  Number(
+                    selectionElement.dataset
+                      .selectionIndex
+                  );
+
+
+                if (
+                  Number.isNaN(
+                    selectionIndex
+                  )
+                ) {
+                  return;
+                }
+
+
+                setManualSelectionResult(
+                  bet.id,
+                  selectionIndex,
+                  button.dataset
+                    .selectionResult
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+      card
+        .querySelectorAll(
+          "[data-selection-cancel]"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const selectionElement =
+                  button.closest(
+                    ".history-selection"
+                  );
+
+
+                if (
+                  !selectionElement
+                ) {
+                  return;
+                }
+
+
+                const selectionIndex =
+                  Number(
+                    selectionElement.dataset
+                      .selectionIndex
+                  );
+
+
+                if (
+                  Number.isNaN(
+                    selectionIndex
+                  )
+                ) {
+                  return;
+                }
+
+
+                cancelManualSelection(
+                  bet.id,
+                  selectionIndex
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+      const resetManualBetButtonElement =
+        card.querySelector(
+          '[data-reset-manual-bet="true"]'
+        );
+
+
+      if (
+        resetManualBetButtonElement
+      ) {
+
+        resetManualBetButtonElement.addEventListener(
+          "click",
+          () => {
+
+            resetManualBetResults(
+              bet.id
+            );
+
+          }
+        );
+
+      }
+
+
+      const deleteButton =
+        card.querySelector(
+          '[data-delete-bet="true"]'
+        );
+
+
+      if (deleteButton) {
+
+        deleteButton.addEventListener(
+          "click",
+          () => {
+
+            deleteBet(
+              bet.id
+            );
+
+          }
+        );
+
+      }
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+
+  renderPagination(
+    allFilteredBets.length
+  );
+
+}
+
+
+/* =====================================================
+   EMBLEMAS DE OUTROS DESPORTOS
+===================================================== */
+
+function getSportIcon(
+  selection
+) {
+
+  const sport =
+    normalizeSportName(
+      getSelectionSport(
+        selection
+      )
+    );
+
+
+  if (
+    isFootballSport(
+      sport
+    )
+  ) {
+    return "";
+  }
+
+
+  const normalized =
+    sport
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      );
+
+
+  if (
+    normalized.includes("basket") ||
+    normalized.includes("basquet")
+  ) {
+    return "🏀";
+  }
+
+
+  if (
+    normalized.includes("tennis") ||
+    normalized.includes("tenis")
+  ) {
+    return "🎾";
+  }
+
+
+  if (
+    normalized.includes("hockey") ||
+    normalized.includes("hoquei") ||
+    normalized.includes("nhl")
+  ) {
+    return "🏒";
+  }
+
+
+  return "🏅";
+
+}
+
+
+/* ==========================================================
+   RENDER JOGO INDIVIDUAL
+========================================================== */
+
+function renderSelection(
+  selection,
+  betId,
+  selectionIndex
+) {
+
+  const home =
+    selection.homeTeam?.shortName ||
+    selection.homeTeam?.name ||
+    "Casa";
+
+
+  const away =
+    selection.awayTeam?.shortName ||
+    selection.awayTeam?.name ||
+    "Fora";
+
+
+  const homeCrest =
+    selection.homeTeam?.crest ||
+    "";
+
+
+  const awayCrest =
+    selection.awayTeam?.crest ||
+    "";
+
+
+  const state =
+    getSelectionDisplayState(
+      selection
+    );
+
+
+  const marketLabel =
+    escapeHtml(
+      selection.market ||
+      "Mercado"
+    );
+
+
+  const footballSelection =
+    isFootballSelection(
+      selection
+    );
+
+
+  const tennisSelection =
+    isTennisSelection(
+      selection
+    );
+
+
+  const manualFootballSelection =
+    footballSelection &&
+    (
+      selection.manualBet === true ||
+      selection.manual === true
+    );
+
+
+  const manualSport =
+    !footballSelection ||
+    manualFootballSelection;
+
+
+  const sportIcon =
+    getSportIcon(
+      selection
+    );
+
+
+  const earlyPayMarketBadge =
+    selection.earlyPay === true &&
+    isEarlyPayMarket(
+      selection.marketCode
+    )
+      ? `
+        <span
+          class="early-pay-market-badge"
+          title="Esta seleção tem Early Pay"
+        >
+          ⚡ Early Pay
+        </span>
+      `
+      : "";
+
+
+  let centerContent =
+    "";
+
+
+  if (
+    selection.matchStatus ===
+    "live"
+  ) {
+
+    const liveLabel =
+      selection.liveMinuteLabel ||
+      selection.liveLabel ||
+      (
+        selection.liveMinute != null
+          ? `${selection.liveMinute}'`
+          : "LIVE"
+      );
+
+
+    centerContent = `
+
+      <span class="history-live">
+        🔴 ${escapeHtml(
+          liveLabel
+        )}
+      </span>
+
+
+      ${
+        selection.score
+          ? `
+            <strong class="history-score">
+              ${escapeHtml(
+                selection.score
+              )}
+            </strong>
+          `
+          : ""
+      }
+
+
+      ${
+        selection.phaseLabel
+          ? `
+            <span class="history-original-time">
+              ${escapeHtml(
+                selection.phaseLabel
+              )}
+            </span>
+          `
+          : ""
+      }
+
+    `;
+
+  }
+
+  else if (
+    selection.matchStatus ===
+    "finished"
+  ) {
+
+    centerContent = `
+
+      ${
+        selection.score
+          ? `
+            <strong class="history-score">
+              ${escapeHtml(
+                selection.score
+              )}
+            </strong>
+          `
+          : `
+            <span class="history-vs">
+              VS
+            </span>
+          `
+      }
+
+
+      <span class="history-original-time">
+
+        ${escapeHtml(
+          selection.time ||
+          ""
+        )}
+
+      </span>
+
+    `;
+
+  }
+
+  else if (
+    selection.matchStatus ===
+    "cancelled" ||
+    selection.outcome ===
+    "void"
+  ) {
+
+    centerContent = `
+
+      <span class="history-vs">
+        Cancelado
+      </span>
+
+    `;
+
+  }
+
+  else {
+
+    centerContent = `
+
+      <span class="history-time">
+
+        ${escapeHtml(
+          selection.time ||
+          "--:--"
+        )}
+
+      </span>
+
+      <span class="history-vs">
+        VS
+      </span>
+
+    `;
+
+  }
+
+
+  let manualActions =
+    "";
+
+
+  if (
+    manualSport &&
+    selection.manualSettlement !== true &&
+    selection.outcome !== "void" &&
+    selection.matchStatus !== "cancelled"
+  ) {
+
+    manualActions = `
+
+      <div class="selection-manual-actions">
+
+        <button
+          type="button"
+          class="
+            selection-result-button
+            selection-green-button
+          "
+          data-selection-result="won"
+        >
+          ✓ Green
+        </button>
+
+
+        <button
+          type="button"
+          class="
+            selection-result-button
+            selection-red-button
+          "
+          data-selection-result="lost"
+        >
+          ✕ Red
+        </button>
+
+
+        ${
+          tennisSelection
+            ? `
+              <button
+                type="button"
+                class="
+                  selection-result-button
+                  selection-cancel-button
+                "
+                data-selection-cancel="true"
+                title="Cancelar manualmente este jogo"
+              >
+                ↩ Cancelar jogo
+              </button>
+            `
+            : ""
+        }
+
+      </div>
+
+    `;
+
+  }
+
+
+  const matchTeamsContent =
+    footballSelection
+
+      ? `
+
+        <div class="history-club">
+
+          ${renderCrest(
+            homeCrest,
+            home,
+            "history-club-crest"
+          )}
+
+          <span>
+            ${escapeHtml(home)}
+          </span>
+
+        </div>
+
+      `
+
+      : `
+
+        <div class="history-club manual-sport-club">
+
+          <span class="manual-sport-name">
+            ${escapeHtml(home)}
+          </span>
+
+        </div>
+
+      `;
+
+
+  const awayTeamContent =
+    footballSelection
+
+      ? `
+
+        <div class="history-club history-club-away">
+
+          ${renderCrest(
+            awayCrest,
+            away,
+            "history-club-crest"
+          )}
+
+          <span>
+            ${escapeHtml(away)}
+          </span>
+
+        </div>
+
+      `
+
+      : `
+
+        <div
+          class="
+            history-club
+            history-club-away
+            manual-sport-club
+          "
+        >
+
+          <span class="manual-sport-name">
+            ${escapeHtml(away)}
+          </span>
+
+        </div>
+
+      `;
+
+
+  return `
+
+    <div
+      class="history-selection"
+      data-selection-index="${selectionIndex}"
+    >
+
+      <div class="history-match">
+
+        ${matchTeamsContent}
+
+
+        <div class="history-match-center">
+
+          ${
+            !footballSelection
+              ? `
+                <div class="selection-sport-icon">
+                  ${sportIcon}
+                </div>
+              `
+              : ""
+          }
+
+
+          ${centerContent}
+
+        </div>
+
+
+        ${awayTeamContent}
+
+      </div>
+
+
+      <div class="history-match-date">
+
+        ${escapeHtml(
+          formatShortDate(
+            selection.date
+          )
+        )}
+
+      </div>
+
+
+      <div class="history-market">
+
+        ${marketLabel}
+
+        ${earlyPayMarketBadge}
+
+        <span class="history-market-separator">
+          •
+        </span>
+
+        Odd
+
+        <strong>
+          ${formatOdd(
+            selection.odd
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="history-selection-bottom">
+
+        <span
+          class="
+            selection-status
+            ${state.className}
+          "
+        >
+
+          ${state.label}
+
+        </span>
+
+
+        ${manualActions}
+
+      </div>
+
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   ESTADO VISUAL DA APOSTA
+========================================================== */
+
+function getBetDisplayState(
+  bet
+) {
+
+  if (
+    bet.status === "live"
+  ) {
+
+    return {
+
+      className:
+        "status-live",
+
+      label:
+        "🔴 Em curso"
+
+    };
+
+  }
+
+
+  if (
+    bet.status === "finished" &&
+    bet.outcome === "won"
+  ) {
+
+    return {
+
+      className:
+        "status-won",
+
+      label:
+        (
+          bet.selections?.length ||
+          0
+        ) > 1
+          ? "✅ Múltipla ganha"
+          : "✅ Aposta ganha"
+
+    };
+
+  }
+
+
+  if (
+    bet.status === "finished" &&
+    bet.outcome === "lost"
+  ) {
+
+    return {
+
+      className:
+        "status-lost",
+
+      label:
+        (
+          bet.selections?.length ||
+          0
+        ) > 1
+          ? "❌ Múltipla perdida"
+          : "❌ Aposta perdida"
+
+    };
+
+  }
+
+
+  if (
+    bet.status === "finished" &&
+    bet.outcome === "void"
+  ) {
+
+    return {
+
+      className:
+        "status-finished",
+
+      label:
+        "Anulada"
+
+    };
+
+  }
+
+
+  if (
+    requiresManualSettlement(
+      bet
+    )
+  ) {
+
+    const pendingManual =
+      (
+        bet.selections ||
+        []
+      ).some(
+        selection =>
+          !isFootballSelection(
+            selection
+          ) &&
+          ![
+            "won",
+            "lost",
+            "void"
+          ].includes(
+            selection.outcome
+          )
+      );
+
+
+    if (
+      pendingManual
+    ) {
+
+      return {
+
+        className:
+          "status-pending",
+
+        label:
+          "✋ A aguardar resultados individuais"
+
+      };
+
+    }
+
+  }
+
+
+  if (
+    bet.status === "finished"
+  ) {
+
+    return {
+
+      className:
+        "status-finished",
+
+      label:
+        "Terminada"
+
+    };
+
+  }
+
+
+  return {
+
+    className:
+      "status-pending",
+
+    label:
+      "⏳ Pendente"
+
+  };
+
+}
+
+
+/* ==========================================================
+   ESTADO VISUAL DO JOGO
+========================================================== */
+
+function getSelectionDisplayState(
+  selection
+) {
+
+  if (
+    selection.outcome === "void" ||
+    selection.matchStatus === "cancelled"
+  ) {
+
+    return {
+
+      className:
+        "status-finished",
+
+      label:
+        "↩ Cancelado"
+
+    };
+
+  }
+
+
+  if (
+    selection.manualSettlement === true
+  ) {
+
+    if (
+      selection.outcome ===
+      "won"
+    ) {
+
+      return {
+
+        className:
+          "status-won",
+
+        label:
+          "✓ Green"
+
+      };
+
+    }
+
+
+    if (
+      selection.outcome ===
+      "lost"
+    ) {
+
+      return {
+
+        className:
+          "status-lost",
+
+        label:
+          "✕ Red"
+
+      };
+
+    }
+
+  }
+
+
+  if (
+    !isFootballSelection(
+      selection
+    ) &&
+    selection.matchStatus ===
+      "finished"
+  ) {
+
+    return {
+
+      className:
+        "status-pending",
+
+      label:
+        "✋ Resultado manual"
+
+    };
+
+  }
+
+
+  if (
+    selection.earlyPayTriggered === true &&
+    selection.outcome === "won"
+  ) {
+
+    return {
+
+      className:
+        "status-won",
+
+      label:
+        "⚡ Early Pay - Green ✓"
+
+    };
+
+  }
+
+
+  if (
+    selection.outcome ===
+    "won"
+  ) {
+
+    return {
+
+      className:
+        "status-won",
+
+      label:
+        "✓ Green"
+
+    };
+
+  }
+
+
+  if (
+    selection.matchStatus ===
+    "live"
+  ) {
+
+    return {
+
+      className:
+        "status-live",
+
+      label:
+        "🔴 Em curso"
+
+    };
+
+  }
+
+
+  if (
+    selection.outcome ===
+    "lost"
+  ) {
+
+    return {
+
+      className:
+        "status-lost",
+
+      label:
+        "✕ Red"
+
+    };
+
+  }
+
+
+  if (
+    selection.matchStatus ===
+    "finished"
+  ) {
+
+    return {
+
+      className:
+        "status-pending",
+
+      label:
+        "⏳ A aguardar resultado"
+
+    };
+
+  }
+
+
+  return {
+
+    className:
+      "status-pending",
+
+    label:
+      "Pendente"
+
+  };
+
+}
+
+
+/* ==========================================================
+   FINANCEIRO
+========================================================== */
+
+function getBetFinancialResult(
+  bet
+) {
+
+  if (
+    bet.status !==
+    "finished"
+  ) {
+
+    return {
+
+      returnAmount:
+        0,
+
+      profitAmount:
+        0,
+
+      returnText:
+        "—",
+
+      profitText:
+        "—",
+
+      className:
+        ""
+
+    };
+
+  }
+
+
+  if (
+    bet.outcome ===
+    "won"
+  ) {
+
+    const realReturn =
+      getEffectivePotentialReturn(
+        bet
+      );
+
+
+    const profit =
+      realReturn -
+      Number(
+        bet.stake ||
+        0
+      );
+
+
+    return {
+
+      returnAmount:
+        realReturn,
+
+      profitAmount:
+        profit,
+
+      returnText:
+        formatMoney(
+          realReturn
+        ),
+
+      profitText:
+        formatMoney(
+          profit
+        ),
+
+      className:
+        "profit-positive"
+
+    };
+
+  }
+
+
+  if (
+    bet.outcome ===
+    "lost"
+  ) {
+
+    const stake =
+      Number(
+        bet.stake ||
+        0
+      );
+
+
+    return {
+
+      returnAmount:
+        0,
+
+      profitAmount:
+        -stake,
+
+      returnText:
+        formatMoney(0),
+
+      profitText:
+        formatMoney(
+          -stake
+        ),
+
+      className:
+        "profit-negative"
+
+    };
+
+  }
+
+
+  if (
+    bet.outcome ===
+    "void"
+  ) {
+
+    const stake =
+      Number(
+        bet.stake ||
+        0
+      );
+
+
+    return {
+
+      returnAmount:
+        stake,
+
+      profitAmount:
+        0,
+
+      returnText:
+        formatMoney(
+          stake
+        ),
+
+      profitText:
+        formatMoney(0),
+
+      className:
+        ""
+
+    };
+
+  }
+
+
+  return {
+
+    returnAmount:
+      0,
+
+    profitAmount:
+      0,
+
+    returnText:
+      "—",
+
+    profitText:
+      "—",
+
+    className:
+      ""
+
+  };
+
+}
+
+
+/* ==========================================================
+   STORAGE
+========================================================== */
+
+function saveSavedBets() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(
+      savedBets
+    )
+  );
+
+
+  window.dispatchEvent(
+    new CustomEvent(
+      "betsUpdated"
+    )
+  );
+
+}
+
+
+/* ==========================================================
+   IMAGENS
+========================================================== */
+
+function renderCrest(
+  src,
+  teamName,
+  className
+) {
+
+  if (!src) {
+
+    return `
+
+      <div class="club-crest-placeholder">
+        ⚽
+      </div>
+
+    `;
+
+  }
+
+
+  return `
+
+    <img
+      src="${escapeHtml(src)}"
+      class="${escapeHtml(className)}"
+      alt="${escapeHtml(teamName || "")}"
+      loading="lazy"
+      onerror="
+        this.style.display='none';
+        if(this.nextElementSibling){
+          this.nextElementSibling.style.display='grid';
+        }
+      "
+    >
+
+    <div
+      class="club-crest-placeholder"
+      style="display:none;"
+    >
+      ⚽
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   UTILITÁRIOS
+========================================================== */
+
+function createId() {
+
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID ===
+      "function"
+  ) {
+
+    return window.crypto.randomUUID();
+
+  }
+
+
+  return (
+    Date.now() +
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2)
+  );
+
+}
+
+
+function formatMoney(
+  value
+) {
+
+  return Number(
+    value || 0
+  ).toLocaleString(
+    "pt-PT",
+    {
+      style:
+        "currency",
+      currency:
+        "EUR"
+    }
+  );
+
+}
+
+
+function formatOdd(
+  value
+) {
+
+  return Number(
+    value || 0
+  ).toFixed(2);
+
+}
+
+
+function formatDateTime(
+  value
+) {
+
+  if (!value) {
+    return "";
+  }
+
+
+  const date =
+    new Date(
+      value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "";
+  }
+
+
+  return date.toLocaleString(
+    "pt-PT"
+  );
+
+}
+
+
+function formatShortDate(
+  value
+) {
+
+  if (!value) {
+    return "";
+  }
+
+
+  const date =
+    new Date(
+      `${value}T12:00:00`
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return value;
+  }
+
+
+  return date.toLocaleDateString(
+    "pt-PT",
+    {
+      day:
+        "2-digit",
+      month:
+        "2-digit",
+      year:
+        "numeric"
+    }
+  );
+
+}
+
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+/* ==========================================================
+   RENDER GERAL
+========================================================== */
+
+function renderEverything() {
+
+  updateStatistics();
+
+  renderHistory();
+
+}
+
+
+/* ==========================================================
+   FILTROS
+========================================================== */
+
+document
+  .querySelectorAll(
+    ".filter-button"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          currentFilter =
+            button.dataset.filter;
+
+
+          currentPage =
+            1;
+
+
+          document
+            .querySelectorAll(
+              ".filter-button"
+            )
+            .forEach(
+              item => {
+
+                item.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          renderHistory();
+
+        }
+      );
+
+    }
+  );
+
+
+/* ==========================================================
+   SPORTScore — SSE
+========================================================== */
+
+const LIVE_EVENT_TYPES = [
+  "LIVE_STATE",
+  "LIVE_STARTED",
+  "SCORE_CHANGED",
+  "HALFTIME",
+  "SECOND_HALF_STARTED",
+  "MATCH_FINISHED"
+];
+
+
+const LIVE_EVENT_STATUS = {
+
+  LIVE_STARTED:
+    "LIVE",
+
+  HALFTIME:
+    "PAUSED",
+
+  SECOND_HALF_STARTED:
+    "LIVE",
+
+  MATCH_FINISHED:
+    "FINISHED"
+
+};
+
+
+function handleLiveEvent(
+  type,
+  event
+) {
+
+  try {
+
+    const data =
+      JSON.parse(
+        event.data
+      );
+
+
+    const eventType =
+      String(
+        data?.type ||
+        data?.event ||
+        type ||
+        ""
+      ).toUpperCase();
+
+
+    let payload =
+      data?.match ??
+      data?.event ??
+      data;
+
+
+    /*
+     * Alguns eventos podem transportar
+     * diretamente uma lista.
+     */
+    if (
+      Array.isArray(payload)
+    ) {
+
+      payload.forEach(
+        setLiveMatch
+      );
+
+      applyLiveUpdate();
+
+      if (
+        eventType ===
+        "MATCH_FINISHED"
+      ) {
+        settleFinishedBetsWithRetry();
+      }
+
+      return;
+
+    }
+
+
+    /*
+     * Alguns servidores usam:
+     * { matches: [...] }
+     * { live: [...] }
+     * { events: [...] }
+     */
+    const list =
+      payload?.matches ||
+      payload?.live ||
+      payload?.events;
+
+
+    if (
+      Array.isArray(list)
+    ) {
+
+      list.forEach(
+        match => {
+
+          setLiveMatch(
+            {
+              ...match,
+
+              ...(LIVE_EVENT_STATUS[eventType]
+                ? {
+                    status:
+                      LIVE_EVENT_STATUS[
+                        eventType
+                      ]
+                  }
+                : {}),
+
+              ...(eventType ===
+                "MATCH_FINISHED"
+                ? {
+                    isLive:
+                      false,
+
+                    isFinished:
+                      true
+                  }
+                : {})
+            }
+          );
+
+        }
+      );
+
+    } else {
+
+      const eventStatus =
+        LIVE_EVENT_STATUS[
+          eventType
+        ];
+
+
+      setLiveMatch({
+
+        ...(payload || {}),
+
+        ...(eventStatus
+          ? {
+              status:
+                eventStatus
+            }
+          : {}),
+
+        ...(eventType ===
+          "MATCH_FINISHED"
+          ? {
+              isLive:
+                false,
+
+              isFinished:
+                true
+            }
+          : {})
+
+      });
+
+    }
+
+
+    applyLiveUpdate();
+
+
+    if (
+      eventType ===
+      "MATCH_FINISHED"
+    ) {
+
+      settleFinishedBetsWithRetry();
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      `Erro evento LIVE ${type}:`,
+      error
+    );
+
+  }
+
+}
+
+
+function connectLiveEvents() {
+
+  if (
+    liveReconnectTimer
+  ) {
+
+    clearTimeout(
+      liveReconnectTimer
+    );
+
+    liveReconnectTimer =
+      null;
+
+  }
+
+
+  if (
+    liveEventSource
+  ) {
+
+    liveEventSource.close();
+
+    liveEventSource =
+      null;
+
+  }
+
+
+  try {
+
+    const source =
+      new EventSource(
+        `${LIVE_SERVER_URL}/api/live/events`
+      );
+
+
+    liveEventSource =
+      source;
+
+
+    source.onopen =
+      () => {
+
+        console.log(
+          "Ligação ao SportScore Live Server estabelecida."
+        );
+
+
+        refreshLiveMatches();
+
+      };
+
+
+    LIVE_EVENT_TYPES.forEach(
+      type => {
+
+        source.addEventListener(
+          type,
+          event => {
+
+            handleLiveEvent(
+              type,
+              event
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    source.onmessage =
+      event => {
+
+        handleLiveEvent(
+          "MESSAGE",
+          event
+        );
+
+      };
+
+
+    source.onerror =
+      () => {
+
+        console.warn(
+          "Ligação SSE LIVE perdida."
+        );
+
+
+        if (
+          source.readyState ===
+          EventSource.CLOSED
+        ) {
+
+          if (
+            liveEventSource ===
+            source
+          ) {
+
+            liveEventSource =
+              null;
+
+          }
+
+
+          if (
+            liveReconnectTimer
+          ) {
+            return;
+          }
+
+
+          liveReconnectTimer =
+            setTimeout(
+              () => {
+
+                liveReconnectTimer =
+                  null;
+
+                connectLiveEvents();
+
+              },
+              3000
+            );
+
+        }
+
+      };
+
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao ligar ao servidor LIVE:",
+      error
+    );
+
+
+    if (
+      !liveReconnectTimer
+    ) {
+
+      liveReconnectTimer =
+        setTimeout(
+          () => {
+
+            liveReconnectTimer =
+              null;
+
+            connectLiveEvents();
+
+          },
+          3000
+        );
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================================
+   LIQUIDAÇÃO FINAL
+========================================================== */
+
+async function settleFinishedBetsWithRetry() {
+
+  if (
+    !hasBetsWaitingForOfficialResult()
+  ) {
+    return;
+  }
+
+
+  for (
+    const delay of
+    FINAL_RESULT_RETRY_DELAYS
+  ) {
+
+    await wait(
+      delay
+    );
+
+
+    await updateAllBets();
+
+
+    if (
+      !hasBetsWaitingForOfficialResult()
+    ) {
+      return;
+    }
+
+  }
+
+}
+
+
+function hasBetsWaitingForOfficialResult() {
+
+  return savedBets.some(
+    bet => {
+
+      return (
+        bet.selections ||
+        []
+      ).some(
+        selection =>
+
+          isFootballSelection(
+            selection
+          ) &&
+
+          selection.matchStatus ===
+            "finished" &&
+
+          ![
+            "won",
+            "lost",
+            "void"
+          ].includes(
+            selection.outcome
+          )
+
+      );
+
+    }
+  );
+
+}
+
+
+function wait(
+  milliseconds
+) {
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        milliseconds
+      )
+  );
+
+}
+
+
+/* ==========================================================
+   FILTRO MÊS
+========================================================== */
+
+const summaryMonthFilter =
+  document.getElementById(
+    "summaryMonthFilter"
+  );
+
+
+if (
+  summaryMonthFilter
+) {
+
+  summaryMonthFilter.addEventListener(
+    "change",
+    updateStatistics
+  );
+
+}
+
+
+/* ==========================================================
+   INIT
+========================================================== */
+
+function hasActiveBets() {
+
+  return savedBets.some(
+    bet =>
+      bet.status !==
+      "finished"
+  );
+
+}
+
+
+async function init() {
+
+  currentPage =
+    1;
+
+
+  updateSummaryMonthFilter();
+
+  renderEverything();
+
+  connectLiveEvents();
+
+  await refreshLiveMatches();
+
+
+  const liveInterval =
+    setInterval(
+      () => {
+
+        if (
+          !document.hidden &&
+          hasActiveBets()
+        ) {
+
+          refreshLiveMatches();
+
+        }
+
+      },
+      LIVE_REFRESH_INTERVAL
+    );
+
+
+  setInterval(
+    updateAllBets,
+    REFRESH_INTERVAL
+  );
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (
+        !document.hidden &&
+        hasActiveBets()
+      ) {
+
+        refreshLiveMatches();
+
+      }
+
+    }
+  );
+
+
+  await updateAllBets();
+
+}
+
+
+init();
+
+</script>
+
+<script src="js/notifications.cjs"></script>
+
+</body>
+</html>

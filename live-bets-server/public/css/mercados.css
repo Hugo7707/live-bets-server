@@ -1,0 +1,623 @@
+/* ============================================================
+   MERCADOS — TWITCH / DARK GRAPHITE THEME
+   ============================================================ */
+
+
+/* ============================================================
+   MERCADO BASE
+   ============================================================ */
+
+.prob {
+  position: relative;
+
+  border: 1px solid #29292f;
+  background: #18181d;
+
+  box-shadow: none;
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    transform .18s ease;
+}
+
+.prob:hover {
+  background: #1c1c21;
+  border-color: #3a3a42;
+  transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   CONTEÚDO DO MERCADO
+   ============================================================ */
+
+.prob-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.prob-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #eeeeF1;
+
+  font-weight: 650;
+}
+
+.prob-value {
+  color: #a970ff;
+
+  font-weight: 850;
+  white-space: nowrap;
+
+  text-shadow: none;
+}
+
+
+/* ============================================================
+   MERCADO GANHO
+   ============================================================ */
+
+.prob.market-won {
+  border-color: rgba(0, 201, 107, .26);
+
+  background:
+    rgba(0, 201, 107, .055);
+
+  box-shadow: none;
+}
+
+.prob.market-won:hover {
+  border-color: rgba(0, 201, 107, .42);
+
+  background:
+    rgba(0, 201, 107, .08);
+
+  transform: translateY(-1px);
+
+  box-shadow: none;
+}
+
+.prob.market-won .prob-value {
+  color: #36dc8b;
+  text-shadow: none;
+}
+
+
+/* ============================================================
+   MERCADO PERDIDO
+   ============================================================ */
+
+.prob.market-lost {
+  border-color: rgba(235, 91, 103, .26);
+
+  background:
+    rgba(235, 91, 103, .055);
+
+  box-shadow: none;
+}
+
+.prob.market-lost:hover {
+  border-color: rgba(235, 91, 103, .42);
+
+  background:
+    rgba(235, 91, 103, .08);
+
+  transform: translateY(-1px);
+
+  box-shadow: none;
+}
+
+.prob.market-lost .prob-value {
+  color: #eb7a84;
+  text-shadow: none;
+}
+
+
+/* ============================================================
+   MERCADO PENDENTE
+   ============================================================ */
+
+.prob.market-pending {
+  border-color: #303037;
+
+  background: #18181d;
+
+  box-shadow: none;
+}
+
+.prob.market-pending:hover {
+  border-color: rgba(145, 71, 255, .35);
+
+  background:
+    rgba(145, 71, 255, .055);
+
+  transform: translateY(-1px);
+}
+
+.prob.market-pending .prob-value {
+  color: #a970ff;
+  text-shadow: none;
+}
+
+
+/* ============================================================
+   RESULTADO DO MERCADO
+   ============================================================ */
+
+.market-result {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  margin-top: 7px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.market-result-icon {
+  font-size: 11px;
+
+  filter: none;
+}
+
+.market-result-label {
+  font-weight: 800;
+}
+
+.market-result-score {
+  color: #858591;
+
+  opacity: 1;
+
+  font-weight: 600;
+  text-transform: none;
+}
+
+
+/* ============================================================
+   RESULTADO — GANHO
+   ============================================================ */
+
+.market-won .market-result {
+  color: #36dc8b;
+}
+
+
+/* ============================================================
+   RESULTADO — PERDIDO
+   ============================================================ */
+
+.market-lost .market-result {
+  color: #eb7a84;
+}
+
+
+/* ============================================================
+   RESULTADO — PENDENTE
+   ============================================================ */
+
+.market-pending .market-result {
+  color: #a970ff;
+}
+
+
+/* ============================================================
+   RECOMENDAÇÃO PRINCIPAL — GANHA
+   ============================================================ */
+
+.recommendation.market-won {
+  border:
+    1px solid
+    rgba(0, 201, 107, .28);
+
+  background:
+    rgba(0, 201, 107, .055);
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   RECOMENDAÇÃO PRINCIPAL — PERDIDA
+   ============================================================ */
+
+.recommendation.market-lost {
+  border:
+    1px solid
+    rgba(235, 91, 103, .28);
+
+  background:
+    rgba(235, 91, 103, .055);
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   RECOMENDAÇÃO PRINCIPAL — PENDENTE
+   ============================================================ */
+
+.recommendation.market-pending {
+  border:
+    1px solid
+    rgba(145, 71, 255, .24);
+
+  background:
+    rgba(145, 71, 255, .055);
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   RECOMENDAÇÃO INDIVIDUAL — GANHA
+   ============================================================ */
+
+.individual-recommendation.market-won {
+  border:
+    1px solid
+    rgba(0, 201, 107, .26);
+
+  background:
+    rgba(0, 201, 107, .05);
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   RECOMENDAÇÃO INDIVIDUAL — PERDIDA
+   ============================================================ */
+
+.individual-recommendation.market-lost {
+  border:
+    1px solid
+    rgba(235, 91, 103, .26);
+
+  background:
+    rgba(235, 91, 103, .05);
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   RECOMENDAÇÃO INDIVIDUAL — PENDENTE
+   ============================================================ */
+
+.individual-recommendation.market-pending {
+  border:
+    1px solid
+    rgba(145, 71, 255, .22);
+
+  background:
+    rgba(145, 71, 255, .045);
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   RESULTADO DA RECOMENDAÇÃO
+   ============================================================ */
+
+.recommendation-result {
+  margin-top: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+
+/* GANHA */
+
+.recommendation.market-won
+.recommendation-result {
+  color: #36dc8b;
+  text-shadow: none;
+}
+
+
+/* PERDIDA */
+
+.recommendation.market-lost
+.recommendation-result {
+  color: #eb7a84;
+  text-shadow: none;
+}
+
+
+/* PENDENTE */
+
+.recommendation.market-pending
+.recommendation-result {
+  color: #a970ff;
+  text-shadow: none;
+}
+
+
+.individual-recommendation
+.recommendation-result {
+  margin-top: 8px;
+
+  justify-content: center;
+}
+
+
+/* ============================================================
+   MARCADOR FINAL
+   ============================================================ */
+
+.game-final-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 5px;
+
+  color: #f4f4f5;
+
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+
+  font-variant-numeric: tabular-nums;
+
+  text-shadow: none;
+}
+
+.game-final-score-separator {
+  color: #686873;
+
+  opacity: 1;
+}
+
+.game-finished
+.game-final-score {
+  color: inherit;
+}
+
+
+/* ============================================================
+   STATUS FINAL
+   ============================================================ */
+
+.finished-match-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  margin-top: 4px;
+
+  color: #858591;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  opacity: 1;
+}
+
+
+/* ============================================================
+   SCORE DA ANÁLISE INDIVIDUAL
+   ============================================================ */
+
+.individual-score-final {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  margin: 14px 0;
+
+  color: #f4f4f5;
+
+  font-size: 28px;
+  font-weight: 900;
+
+  font-variant-numeric: tabular-nums;
+
+  text-shadow: none;
+}
+
+.individual-score-final-label {
+  color: #858591;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  opacity: 1;
+
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+
+/* ============================================================
+   RESULT DOT
+   ============================================================ */
+
+.market-result-dot {
+  width: 6px;
+  height: 6px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+
+  box-shadow: none;
+}
+
+
+/* GANHO */
+
+.market-result-dot.won {
+  background: #00c96b;
+  color: #00c96b;
+}
+
+
+/* PERDIDO */
+
+.market-result-dot.lost {
+  background: #eb5b67;
+  color: #eb5b67;
+}
+
+
+/* PENDENTE */
+
+.market-result-dot.pending {
+  background: #9147ff;
+  color: #9147ff;
+}
+
+
+/* ============================================================
+   DESTAQUE LATERAL OPCIONAL
+   ============================================================ */
+
+.prob.market-won::before,
+.prob.market-lost::before,
+.prob.market-pending::before {
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+
+  width: 2px;
+
+  border-radius: 0 2px 2px 0;
+}
+
+
+/* GANHO */
+
+.prob.market-won::before {
+  background: #00c96b;
+}
+
+
+/* PERDIDO */
+
+.prob.market-lost::before {
+  background: #eb5b67;
+}
+
+
+/* PENDENTE */
+
+.prob.market-pending::before {
+  background: #9147ff;
+}
+
+
+/* ============================================================
+   REMOVE GLASS / BLUR
+   ============================================================ */
+
+.prob.market-won,
+.prob.market-lost,
+.prob.market-pending,
+.recommendation.market-won,
+.recommendation.market-lost,
+.recommendation.market-pending,
+.individual-recommendation.market-won,
+.individual-recommendation.market-lost,
+.individual-recommendation.market-pending {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+
+/* ============================================================
+   HOVER DAS RECOMENDAÇÕES
+   ============================================================ */
+
+.recommendation.market-won,
+.recommendation.market-lost,
+.recommendation.market-pending,
+.individual-recommendation.market-won,
+.individual-recommendation.market-lost,
+.individual-recommendation.market-pending {
+  transition:
+    background .18s ease,
+    border-color .18s ease;
+}
+
+
+.recommendation.market-won:hover,
+.individual-recommendation.market-won:hover {
+  border-color:
+    rgba(0, 201, 107, .40);
+
+  background:
+    rgba(0, 201, 107, .075);
+}
+
+
+.recommendation.market-lost:hover,
+.individual-recommendation.market-lost:hover {
+  border-color:
+    rgba(235, 91, 103, .40);
+
+  background:
+    rgba(235, 91, 103, .075);
+}
+
+
+.recommendation.market-pending:hover,
+.individual-recommendation.market-pending:hover {
+  border-color:
+    rgba(145, 71, 255, .38);
+
+  background:
+    rgba(145, 71, 255, .07);
+}
+
+
+/* ============================================================
+   ACESSIBILIDADE / REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .prob,
+  .prob.market-won,
+  .prob.market-lost,
+  .prob.market-pending,
+  .recommendation,
+  .individual-recommendation {
+    transition: none !important;
+  }
+
+  .prob:hover,
+  .prob.market-won:hover,
+  .prob.market-lost:hover,
+  .prob.market-pending:hover {
+    transform: none !important;
+  }
+}
