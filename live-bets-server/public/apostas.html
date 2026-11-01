@@ -1691,9 +1691,68 @@ function setLiveMatch(
     ).toUpperCase();
 
 
+  /*
+   * O SportScore pode deixar um jogo antigo preso em LIVE.
+   * Após 4 horas desde o início, retirá-lo da lista LIVE,
+   * sem o declarar oficialmente terminado nem liquidar apostas.
+   */
   if (
-    finalStatus === "FINISHED" ||
-    finalStatus === "AWARDED"
+    isSportScoreLiveStatus(finalStatus) &&
+    isStaleLiveMatch(merged)
+  ) {
+
+    liveMatches.delete(id);
+
+    finishedLiveMatches.set(
+      id,
+      {
+        ...merged,
+        status: "LIVE_UNCONFIRMED",
+        isLive: false,
+        isFinished: false,
+        liveMinute: null,
+        liveMinuteLabel: "",
+        liveLabel: "",
+        liveFeedStale: true
+      }
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Um evento LIVE atrasado não pode reabrir um jogo
+   * que o SportScore já marcou como terminado/cancelado.
+   */
+  const previousStatus =
+    String(previous?.status || "").toUpperCase();
+
+  if (
+    ["FINISHED", "AWARDED", "CANCELLED", "POSTPONED", "ABANDONED"]
+      .includes(previousStatus) &&
+    isSportScoreLiveStatus(finalStatus)
+  ) {
+
+    liveMatches.delete(id);
+
+    finishedLiveMatches.set(
+      id,
+      {
+        ...previous,
+        isLive: false
+      }
+    );
+
+    return;
+
+  }
+
+
+  if (
+    ["FINISHED", "AWARDED", "CANCELLED", "POSTPONED", "ABANDONED"]
+      .includes(finalStatus)
   ) {
 
     liveMatches.delete(
@@ -1844,6 +1903,27 @@ function isSportScoreLiveStatus(
     ).toUpperCase()
   );
 
+}
+
+
+/*
+ * Proteção contra jogos presos no estado LIVE no fornecedor.
+ * Um jogo com início há mais de 4 horas deixa de ser apresentado
+ * como LIVE, mas permanece pendente até confirmação oficial.
+ */
+function isStaleLiveMatch(match, selection) {
+  const kickoffValue =
+    match?.utcDate || match?.utc_date || match?.kickoff ||
+    match?.kickoff_time || match?.start || match?.date ||
+    selection?.utcDate || selection?.utc_date ||
+    selection?.kickoff || selection?.date;
+
+  if (!kickoffValue) return false;
+
+  const kickoff = new Date(kickoffValue).getTime();
+  if (!Number.isFinite(kickoff)) return false;
+
+  return Date.now() - kickoff > 4 * 60 * 60 * 1000;
 }
 
 
@@ -2272,35 +2352,22 @@ async function refreshLiveMatches() {
         liveMatches.delete(id);
 
         /*
-         * Não sabemos necessariamente o resultado final
-         * neste momento.
-         *
-         * Guardamos como terminado/fora do LIVE apenas para
-         * impedir que continue a aparecer como LIVE.
+         * A ausência no feed não prova que o jogo terminou.
+         * Guardamos apenas um estado desconhecido para retirar
+         * o indicador LIVE; o resultado continua pendente até
+         * confirmação oficial pelo football-data.org.
          */
-
         finishedLiveMatches.set(
           id,
           {
             ...match,
-
-            status:
-              "FINISHED",
-
-            isLive:
-              false,
-
-            isFinished:
-              true,
-
-            liveMinute:
-              null,
-
-            liveMinuteLabel:
-              "",
-
-            liveLabel:
-              ""
+            status: "LIVE_UNCONFIRMED",
+            feedMissingAt: new Date().toISOString(),
+            isLive: false,
+            isFinished: false,
+            liveMinute: null,
+            liveMinuteLabel: "",
+            liveLabel: ""
           }
         );
 
@@ -2475,46 +2542,25 @@ function mergeLiveDataIntoMatch(
     );
 
 
+  /*
+   * Os campos oficiais têm sempre prioridade. O SportScore
+   * só pode alimentar o marcador corrente durante LIVE; nunca
+   * escreve score.fullTime nem fornece resultado de liquidação.
+   */
   const mergedScore = {
-
-    ...(match.score || {}),
-
-    ...(liveMatch.score || {})
-
+    ...(liveMatch.score || {}),
+    ...(match.score || {})
   };
 
-
-  /*
-   * Durante LIVE o score do SportScore
-   * tem prioridade.
-   */
   if (
-    !officialFinished &&
+    sportScoreIsLive &&
     liveHome !== null &&
     liveAway !== null
   ) {
-
-    mergedScore.fullTime = {
-
-      home:
-        liveHome,
-
-      away:
-        liveAway
-
-    };
-
-
     mergedScore.current = {
-
-      home:
-        liveHome,
-
-      away:
-        liveAway
-
+      home: liveHome,
+      away: liveAway
     };
-
   }
 
 
@@ -2790,26 +2836,15 @@ async function updateAllBets() {
 
 
                   /*
-                   * FUTEBOL:
-                   * automático.
+                   * FUTEBOL: consultar primeiro o resultado oficial.
+                   * O SportScore é apenas fallback para estado/minuto/
+                   * marcador LIVE e Early Pay, nunca para liquidação.
                    */
                   if (
                     isFootballSelection(
                       selection
                     )
                   ) {
-
-                    if (
-                      liveMatch
-                    ) {
-
-                      return updateSelectionFromLive(
-                        selection,
-                        liveMatch
-                      );
-
-                    }
-
 
                     const match =
                       matchesById.get(
@@ -2818,16 +2853,18 @@ async function updateAllBets() {
                         )
                       );
 
-
-                    if (
-                      match
-                    ) {
-
+                    if (match) {
                       return updateSelection(
                         selection,
                         match
                       );
+                    }
 
+                    if (liveMatch) {
+                      return updateSelectionFromLive(
+                        selection,
+                        liveMatch
+                      );
                     }
 
 
@@ -2914,28 +2951,23 @@ async function updateAllBets() {
                     selection
                   );
 
+                /* Resultado oficial sempre primeiro. */
+                if (match) {
+                  return updateSelection(
+                    selection,
+                    match
+                  );
+                }
 
-                if (
-                  liveMatch
-                ) {
-
+                /* Sem registo oficial disponível: apenas dados LIVE. */
+                if (liveMatch) {
                   return updateSelectionFromLive(
                     selection,
                     liveMatch
                   );
-
                 }
 
-
-                if (!match) {
-                  return selection;
-                }
-
-
-                return updateSelection(
-                  selection,
-                  match
-                );
+                return selection;
 
               }
             );
@@ -3029,44 +3061,6 @@ function isEarlyPayEligible(
 }
 
 
-/* ==========================================================
-   EARLY PAY
-========================================================== */
-
-function isEarlyPayMarket(
-  marketCode
-) {
-
-  return EARLY_PAY_MARKETS.has(
-    String(
-      marketCode ||
-      ""
-    ).toUpperCase()
-  );
-
-}
-
-
-function isEarlyPayEligible(
-  selection
-) {
-
-  if (!selection) {
-    return false;
-  }
-
-
-  /*
-   * O jogo só pode usar Early Pay quando
-   * essa funcionalidade estiver explicitamente
-   * atribuída à seleção.
-   *
-   * HOME/AWAY por si só NÃO significa Early Pay.
-   */
-
-  return selection.earlyPay === true;
-
-}
 
 
 function evaluateEarlyPay(
@@ -3848,25 +3842,6 @@ function updateSelectionFromLive(
       updated.outcome =
         "live";
 
-    } else if (
-      status === "FINISHED" ||
-      status === "AWARDED"
-    ) {
-
-      updated.matchStatus =
-        "finished";
-
-      updated.outcome =
-        [
-          "won",
-          "lost",
-          "void"
-        ].includes(
-          selection.outcome
-        )
-          ? selection.outcome
-          : "pending";
-
     } else {
 
       updated.matchStatus =
@@ -3944,6 +3919,21 @@ function updateSelectionFromLive(
 
 
   if (
+    isSportScoreLiveStatus(status) &&
+    isStaleLiveMatch(liveMatch, selection)
+  ) {
+    updated.matchStatus = "pending";
+    updated.outcome = updated.earlyPayTriggered === true
+      ? "won"
+      : "pending";
+    updated.liveMinute = null;
+    updated.liveMinuteLabel = "";
+    updated.liveLabel = "";
+    updated.liveFeedStale = true;
+    return updated;
+  }
+
+  if (
     isSportScoreLiveStatus(
       status
     )
@@ -3960,80 +3950,31 @@ function updateSelectionFromLive(
   }
 
 
+  /*
+   * FINISHED/AWARDED/CANCELLED do SportScore não liquidam
+   * nem anulam seleções. Aguardar sempre o estado oficial.
+   * Mantemos apenas o último marcador para consulta visual.
+   */
   if (
     status === "FINISHED" ||
-    status === "AWARDED"
+    status === "AWARDED" ||
+    status === "CANCELLED" ||
+    status === "POSTPONED" ||
+    status === "ABANDONED" ||
+    status === "LIVE_UNCONFIRMED"
   ) {
-
-    updated.matchStatus =
-      "finished";
-
-
-    const finalOutcome =
-      updated.earlyPayTriggered === true
-        ? "won"
-        : evaluateSelection(
-            updated,
-            {
-              status,
-              score:
-                scoreObject
-            }
-          );
-
-
-    updated.outcome =
-      finalOutcome;
-
-
-    updated.earlyPayTriggered =
-      updated.earlyPayTriggered === true;
-
-
-    updated.earlyPayAt =
-      updated.earlyPayAt ||
-      null;
-
-
-    updated.earlyPaySource =
-      updated.earlyPaySource ||
-      null;
-
-
-    updated.liveMinute =
-      null;
-
-    updated.liveMinuteLabel =
-      "";
-
-    updated.liveLabel =
-      "";
-
-    return updated;
-
+    updated.matchStatus = "pending";
+    updated.outcome = updated.earlyPayTriggered === true
+      ? "won"
+      : (
+          ["won", "lost", "void"].includes(selection.outcome)
+            ? selection.outcome
+            : "pending"
+        );
+    updated.liveMinute = null;
+    updated.liveMinuteLabel = "";
+    updated.liveLabel = "";
   }
-
-
-  if (
-    [
-      "CANCELLED",
-      "POSTPONED",
-      "ABANDONED"
-    ].includes(
-      status
-    )
-  ) {
-
-    updated.matchStatus =
-      "cancelled";
-
-    updated.outcome =
-      "void";
-
-    return updated;
-
-  }
-
 
   return updated;
 
@@ -8522,13 +8463,11 @@ function connectLiveEvents() {
 
 async function settleFinishedBetsWithRetry() {
 
-  if (
-    !hasBetsWaitingForOfficialResult()
-  ) {
-    return;
-  }
-
-
+  /*
+   * MATCH_FINISHED do SportScore é apenas um sinal para
+   * consultar novamente football-data.org. Não exige que a
+   * seleção já esteja marcada como finished pelo feed LIVE.
+   */
   for (
     const delay of
     FINAL_RESULT_RETRY_DELAYS
@@ -8540,13 +8479,6 @@ async function settleFinishedBetsWithRetry() {
 
 
     await updateAllBets();
-
-
-    if (
-      !hasBetsWaitingForOfficialResult()
-    ) {
-      return;
-    }
 
   }
 
