@@ -6908,56 +6908,56 @@ function renderCurrentSelections() {
        */
 
       const manualSportContent = `
-  <div class="manual-sport-team manual-sport-home">
-    <span class="manual-sport-team-name">
-      ${escapeHtml(
-        selection.homeTeam?.shortName ||
-        selection.homeTeam?.name ||
-        "Casa"
-      )}
-    </span>
-  </div>
-
-  <div class="manual-sport-center">
-
-    <div class="selection-sport-icon">
-      ${sportIcon}
-    </div>
-
-    ${
-      live
-        ? `
-          <span class="selection-live">
-            🔴 LIVE
+        <div class="manual-sport-team manual-sport-home">
+          <span class="manual-sport-team-name">
+            ${escapeHtml(
+              selection.homeTeam?.shortName ||
+              selection.homeTeam?.name ||
+              "Casa"
+            )}
           </span>
+        </div>
+
+        <div class="manual-sport-center">
+
+          <div class="selection-sport-icon">
+            ${sportIcon}
+          </div>
 
           ${
-            score
-              ? `<strong>${escapeHtml(score)}</strong>`
-              : ""
+            live
+              ? `
+                <span class="selection-live">
+                  🔴 LIVE
+                </span>
+
+                ${
+                  score
+                    ? `<strong>${escapeHtml(score)}</strong>`
+                    : ""
+                }
+              `
+              : `
+                <strong>
+                  ${escapeHtml(selection.time || "--:--")}
+                </strong>
+
+                <span>VS</span>
+              `
           }
-        `
-        : `
-          <strong>
-            ${escapeHtml(selection.time || "--:--")}
-          </strong>
 
-          <span>VS</span>
-        `
-    }
+        </div>
 
-  </div>
-
-  <div class="manual-sport-team manual-sport-away">
-    <span class="manual-sport-team-name">
-      ${escapeHtml(
-        selection.awayTeam?.shortName ||
-        selection.awayTeam?.name ||
-        "Fora"
-      )}
-    </span>
-  </div>
-`;
+        <div class="manual-sport-team manual-sport-away">
+          <span class="manual-sport-team-name">
+            ${escapeHtml(
+              selection.awayTeam?.shortName ||
+              selection.awayTeam?.name ||
+              "Fora"
+            )}
+          </span>
+        </div>
+      `;
 
 
       item.innerHTML = `
