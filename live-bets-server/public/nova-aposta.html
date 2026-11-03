@@ -1844,6 +1844,7 @@ const MANUAL_SPORT_CONFIG = {
     competitionPlaceholder: "Ex.: ATP Finals",
     markets: [
       { code: "MATCH_WINNER", label: "Vencedor do encontro", options: ["Jogador 1", "Jogador 2"] },
+      { code: "WINSET", label: "Ganha um set", options: ["Jogador 1", "Jogador 2"] },
       { code: "SETS", label: "Total de sets", options: ["Mais de", "Menos de"] },
       { code: "GAMES", label: "Total de jogos", options: ["Mais de", "Menos de"] }
     ]
@@ -5308,16 +5309,17 @@ function updateManualSelectionOptions() {
       ];
     }
 
-  } else if (
-    market.code === "MONEYLINE" ||
-    market.code === "MATCH_WINNER"
-  ) {
+    } else if (
+      market.code === "MONEYLINE" ||
+      market.code === "MATCH_WINNER" ||
+      market.code === "WINSET" ||
+      market.code === "SPREAD"
+    ) {
 
-    options = [
-      home,
-      away
-    ];
-
+      options = [
+        home,
+        away
+      ];
   }
 
 
